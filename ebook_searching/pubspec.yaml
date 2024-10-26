@@ -9,6 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flashy_tab_bar2: ^0.0.10
+  sqflite: ^2.0.0+3
+  path: ^1.8.0
+  flutter_image_slideshow: any
+  carousel_slider: ^5.0.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +23,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/

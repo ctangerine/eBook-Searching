@@ -1,3 +1,5 @@
+import 'package:ebook_searching/presentation/screens/splash_screen.dart';
+import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,10 +11,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      home: const SafeArea(
+        child: Scaffold(
+          body: Center(
+            child: SplashScreen()
+          ),
         ),
       ),
     );

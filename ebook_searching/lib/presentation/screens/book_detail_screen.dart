@@ -1,6 +1,6 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
 import 'package:ebook_searching/presentation/reuse_component/review_card.dart';
-import 'package:ebook_searching/presentation/screens/comments_screen.dart';
+import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';

@@ -7,8 +7,8 @@ class BookTudIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1,
-      height: 1,
+      width: 50,
+      height: 50,
       padding: const EdgeInsets.all(12.0),
       child: Image.asset(booktudLogo, fit: BoxFit.fill,)
     );

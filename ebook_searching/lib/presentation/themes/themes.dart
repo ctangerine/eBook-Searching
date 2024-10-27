@@ -128,6 +128,7 @@ final ThemeData lightTheme = ThemeData(
     bodySmall: AppTextStyles.body3Medium
   ),
   buttonTheme: const ButtonThemeData(
+    disabledColor: AppColors.textSecondary,
     buttonColor: AppColors.primary
   ),
   filledButtonTheme: FilledButtonThemeData(
@@ -149,23 +150,32 @@ final ThemeData lightTheme = ThemeData(
       foregroundColor: WidgetStatePropertyAll(AppColors.textPrimary),
     )
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: OutlineInputBorder(
+  inputDecorationTheme: InputDecorationTheme(
+    enabledBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: AppColors.textSecondary, width: 1.0)
+    ),
+    focusedBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: AppColors.primary, width: 2.0)
+    ),
+    errorBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: AppColors.error, width: 2.0)
+    ),
+    border: const OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(100)),
       borderSide: BorderSide(color: AppColors.textSecondary, width: 2.0),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(100)),
-      borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 2.0),
-    ),
-    hintStyle: TextStyle(
+    hintStyle: const TextStyle(
       fontFamily: primaryFontFamily,
       fontSize: 14,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.5,
       height: 16.0/14.0,
       color: AppColors.textSecondary
-    )
+    ),
+    errorStyle: AppTextStyles.body2Medium.copyWith(color: AppColors.error),
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.maintheme,

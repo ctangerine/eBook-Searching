@@ -4,7 +4,7 @@ import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/current_coding_screens.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'signin_screen.dart'; // Import the SigninScreen
+import 'on_boarding_screen.dart'; // Import the SigninScreen
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

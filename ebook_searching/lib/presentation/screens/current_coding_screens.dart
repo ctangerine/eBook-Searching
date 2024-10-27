@@ -1,6 +1,7 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
+import 'package:ebook_searching/presentation/screens/comments_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/splash_screen.dart';
 import 'package:ebook_searching/presentation/screens/signin_screen.dart';
@@ -59,6 +60,18 @@ class CurrentCodingScreens extends StatelessWidget {
                 );
               },
               child: const Text('SigninScreen'),
+            ),
+            // CommentScreen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReviewScreen(),
+                  ),
+                );
+              },
+              child: const Text('CommentsScreen'),
             ),
           ],
         ),

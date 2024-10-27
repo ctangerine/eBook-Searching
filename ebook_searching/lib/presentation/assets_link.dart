@@ -4,3 +4,4 @@ const String homepageImage = 'assets/images/homepage_image.png';
 const String bookCover1 = 'assets/images/book_cover_1.png';
 const String bookCover2 = 'assets/images/book_cover_2.png';
 const String bookCover3 = 'assets/images/book_cover_3.png';
+const String avatar = 'assets/images/avatar1.png';

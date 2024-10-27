@@ -1,8 +1,9 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/reuse_component/review_card.dart';
+import 'package:ebook_searching/presentation/screens/comments_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
 class BookDetailScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class BookDetailScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  BookCoverShowcase(),
+                  const BookCoverShowcase(),
                   _buildNameTag(),
                   Container(height: 10, width: double.infinity, color: AppColors.themeSecondary,),
                   _buildBookInfo(),
@@ -36,7 +37,7 @@ class BookDetailScreen extends StatelessWidget {
                   _buildBookDescription(),
                   Container(height: 10, width: double.infinity, color: AppColors.themeSecondary,),
                   _buildComments(),
-                  _buildViewCommentsButton(),
+                  _buildViewCommentsButton(context),
                 ],
               ),
             ),
@@ -197,6 +198,7 @@ class BookDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ReviewCard( 
+            maxLines: 2,
             name: 'John Doe', 
             review: 'This book is very good, I like it very much. The story is very interesting and the characters are very well developed.',
             rating: 4.5,
@@ -205,6 +207,7 @@ class BookDetailScreen extends StatelessWidget {
           const SizedBox(height:50, child: Divider(color: AppColors.themeSecondary,)),
           //another review card
           ReviewCard(
+            maxLines: 2,
             name: 'Jane Smith',
             review: 'A fascinating read with deep insights into the human condition. Highly recommended!',
             rating: 4.0,
@@ -215,14 +218,16 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildViewCommentsButton() {
+  Widget _buildViewCommentsButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Row(
         children: [
           Expanded(
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                _showReviewPage(context);
+              },
               style: lightTheme.textButtonTheme.style?.copyWith(
                 foregroundColor: WidgetStateProperty.all(AppColors.primary),
                 side: WidgetStateProperty.all(const BorderSide(color: AppColors.textSecondary, width: 0.5)),
@@ -234,95 +239,36 @@ class BookDetailScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class ReviewCard extends StatelessWidget {
-  final String name;
-  final String? avatar;
-  final String? review;
-  final double rating;
-  final DateTime date;
-
-  const ReviewCard({super.key, 
-    required this.name,
-    this.avatar,
-    this.review,
-    required this.rating,
-    required this.date,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.textSecondary, width: 0.5),
-                  ),
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundImage: avatar != null ? AssetImage(avatar!) : null,
-                    child: avatar == null ? const Icon(Icons.person, size: 20) : null,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(name, style: AppTextStyles.title2Medium),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: AppColors.textSecondary, width: 0.5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(Icons.star, color: Color.fromARGB(255, 251, 190, 36)),
-                  const SizedBox(width: 5),
-                  Text('$rating/5', style: AppTextStyles.body2Semibold),
-                ],
-              ),
-            )
-          ],
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(45, 10, 0, 0),
-          child: Text(review ?? '', style: AppTextStyles.body2Regular, maxLines: 2, overflow: TextOverflow.ellipsis),
-        ),
-        const SizedBox(height: 7),
-        Container(
-          padding: const EdgeInsets.fromLTRB(45, 10, 0, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                DateFormat('MMMM d, yyyy').format(date), 
-                style: AppTextStyles.body3Medium.copyWith(color: AppColors.textSecondary)
-              ),
-              Text('${date.hour}:${date.minute}', style: AppTextStyles.body3Medium.copyWith(color: AppColors.textSecondary)),
-            ],
-          ),
+  void _showReviewPage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         )
-      ],
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
+      builder: (context) {
+        return const ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          child: ReviewScreen(), // Your ReviewPage widget here
+        );
+      },
     );
   }
 }
 
 class BookCoverShowcase extends StatefulWidget {
+  const BookCoverShowcase({super.key});
+
   @override
   State<BookCoverShowcase> createState() => _BookCoverShowcaseState();  
 }

@@ -3,6 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'authen_model.g.dart';
 
+typedef AuthenResponseModel = AuthenModel;
+
 @JsonSerializable()
 class AuthenModel {
   static const String example = """

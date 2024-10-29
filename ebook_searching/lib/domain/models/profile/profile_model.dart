@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_model.g.dart';
 
+typedef ProfileResponseModel = ProfileModel;
+
 @JsonSerializable()
 class ProfileModel {
   static const String example = """

@@ -3,7 +3,8 @@ import 'package:ebook_searching/presentation/screens/splash_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
-Future<void> main() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
   runApp(const MainApp());
 }

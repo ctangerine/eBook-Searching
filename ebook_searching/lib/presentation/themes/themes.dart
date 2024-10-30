@@ -121,6 +121,22 @@ class AppTextStyles {
 final ThemeData lightTheme = ThemeData(
   primaryColor: AppColors.primary,
   scaffoldBackgroundColor: AppColors.maintheme,
+  dialogBackgroundColor: AppColors.themeSecondary,
+  datePickerTheme: DatePickerThemeData(
+    backgroundColor: AppColors.maintheme,
+    headerHeadlineStyle: AppTextStyles.title1Semibold.copyWith(color: AppColors.onPrimary),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),
+      errorStyle: AppTextStyles.body2Medium.copyWith(color: AppColors.error),
+    ),
+  ),
+  dropdownMenuTheme: DropdownMenuThemeData(
+    textStyle: AppTextStyles.body2Medium.copyWith(color: AppColors.textPrimary),
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: AppColors.maintheme,
+      focusColor: AppColors.maintheme,
+    )
+  ),
   textTheme: const TextTheme(
     headlineMedium: AppTextStyles.heading2Semibold,
     headlineSmall: AppTextStyles.heading3Semibold,

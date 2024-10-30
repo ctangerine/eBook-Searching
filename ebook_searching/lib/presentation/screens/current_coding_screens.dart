@@ -3,7 +3,9 @@
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
+import 'package:ebook_searching/presentation/screens/setup_account_screen.dart';
 import 'package:ebook_searching/presentation/screens/signin_screen.dart';
+import 'package:ebook_searching/presentation/screens/signup_screen.dart';
 import 'package:ebook_searching/presentation/screens/splash_screen.dart';
 import 'package:ebook_searching/presentation/screens/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,30 @@ class CurrentCodingScreens extends StatelessWidget {
                 );
               },
               child: const Text('SigninScreen'),
+            ),
+            // page for signupScreen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignupScreen(),
+                  ),
+                );
+              },
+              child: const Text('SignupScreen'),
+            ),
+            // page setupaccount
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SetupAccountScreen(),
+                  ),
+                );
+              },
+              child: const Text('SetupAccountScreen'),
             ),
           ],
         ),

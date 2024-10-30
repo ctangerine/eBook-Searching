@@ -1,14 +1,22 @@
+import 'package:ebook_searching/domain/models/authen/sign_in_request.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SigninScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  SigninScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final authBloc = context.read<AuthenBloc>();
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -19,7 +27,7 @@ class SigninScreen extends StatelessWidget {
             children: [
               _buildAppname(),
               _buildDescrition(),
-              _buildLoginForm(context),
+              _buildLoginForm(context, authBloc),
               _buildTermPart()
             ],
           ),
@@ -76,7 +84,7 @@ class SigninScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginForm(BuildContext context) {
+  Widget _buildLoginForm(BuildContext context, AuthenBloc authBloc) {
     return Form(
       key: _formKey,  // Attach the GlobalKey to the Form
       child: Column(
@@ -93,11 +101,36 @@ class SigninScreen extends StatelessWidget {
           const SizedBox(height: 20),
           _buildForgotPasswordLink(),
           const SizedBox(height: 10),
-          _buildLoginButton(),
+          _buildLoginButton(authBloc),
           const SizedBox(height: 10),
-          _buildLoginWithGoogleButton()
+          _buildLoginWithGoogleButton(),
+          const SizedBox(height: 10),
+          _buildBlocConsumer()
         ],
       ),
+    );
+  }
+
+  BlocConsumer<AuthenBloc, AuthenState> _buildBlocConsumer() {
+    return BlocConsumer<AuthenBloc, AuthenState>(
+      listener: (context, state) {
+        if (state is AuthenSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login Successful')),
+          );
+        } else if (state is AuthenFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login Failed with error: ${state.error}')),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthenLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Container(); // Return an empty container or any other widget
+        }
+      },
     );
   }
 
@@ -116,13 +149,23 @@ class SigninScreen extends StatelessWidget {
     );
   }
 
-  Row _buildLoginButton() {
+  Row _buildLoginButton(AuthenBloc authBloc) {
     return Row(
       children: [
         Expanded(
           child: FilledButton(
             statesController: WidgetStatesController(_formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled}),
-            onPressed: () => {},
+            onPressed: () {
+              if (_formKey.currentState != null) {
+                if (_formKey.currentState!.validate()) {
+                  SignInRequest signInRequest = SignInRequest(
+                    username: _emailController.text,
+                    password: _passwordController.text
+                  );
+                  authBloc.add(SignInEvent(signInRequest));
+                }
+              }
+            },
             child: const Text('Login', 
               style: AppTextStyles.body2Semibold
             )

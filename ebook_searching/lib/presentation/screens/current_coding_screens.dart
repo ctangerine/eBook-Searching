@@ -106,7 +106,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SetupAccountScreen(),
+                    builder: (context) => SetupAccountScreen(email: 'abc', password: 'cde'),
                   ),
                 );
               },

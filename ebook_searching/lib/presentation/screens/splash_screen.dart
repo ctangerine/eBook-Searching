@@ -1,10 +1,8 @@
 // splash screen to show the logo of the app
 import 'package:ebook_searching/presentation/assets_link.dart';
-import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/current_coding_screens.dart';
-import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'on_boarding_screen.dart'; // Import the SigninScreen
+// Import the SigninScreen
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

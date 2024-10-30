@@ -1,15 +1,28 @@
+import 'package:ebook_searching/domain/models/authen/sign_up_request.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
+import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SetupAccountScreen extends StatelessWidget {
+  final String email;
+  final String password;
+
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  SetupAccountScreen({super.key, required this.email, required this.password});
+
   @override
   Widget build(BuildContext context) {
+    final authBloc = context.read<AuthenBloc>();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -26,7 +39,35 @@ class SetupAccountScreen extends StatelessWidget {
               _buildDescrition(),
               _buildAvatarProfile(),
               _buildInformationForm(context),
-              _buildSubmitButton() 
+              _buildSubmitButton(authBloc),
+              // BlocConsumer to test 
+              BlocConsumer<AuthenBloc, AuthenState>(
+                listener: (context, state) {
+                    if (state is AuthenSuccess) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                    } else if (state is AuthenFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                      content: Text('Authentication Failed: ${state.error}'),
+                      backgroundColor: Colors.red,
+                      ),
+                    );
+                    }
+                  
+                },
+                builder: (context, state) {
+                  if (state is AuthenLoading) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return Container();
+                  }
+                },
+              )
             ],
           ),
         ),
@@ -49,6 +90,7 @@ class SetupAccountScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(height: 20),
         const Text('Setup your account', style: AppTextStyles.heading2Semibold),
         const SizedBox(height: 10),
         Text(
@@ -104,13 +146,20 @@ class SetupAccountScreen extends StatelessWidget {
     );
   }
 
-  Row _buildSubmitButton() {
+  Row _buildSubmitButton(AuthenBloc authBloc) {
     return Row(
       children: [
         Expanded(
           child: FilledButton(
             statesController: WidgetStatesController(_formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled}),
-            onPressed: () => {},
+            onPressed: () {
+              SignUpRequest signUpRequest = SignUpRequest(
+                email: email,
+                password: password,
+                username: _fullnameController.text
+              );
+              authBloc.add(SignUpEvent(signUpRequest));
+            },
             child: const Text('Submit', 
               style: AppTextStyles.body2Semibold
             )

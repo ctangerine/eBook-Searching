@@ -1,4 +1,5 @@
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
+import 'package:ebook_searching/presentation/screens/setup_account_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -26,7 +28,7 @@ class SignupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildDescrition(),
-              _buildLoginForm(context),
+              _buildSignupForm(context),
               _buildTermPart()
             ],
           ),
@@ -85,7 +87,7 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginForm(BuildContext context) {
+  Widget _buildSignupForm(BuildContext context) {
     return Form(
       key: _formKey,  // Attach the GlobalKey to the Form
       child: Column(
@@ -104,7 +106,7 @@ class SignupScreen extends StatelessWidget {
           const SizedBox(height: 10),
           confirmPasswordTextFormField(context),
           const SizedBox(height: 30),
-          _buildRegisterButton(),
+          _buildRegisterButton(context),
           const SizedBox(height: 10),
           _buildLoginWithGoogleButton()
         ],
@@ -127,20 +129,37 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Row _buildRegisterButton() {
+  Row _buildRegisterButton(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: FilledButton(
-            statesController: WidgetStatesController(_formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled}),
-            onPressed: () => {},
-            child: const Text('Login', 
-              style: AppTextStyles.body2Semibold
-            )
-          )
+            statesController: WidgetStatesController(
+              _formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled},
+            ),
+            onPressed: () => _onRegisterButtonPressed(context),
+            child: const Text(
+              'Register',
+              style: AppTextStyles.body2Semibold,
+            ),
+          ),
         ),
       ],
     );
+  }
+
+  void _onRegisterButtonPressed(BuildContext context) {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SetupAccountScreen(
+            email: _emailController.text,
+            password: _passwordController.text,
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildForgotPasswordLink() {

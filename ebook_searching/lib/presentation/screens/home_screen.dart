@@ -2,6 +2,7 @@ import 'package:ebook_searching/presentation/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
+import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -21,35 +22,47 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: const BookTudIcon(),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications_none_outlined),
-              onPressed: () {
-              },
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Center(
-              child: Column(
-                children: [
-                  _buildCarousel(),
-                  const SizedBox(height: 20),
-                  _buildSearchBar(),
-                  _buildBookByGenreTab(),
-                  _buildBookSlider(),
-                ],
-              ),
-            ),
-          ),
-        ),
+        appBar: _selectedIndex == 0 ? homepageAppBar() : null,
+        body: <Widget>[
+          homePageScreen(),
+          LibraryScreen(),
+          // ProfileScreen(),
+        ][_selectedIndex],
         bottomNavigationBar: _buildBottomNavigationbar(),
       ),
     );
+  }
+
+  AppBar homepageAppBar() {
+    return AppBar(
+        leading: const BookTudIcon(),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none_outlined),
+            onPressed: () {
+            },
+          ),
+        ],
+      );
+  }
+
+  SingleChildScrollView homePageScreen() {
+    return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Center(
+            child: Column(
+              children: [
+                _buildCarousel(),
+                const SizedBox(height: 20),
+                _buildSearchBar(),
+                _buildBookByGenreTab(),
+                _buildBookSlider(),
+              ],
+            ),
+          ),
+        ),
+      );
   }
 
   Widget _buildCarousel() {

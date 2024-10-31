@@ -1,6 +1,7 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
+import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
@@ -122,6 +123,18 @@ class CurrentCodingScreens extends StatelessWidget {
                   ),
                 );
               }, child: const Text('SaveToLibraryScreen',)
+            ),
+            //For library screen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LibraryScreen(),
+                  ),
+                );
+              },
+              child: const Text('LibraryScreen'),
             ),
           ],
         ),

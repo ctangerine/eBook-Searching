@@ -8,17 +8,19 @@ class SignupSuccessfulScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.maintheme,
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildHeroImage(),
-          _buildDescription(),
-          _buildContinueButton(context),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        color: AppColors.maintheme,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildHeroImage(),
+            _buildDescription(),
+            _buildContinueButton(context),
+          ],
+        ),
       ),
     );
   }

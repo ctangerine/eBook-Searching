@@ -31,19 +31,21 @@ class SetupAccountScreen extends StatelessWidget {
           title: _buildAppname(),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildDescrition(),
-              _buildAvatarProfile(),
-              _buildInformationForm(context),
-              _buildSubmitButton(authBloc),
-              // BlocConsumer to test 
-              _buildBlocConsumer()
-            ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildDescrition(),
+                _buildAvatarProfile(),
+                _buildInformationForm(context),
+                _buildSubmitButton(authBloc),
+                // BlocConsumer to test 
+                _buildBlocConsumer()
+              ],
+            ),
           ),
         ),
       ),

@@ -7,3 +7,4 @@ const String bookCover3 = 'assets/images/book_cover_3.png';
 const String avatar = 'assets/images/avatar1.png';
 const String signupSuccess = 'assets/images/signup_success.png';
 const String naturalCover = 'assets/images/natural.png';
+const String searchImage = 'assets/images/search_image.png';

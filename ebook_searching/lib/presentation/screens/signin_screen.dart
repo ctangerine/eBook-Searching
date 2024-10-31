@@ -19,17 +19,19 @@ class SigninScreen extends StatelessWidget {
     final authBloc = context.read<AuthenBloc>();
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildAppname(),
-              _buildDescrition(),
-              _buildLoginForm(context, authBloc),
-              _buildTermPart()
-            ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildAppname(),
+                _buildDescrition(),
+                _buildLoginForm(context, authBloc),
+                _buildTermPart()
+              ],
+            ),
           ),
         ),
       ),

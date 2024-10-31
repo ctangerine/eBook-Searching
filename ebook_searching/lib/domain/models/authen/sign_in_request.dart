@@ -18,9 +18,9 @@ class SignInRequest {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['username'] = username;
-    _data['password'] = password;
-    return _data;
+    final data = <String, dynamic>{};
+    data['username'] = username;
+    data['password'] = password;
+    return data;
   }
 }

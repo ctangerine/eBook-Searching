@@ -26,11 +26,11 @@ class GenreParam {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['limit'] = limit;
-    _data['offset'] = offset;
-    _data['orderBy'] = orderBy;
-    _data['orderDirection'] = orderDirection;
-    return _data;
+    final data = <String, dynamic>{};
+    data['limit'] = limit;
+    data['offset'] = offset;
+    data['orderBy'] = orderBy;
+    data['orderDirection'] = orderDirection;
+    return data;
   }
 }

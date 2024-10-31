@@ -11,7 +11,7 @@ import 'package:ebook_searching/presentation/screens/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 
 class CurrentCodingScreens extends StatelessWidget {
-  const CurrentCodingScreens({Key? key}) : super(key: key);
+  const CurrentCodingScreens({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
+                    builder: (context) => const HomeScreen(),
                   ),
                 );
               },
@@ -36,7 +36,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BookDetailScreen(),
+                    builder: (context) => const BookDetailScreen(),
                   ),
                 );
               },
@@ -47,7 +47,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SplashScreen(),
+                    builder: (context) => const SplashScreen(),
                   ),
                 );
               },
@@ -58,7 +58,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OnBoardingScreen(),
+                    builder: (context) => const OnBoardingScreen(),
                   ),
                 );
               },
@@ -70,7 +70,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReviewScreen(),
+                    builder: (context) => const ReviewScreen(),
                   ),
                 );
               },

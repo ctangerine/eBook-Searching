@@ -22,10 +22,10 @@ class UpdateProfileRequest {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['fullName'] = fullName;
-    _data['gender'] = gender;
-    _data['dateOfBirth'] = dateOfBirth;
-    return _data;
+    final data = <String, dynamic>{};
+    data['fullName'] = fullName;
+    data['gender'] = gender;
+    data['dateOfBirth'] = dateOfBirth;
+    return data;
   }
 }

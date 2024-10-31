@@ -4,6 +4,7 @@ import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
+import 'package:ebook_searching/presentation/screens/signup_successful_scree.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,37 +42,53 @@ class SetupAccountScreen extends StatelessWidget {
               _buildInformationForm(context),
               _buildSubmitButton(authBloc),
               // BlocConsumer to test 
-              BlocConsumer<AuthenBloc, AuthenState>(
-                listener: (context, state) {
-                    if (state is AuthenSuccess) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                      ),
-                    );
-                    } else if (state is AuthenFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                      content: Text('Authentication Failed: ${state.error}'),
-                      backgroundColor: Colors.red,
-                      ),
-                    );
-                    }
-                  
-                },
-                builder: (context, state) {
-                  if (state is AuthenLoading) {
-                    return const CircularProgressIndicator();
-                  } else {
-                    return Container();
-                  }
-                },
-              )
+              _buildBlocConsumer()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  BlocConsumer<AuthenBloc, AuthenState> _buildBlocConsumer() {
+    return BlocConsumer<AuthenBloc, AuthenState>(
+      listener: (context, state) {
+        if (state is AuthenSuccess || state is AuthenFailure) {
+          _showModalBottomSheet(context, state);
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthenLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Container(); // Return an empty container or any other widget
+        }
+      },
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, AuthenState state) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+      ),
+      builder: (context) {
+        return const ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          child: SignupSuccessfulScreen(), // Your ReviewPage widget here
+        );
+      },
     );
   }
 

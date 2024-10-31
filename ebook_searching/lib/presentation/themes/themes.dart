@@ -196,6 +196,7 @@ final ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.maintheme,
     elevation: 0,
+    scrolledUnderElevation: 0,
     iconTheme: IconThemeData(
       color: AppColors.textPrimary
     ),

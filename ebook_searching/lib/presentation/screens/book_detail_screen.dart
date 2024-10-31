@@ -1,6 +1,7 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/review_card.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
+import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -30,7 +31,7 @@ class BookDetailScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const BookCoverShowcase(),
-                  _buildNameTag(),
+                  _buildNameTag(context),
                   Container(height: 10, width: double.infinity, color: AppColors.themeSecondary,),
                   _buildBookInfo(),
                   Container(height: 10, width: double.infinity, color: AppColors.themeSecondary,),
@@ -47,7 +48,7 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNameTag() {
+  Widget _buildNameTag(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       color: AppColors.maintheme,
@@ -77,7 +78,9 @@ class BookDetailScreen extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () => {}, 
+            onPressed: () {
+              saveToLibrarySheet(context);
+            }, 
             icon: const Icon(Icons.new_label_outlined, size: 30,),
             style: lightTheme.textButtonTheme.style?.copyWith(
               shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
@@ -87,6 +90,31 @@ class BookDetailScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Future<dynamic> saveToLibrarySheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        )
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          child: SaveToLibraryScreen(), // Your ReviewPage widget here
+        );
+      },
     );
   }
 

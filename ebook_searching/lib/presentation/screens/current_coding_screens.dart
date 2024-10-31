@@ -3,6 +3,7 @@
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
+import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
 import 'package:ebook_searching/presentation/screens/setup_account_screen.dart';
 import 'package:ebook_searching/presentation/screens/signin_screen.dart';
 import 'package:ebook_searching/presentation/screens/signup_screen.dart';
@@ -111,6 +112,16 @@ class CurrentCodingScreens extends StatelessWidget {
                 );
               },
               child: const Text('SetupAccountScreen'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SaveToLibraryScreen(),
+                  ),
+                );
+              }, child: const Text('SaveToLibraryScreen',)
             ),
           ],
         ),

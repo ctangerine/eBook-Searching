@@ -8,7 +8,7 @@ part of 'book_detail_model.dart';
 
 BookDetailModel _$BookDetailModelFromJson(Map<String, dynamic> json) =>
     BookDetailModel(
-      author: (json['author'] as List<dynamic>)
+      authors: (json['authors'] as List<dynamic>)
           .map((e) => AuthorModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       avgRating: (json['avgRating'] as num).toDouble(),
@@ -34,7 +34,7 @@ BookDetailModel _$BookDetailModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BookDetailModelToJson(BookDetailModel instance) =>
     <String, dynamic>{
-      'author': instance.author,
+      'authors': instance.authors,
       'avgRating': instance.avgRating,
       'categories': instance.categories,
       'description': instance.description,

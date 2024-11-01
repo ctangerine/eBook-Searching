@@ -11,7 +11,9 @@ BookModel _$BookModelFromJson(Map<String, dynamic> json) => BookModel(
       uri: json['uri'] as String,
       avgRating: (json['avgRating'] as num).toDouble(),
       image: json['image'] as String,
-      author: AuthorModel.fromJson(json['author'] as Map<String, dynamic>),
+      authors: (json['authors'] as List<dynamic>)
+          .map((e) => AuthorModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       title: json['title'] as String?,
     );
 
@@ -20,6 +22,6 @@ Map<String, dynamic> _$BookModelToJson(BookModel instance) => <String, dynamic>{
       'uri': instance.uri,
       'avgRating': instance.avgRating,
       'image': instance.image,
-      'author': instance.author,
+      'authors': instance.authors,
       'title': instance.title,
     };

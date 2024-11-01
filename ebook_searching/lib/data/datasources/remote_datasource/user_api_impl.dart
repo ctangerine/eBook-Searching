@@ -2,15 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:ebook_searching/core/constant/network_constant.dart';
 import 'package:ebook_searching/core/network/error/dio_error_handler.dart';
 import 'package:ebook_searching/core/network/error/exceptions.dart';
-import 'package:ebook_searching/data/datasources/remote_datasource/profile_api.dart';
+import 'package:ebook_searching/data/datasources/remote_datasource/user_api.dart';
 import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:ebook_searching/domain/models/profile/update_profile_request.dart';
 
-class ProfileImplApi extends ProfileApi {
+class UserImplApi extends UserApi {
   final Dio dio;
   CancelToken cancelToken = CancelToken();
 
-  ProfileImplApi(this.dio);
+  UserImplApi(this.dio);
 
   // Get Profile
   @override

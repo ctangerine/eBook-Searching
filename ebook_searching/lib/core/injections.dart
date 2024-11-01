@@ -2,6 +2,9 @@ import 'package:ebook_searching/app_injections.dart';
 import 'package:ebook_searching/core/log/app_logger.dart';
 import 'package:ebook_searching/core/network/dio_network.dart';
 import 'package:ebook_searching/presentation/auth_injections.dart';
+import 'package:ebook_searching/presentation/book_injections.dart';
+import 'package:ebook_searching/presentation/genre_injections.dart';
+import 'package:ebook_searching/presentation/user_injections.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +15,9 @@ Future<void> initInjections() async {
   await initAppInjections();
   await initDioInjections();
   await initAuthInjections();
+  await initBookInjections();
+  await initUserInjections();
+  await initGenreInjections();
 }
 
 initSharedPrefsInjections() async {

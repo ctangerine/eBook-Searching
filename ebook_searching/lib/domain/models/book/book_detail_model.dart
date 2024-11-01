@@ -51,7 +51,7 @@ class BookDetailModel {
   "uri": "<string>"
   """;
 
-  List<AuthorModel> author;
+  List<AuthorModel> authors;
   double avgRating;
   List<String> categories;
   String description;
@@ -68,7 +68,7 @@ class BookDetailModel {
   String uri;
 
   BookDetailModel(
-      {required this.author,
+      {required this.authors,
       required this.avgRating,
       required this.categories,
       required this.description,

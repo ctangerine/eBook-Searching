@@ -10,7 +10,7 @@ class BookModel {
   "uri": "<string>",
   "avgRating": "<double>",
   "image": "<base64>",
-  "author": "<string>",
+  "author": [],
   "title": "<string>"
   """;
 
@@ -18,7 +18,7 @@ class BookModel {
   String uri;
   double avgRating;
   String image;
-  AuthorModel author;
+  List<AuthorModel> authors;
   String? title;
 
   BookModel({
@@ -26,7 +26,7 @@ class BookModel {
     required this.uri,
     required this.avgRating,
     required this.image,
-    required this.author,
+    required this.authors,
     this.title,
   });
 

@@ -1,4 +1,4 @@
-import 'package:ebook_searching/domain/usecases/user_usecase.dart';
+import 'package:ebook_searching/domain/usecases/authorization_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

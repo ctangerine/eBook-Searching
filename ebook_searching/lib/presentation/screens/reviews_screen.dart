@@ -1,4 +1,4 @@
-import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/reuse_component/custom_rating_tag.dart';
 import 'package:ebook_searching/presentation/common_widgets/review_card.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';

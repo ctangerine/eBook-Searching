@@ -1,4 +1,4 @@
-import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';

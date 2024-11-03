@@ -1,6 +1,6 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
-import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/screens/library_books_screen.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';

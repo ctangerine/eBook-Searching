@@ -1,4 +1,4 @@
-import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/functional_tag.dart';
 import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';

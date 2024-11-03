@@ -1,6 +1,7 @@
 // splash screen to show the logo of the app
-import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/screens/on_boarding_screen.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:flutter/material.dart';
 // Import the SigninScreen
 

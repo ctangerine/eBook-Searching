@@ -17,6 +17,15 @@ class SearchBookSuccess extends BookState {
 
   SearchBookSuccess(this.response);
 
+  //copyWith method
+  SearchBookSuccess copyWith({
+    BookResponseModel? response,
+  }) {
+    return SearchBookSuccess(
+      response ?? this.response,
+    );
+  }
+
   @override
   List<Object?> get props => [response];
 }

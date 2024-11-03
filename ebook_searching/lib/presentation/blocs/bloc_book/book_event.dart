@@ -23,3 +23,7 @@ class SearchBookEvent extends BookEvent {
   @override
   List<Object?> get props => [param];
 }
+
+class LoadingSuggestionsEvent extends BookEvent {
+  
+}

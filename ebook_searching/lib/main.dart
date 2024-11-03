@@ -1,5 +1,8 @@
+import 'package:ebook_searching/app_config.dart';
+import 'package:ebook_searching/app_routes.dart';
 import 'package:ebook_searching/core/injections.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/screens/splash_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
+  AppConfig().isPassAPI = true;
   runApp(const MainApp());
 }
 
@@ -18,10 +22,12 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => sl<AuthenBloc>()),
+        BlocProvider(create: (context) => sl<UserBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
+        onGenerateRoute: AppRoutes.generateRoute,
         home: const SafeArea(
           child: Scaffold(
             body: Center(

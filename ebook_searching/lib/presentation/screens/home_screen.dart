@@ -1,3 +1,14 @@
+import 'package:ebook_searching/core/injections.dart';
+import 'package:ebook_searching/domain/models/book/book_model.dart';
+import 'package:ebook_searching/domain/models/genre/genre_model.dart';
+import 'package:ebook_searching/domain/models/genre/genre_param.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_state.dart';
+import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
@@ -6,12 +17,14 @@ import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/profile_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
 
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -26,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: _selectedIndex == 0 ? homepageAppBar() : null,
         body: <Widget>[
           homePageScreen(),
-          LibraryScreen(),
-          ProfileScreen(),
+          const LibraryScreen(),
+          const ProfileScreen(),
         ][_selectedIndex],
         bottomNavigationBar: _buildBottomNavigationbar(),
       ),
@@ -47,23 +60,32 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   }
 
-  SingleChildScrollView homePageScreen() {
-    return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Center(
-            child: Column(
-              children: [
-                _buildCarousel(),
-                const SizedBox(height: 20),
-                _buildSearchBar(),
-                _buildBookByGenreTab(),
-                _buildBookSlider(),
-              ],
+  MultiBlocProvider homePageScreen() {
+    final genreParam = GenreParam(limit: 3, offset: 3, orderBy: 'name', orderDirection: 'direction');
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GenreBloc>(
+          create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
+        ),
+        BlocProvider(create: (context) => sl<BookBloc>()..add(LoadingSuggestionsEvent())),
+      ],
+      child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Center(
+              child: Column(
+                children: [
+                  _buildCarousel(),
+                  const SizedBox(height: 20),
+                  _buildSearchBar(),
+                  _buildBookByGenreTab(),
+                  _buildBookSlider(),
+                ],
+              ),
             ),
           ),
         ),
-      );
+    );
   }
 
   Widget _buildCarousel() {
@@ -120,28 +142,40 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              BookGenreCard(
-                genre: 'Fiction',
-                icon: Icons.book,
-                onTap: () {},
-              ),
-              const SizedBox(width: 10),
-              BookGenreCard(
-                genre: 'Non-Fiction',
-                icon: Icons.book,
-                onTap: () {},
-              ),
-              const SizedBox(width: 10),
-              BookGenreCard(
-                genre: 'Fantasy',
-                icon: Icons.book,
-                onTap: () {},
-              ),
-            ],
+          BlocBuilder<GenreBloc, GenreState>(
+            builder: (context, state) {
+              if (state is GenreLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is GenreSuccess) {
+                return _buildGenreList(state.response.data);
+              } else if (state is GenreFailure) {
+                return Center(child: Text(state.error));
+              } else {
+                return const Center(child: Text('No genres available'));
+              }
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGenreList(List<GenreModel> genres) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: genres.map((genre) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: BookGenreCard(
+              genre: genre.name,
+              icon: Icons.book,
+              onTap: () {
+                // Handle genre tap
+              },
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -165,25 +199,58 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          Container(
-            constraints: const BoxConstraints(maxHeight: 250),
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                // Replace this with the actual list of books if it's dynamic
-                List<BookCard> books = [
-                  const BookCard(bookTitle: 'Geografi Kelas XI', author: 'Errlanga', bookCover: bookCover1),
-                  const BookCard(bookTitle: 'Firiska Kelas XI', author: 'Errlanga', bookCover: bookCover2),
-                  const BookCard(bookTitle: 'Kimia Kelas XI', author: 'Errlanga', bookCover: bookCover2),
-                  const BookCard(bookTitle: 'Lorem Kelas XI', author: 'Errlanga', bookCover: bookCover1),
-                ];
-                return books[index];
-              },
-              separatorBuilder: (context, index) => const SizedBox(width: 16), // Add horizontal space between items
-            ),
+          BlocBuilder<BookBloc, BookState>(
+            builder: (context, state) {
+              if (state is BookLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is SearchBookSuccess) {
+                return _buildBookList(state.response.data);
+              } else if (state is SearchBookFailure) {
+                return Center(child: Text(state.error));
+              } else {
+                return const Center(child: Text('No books available'));
+              }
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  BlocListener _buildBookList(List<BookModel> books) {
+    return BlocListener<BookBloc, BookState>(
+      listener: (context, state) {
+        if (state is SearchBookSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (builder) => BlocProvider.value(
+                value: context.read<BookBloc>(),
+                child: const BookDetailScreen(),
+              ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 250),
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: books.length,
+          itemBuilder: (context, index) {
+            final book = books[index];
+            return BookCard(
+              bookTitle: book.title!,
+              author: book.authors[0].name,
+              bookCover: book.image,
+              onTap: () {
+                final bookBloc = context.read<BookBloc>();
+                bookBloc.add(GetBookDetailEvent(book.id));
+              },
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(width: 16), // Add horizontal space between items
+        ),
       ),
     );
   }
@@ -204,4 +271,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
+  
 }

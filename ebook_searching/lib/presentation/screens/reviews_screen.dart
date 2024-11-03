@@ -1,11 +1,13 @@
-import 'package:ebook_searching/presentation/styles/assets_link.dart';
+import 'package:ebook_searching/domain/models/review/review_model.dart';
 import 'package:ebook_searching/presentation/reuse_component/custom_rating_tag.dart';
 import 'package:ebook_searching/presentation/common_widgets/review_card.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 class ReviewScreen extends StatelessWidget {
-  const ReviewScreen({super.key});
+  final List<ReviewModel> comments;
+
+  const ReviewScreen({super.key, required this.comments});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ReviewScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
-          )
+          ),
         ),
         child: Column(
           children: [
@@ -39,7 +41,7 @@ class ReviewScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Review (61)', style: AppTextStyles.title1Semibold.copyWith(color: AppColors.textPrimary)),
+        Text('Review (${comments.length})', style: AppTextStyles.title1Semibold.copyWith(color: AppColors.textPrimary)),
       ],
     );
   }
@@ -64,11 +66,11 @@ class ReviewScreen extends StatelessWidget {
             children: [
               Icon(Icons.star, color: Color.fromARGB(255, 251, 190, 36)),
               SizedBox(width: 10),
-              Text('4.9', style: AppTextStyles.heading3Semibold,)
+              Text('4.9', style: AppTextStyles.heading3Semibold),
             ],
           ),
           const SizedBox(height: 10),
-          Text('Overall score', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary),)
+          Text('Overall score', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary)),
         ],
       ),
     );
@@ -96,7 +98,7 @@ class ReviewScreen extends StatelessWidget {
                 } else {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: CustomRatingTag(rating: (6-index).toDouble(), onOverall: false),
+                    child: CustomRatingTag(rating: (6 - index).toDouble(), onOverall: false),
                   );
                 }
               },
@@ -110,19 +112,20 @@ class ReviewScreen extends StatelessWidget {
   Widget _buildCommentList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: comments.length,
         itemBuilder: (context, index) {
+          final comment = comments[index];
           return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: ReviewCard(
                   maxLines: 9,
-                  avatar: avatar,
-                  name: "Lu Harista",
+                  avatar: comment.image,
+                  name: comment.reviewer,
                   rating: 4,
-                  date: DateTime.now(),
-                  review: "This app has been a game-changer for my reading habits! I love the wide selection of books, and the rental prices are very reasonable. The interface is super user-friendly, and I appreciate the recommendations based on my reading history. I’m reading more than ever, thanks to this app!",
+                  date: DateTime(2024, 11, comment.time),
+                  review: comment.content,
                 ),
               ),
               const SizedBox(

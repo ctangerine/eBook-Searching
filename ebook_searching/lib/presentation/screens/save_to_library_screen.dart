@@ -22,58 +22,89 @@ class SaveToLibraryScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: ValueListenableBuilder<int?>(
-                valueListenable: _selectedCardIndex,
-                builder: (context, selectedIndex, child) {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.95,
-                    ),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.all(0),
-                        alignment: Alignment.center,
-                        child: LibraryCard(
-                          libraryName: 'Natural $index',
-                          libraryCover: naturalCover,
-                          isSelected: selectedIndex == index,
-                          onTap: () {
-                            _selectedCardIndex.value = index;
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+            SavedLibraryList(
+              selectedCardIndex: _selectedCardIndex, 
+              crossAxisCount: crossAxisCount
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel', style: AppTextStyles.body2Semibold),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () {
-                      // Handle save action
-                    },
-                    child: const Text('Save'),
-                  ),
-                ),
-              ],
-            ),
+            _buildActionButton(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Row _buildActionButton(BuildContext context) {
+    return Row(
+      children: [
+        _buildCancelButon(context),
+        const SizedBox(width: 20),
+        _buildSaveButton(),
+      ],
+    );
+  }
+
+  Expanded _buildSaveButton() {
+    return Expanded(
+      child: FilledButton(
+        onPressed: () {
+          // Handle save action
+        },
+        child: const Text('Save'),
+      ),
+    );
+  }
+
+  Expanded _buildCancelButon(BuildContext context) {
+    return Expanded(
+      child: OutlinedButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Cancel', style: AppTextStyles.body2Semibold),
+      ),
+    );
+  }
+}
+
+class SavedLibraryList extends StatelessWidget {
+  const SavedLibraryList({
+    super.key,
+    required ValueNotifier<int?> selectedCardIndex,
+    required this.crossAxisCount,
+  }) : _selectedCardIndex = selectedCardIndex;
+
+  final ValueNotifier<int?> _selectedCardIndex;
+  final int crossAxisCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ValueListenableBuilder<int?>(
+        valueListenable: _selectedCardIndex,
+        builder: (context, selectedIndex, child) {
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.95,
+            ),
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: const EdgeInsets.all(0),
+                alignment: Alignment.center,
+                child: LibraryCard(
+                  libraryName: 'Natural $index',
+                  libraryCover: naturalCover,
+                  isSelected: selectedIndex == index,
+                  onTap: () {
+                    _selectedCardIndex.value = index;
+                  },
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

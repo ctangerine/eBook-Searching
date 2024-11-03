@@ -25,7 +25,7 @@ class ReviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,6 +57,7 @@ class ReviewCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(45, 10, 0, 0),
             child: Text(
             review ?? '', 
+            textAlign: TextAlign.left,
             style: AppTextStyles.body2Regular, 
             maxLines: maxLines, 
             overflow: maxLines != null ? TextOverflow.ellipsis : TextOverflow.visible,

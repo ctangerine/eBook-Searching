@@ -1,8 +1,11 @@
+import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_user/user_state.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/functional_tag.dart';
 import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,11 +26,11 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildAvatarProfile(),
+              _buildAvatarProfile(context),
               const SizedBox(height: 30),
-              _buildAccountTab(),
+              _buildAccountTab(context),
               const SizedBox(height: 20),
-              _buildGeneralTab(),
+              _buildGeneralTab(context),
             ],
           ),
         ),
@@ -35,7 +38,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatarProfile() {
+  Widget _buildAvatarProfile(BuildContext context) {
+    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Macus Geidt', style: AppTextStyles.body2Semibold,),
+            Text(user.fullName?? '', style: AppTextStyles.body2Semibold,),
             const SizedBox(height: 10),
             Text('Senior High School, Grade XII', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),),
           ],
@@ -58,7 +62,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAccountTab() {
+  Widget _buildAccountTab(BuildContext context) {
+    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,26 +77,26 @@ class ProfileScreen extends StatelessWidget {
             const List<String> functionalList = ['Personal details', 'Membership', 'Notifications', 'Account settings', 'Language'];
             const List<IconData> funtionalIcon = [Icons.person_outline, Icons.card_membership_outlined, Icons.notifications_outlined, Icons.settings_outlined, Icons.language_outlined];
             return InkWell(
-              onTap: () {},
+              onTap: index != 0 ? () {} : () {
+                Navigator.push(
+                  context,
+                    MaterialPageRoute(
+                    builder: (context) => PersonalDetailScreen(
+                      fullname: user.fullName ?? user.username ?? user.email,
+                      avatarUrl: avatar,
+                      gender: user.gender == 'Nam'? true : false,
+                      dob: user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : DateTime.now(),
+                      
+                    ),
+                  ),
+                );
+              },
               borderRadius: BorderRadius.circular(12),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
                 child: FunctionalTag(
                   leadingIcon: funtionalIcon[index],
                   label: functionalList[index],
-                  onTap: index != 0 ? null : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PersonalDetailScreen(
-                          fullname: 'Macus Geidt',
-                          avatarUrl: avatar,
-                          gender: true,
-                          dob: DateTime(2003, 04, 25),
-                        ),
-                      ),
-                    );
-                  }               
                 ),
               ),
             );
@@ -102,7 +107,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGeneralTab() {
+  Widget _buildGeneralTab(BuildContext context) {
+    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -128,10 +134,10 @@ class ProfileScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PersonalDetailScreen(
-                          fullname: 'Macus Geidt',
+                          fullname: user.fullName ?? user.username ?? user.email,
                           avatarUrl: avatar,
-                          gender: true,
-                          dob: DateTime(2003, 04, 25),
+                          gender: user.gender == 'Nam'? true : false,
+                          dob: user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : DateTime.now(),
                         ),
                       )
                     );

@@ -1,29 +1,40 @@
+import 'package:ebook_searching/app_routes.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/screens/signin_screen.dart';
 import 'package:ebook_searching/presentation/screens/signup_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-          child: Center(
-            child: Column(
-              children: [
-                _buildHeroImage(context),
-                const SizedBox(height: 30),
-                _buildGreetings(),
-                const SizedBox(height: 40),
-                _buildSigninLinkButton(context),
-                const SizedBox(height: 10),
-                _buildRegisterLinkButton(context),
-              ],
+    return BlocListener<AuthenBloc, AuthenState>(
+      listener: (context, state) {
+        if (state is AuthenSuccess) {
+          Navigator.pushNamed(context, AppRoutes.homePage);
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+            child: Center(
+              child: Column(
+                children: [
+                  _buildHeroImage(context),
+                  const SizedBox(height: 30),
+                  _buildGreetings(),
+                  const SizedBox(height: 40),
+                  _buildSigninLinkButton(context),
+                  const SizedBox(height: 10),
+                  _buildRegisterLinkButton(context),
+                ],
+              ),
             ),
           ),
         ),

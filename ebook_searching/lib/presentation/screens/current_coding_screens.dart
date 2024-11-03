@@ -6,7 +6,6 @@ import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/profile_screen.dart';
-import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
 import 'package:ebook_searching/presentation/screens/setup_account_screen.dart';
@@ -69,18 +68,6 @@ class CurrentCodingScreens extends StatelessWidget {
                 );
               },
               child: const Text('SigninScreen'),
-            ),
-            // CommentScreen
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ReviewScreen(),
-                  ),
-                );
-              },
-              child: const Text('CommentsScreen'),
             ),
             // page for SigninScreen
             ElevatedButton(

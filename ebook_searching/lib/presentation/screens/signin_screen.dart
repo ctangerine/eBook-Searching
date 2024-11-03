@@ -1,7 +1,10 @@
+import 'package:ebook_searching/app_routes.dart';
 import 'package:ebook_searching/domain/models/authen/sign_in_request.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +130,9 @@ class SigninScreen extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Login Successful')),
           );
+          final userBloc = BlocProvider.of<UserBloc>(context);
+          userBloc.add(GetProfileEvent(102210131));
+          Navigator.of(context).pushNamed(AppRoutes.homePage);
         } else if (state is AuthenFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login Failed with error: ${state.error}')),
@@ -142,6 +148,7 @@ class SigninScreen extends StatelessWidget {
       },
     );
   }
+
 
   Row _buildLoginWithGoogleButton() {
     return Row(

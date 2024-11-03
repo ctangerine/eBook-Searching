@@ -55,3 +55,7 @@ class GetBookByIdStorageEvent extends BookEvent {
   @override
   List<Object?> get props => [bookId];
 }
+
+class LoadingSuggestionsEvent extends BookEvent {
+
+}

@@ -1,3 +1,6 @@
+import 'package:ebook_searching/app_config.dart';
+import 'package:ebook_searching/domain/models/authen/authen_model.dart';
+import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:ebook_searching/domain/usecases/authorization_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
@@ -14,13 +17,20 @@ class AuthenBloc extends Bloc<AuthenEvent, AuthenState> {
   }
 
   Future<void> _onSignIn(SignInEvent event, Emitter<AuthenState> emit) async {
-    emit(AuthenLoading());
-    final result = await signInUseCase(event.request);
+    if (AppConfig().isPassAPI) {
+      emit(AuthenLoading());
+      final result = await _getMockResponseData();
+      emit(AuthenSuccess(result));
+    }
+    else {
+      emit(AuthenLoading());
+      final result = await signInUseCase(event.request);
 
-    result.fold(
-          (failure) => emit(AuthenFailure(_mapFailureToMessage(failure))),
-          (response) => emit(AuthenSuccess(response)),
-    );
+      result.fold(
+        (failure) => emit(AuthenFailure(_mapFailureToMessage(failure))),
+        (response) => emit(AuthenSuccess(response)),
+      );
+    }
   }
 
   Future<void> _onSignUp(SignUpEvent event, Emitter<AuthenState> emit) async {
@@ -35,5 +45,24 @@ class AuthenBloc extends Bloc<AuthenEvent, AuthenState> {
 
   String _mapFailureToMessage(Failure failure) {
     return failure.errorMessage ?? "An unexpected error occurred.";
+  }
+
+  Future<AuthenResponseModel> _getMockResponseData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    final profileModel = ProfileResponseModel(
+      setup: false,
+      userId: 102210131,
+      email: "doquan@gmail.com",
+      username: "Do Quan",
+      fullName: "Đỗ Minh Quân",
+      gender: "Nam",
+      dateOfBirth: DateTime(2003, 04, 25).toString(),
+    );
+
+    return AuthenResponseModel(
+      profile: profileModel,
+      accessToken: "accessToken",
+      expirationTimestamp: 3600,
+    );
   }
 }

@@ -84,6 +84,43 @@ class BookDetailModel {
       required this.totalPages,
       required this.uri});
 
+  // copyWith method
+  BookDetailModel copyWith({
+    List<AuthorModel>? authors,
+    double? avgRating,
+    List<String>? categories,
+    String? description,
+    List<String>? genres,
+    int? id,
+    String? image,
+    String? language,
+    int? publicationTime,
+    String? publisher,
+    int? ratingCount,
+    List<ReviewModel>? reviews,
+    String? title,
+    int? totalPages,
+    String? uri,
+  }) {
+    return BookDetailModel(
+      authors: authors ?? this.authors,
+      avgRating: avgRating ?? this.avgRating,
+      categories: categories ?? this.categories,
+      description: description ?? this.description,
+      genres: genres ?? this.genres,
+      id: id ?? this.id,
+      image: image ?? this.image,
+      language: language ?? this.language,
+      publicationTime: publicationTime ?? this.publicationTime,
+      publisher: publisher ?? this.publisher,
+      ratingCount: ratingCount ?? this.ratingCount,
+      reviews: reviews ?? this.reviews,
+      title: title ?? this.title,
+      totalPages: totalPages ?? this.totalPages,
+      uri: uri ?? this.uri,
+    );
+  }
+
   factory BookDetailModel.fromJson(Map<String, dynamic> json) => _$BookDetailModelFromJson(json);
   Map<String, dynamic> toJson() => _$BookDetailModelToJson(this);
 }

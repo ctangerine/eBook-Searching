@@ -1,5 +1,3 @@
-import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
-import 'package:ebook_searching/domain/models/book/book_response_model.dart';
 import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,6 +15,14 @@ class GetProfileSuccess extends UserState {
   final ProfileResponseModel response;
 
   GetProfileSuccess(this.response);
+
+  GetProfileSuccess copyWith({
+    ProfileResponseModel? response,
+  }) {
+    return GetProfileSuccess(
+      response ?? this.response,
+    );
+  }
 
   @override
   List<Object?> get props => [response];

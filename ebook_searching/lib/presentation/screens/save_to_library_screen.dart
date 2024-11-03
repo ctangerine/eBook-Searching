@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 class SaveToLibraryScreen extends StatelessWidget {
   final ValueNotifier<int?> _selectedCardIndex = ValueNotifier<int?>(null);
 
+  SaveToLibraryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

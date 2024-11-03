@@ -3,7 +3,6 @@ import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
-import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/signup_successful_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';

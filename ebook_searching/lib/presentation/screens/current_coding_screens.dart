@@ -1,7 +1,11 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
+import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/screens/library_books_screen.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
+import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
+import 'package:ebook_searching/presentation/screens/profile_screen.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
@@ -135,6 +139,47 @@ class CurrentCodingScreens extends StatelessWidget {
                 );
               },
               child: const Text('LibraryScreen'),
+            ),
+            // LibraryBooksScreen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LibraryBooksScreen(),
+                  ),
+                );
+              },
+              child: const Text('LibraryBooksScreen'),
+            ),
+            //profile screen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>  ProfileScreen(),
+                  ),
+                );
+              },
+              child: const Text('ProfileScreen'),
+            ),
+            //PersonalDetailsScreen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>  PersonalDetailScreen(
+                      fullname: 'John Doe',
+                      gender: true,
+                      dob: DateTime.now(),
+                      avatarUrl: avatar,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('PersonalDetailsScreen'),
             ),
           ],
         ),

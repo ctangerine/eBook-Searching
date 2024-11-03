@@ -22,3 +22,7 @@ class CancelTokenFailure extends Failure {
 
   const CancelTokenFailure(super.errorMessage, this.statusCode);
 }
+
+class QueryStorageFailure extends Failure {
+  const QueryStorageFailure(super.errorMessage);
+}

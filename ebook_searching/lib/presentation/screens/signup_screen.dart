@@ -18,19 +18,27 @@ class SignupScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          leading: const Icon(Icons.arrow_back_rounded),
           title: _buildAppname(),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildDescrition(),
-              _buildSignupForm(context),
-              _buildTermPart()
-            ],
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildDescrition(),
+                    _buildSignupForm(context),
+                    _buildTermPart()
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -137,7 +145,10 @@ class SignupScreen extends StatelessWidget {
             statesController: WidgetStatesController(
               _formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled},
             ),
-            onPressed: () => _onRegisterButtonPressed(context),
+            onPressed: () {
+              Future.delayed(const Duration(seconds: 2));
+              _onRegisterButtonPressed(context);
+            }, 
             child: const Text(
               'Register',
               style: AppTextStyles.body2Semibold,

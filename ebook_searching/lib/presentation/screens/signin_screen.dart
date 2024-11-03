@@ -20,17 +20,24 @@ class SigninScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildAppname(),
-                _buildDescrition(),
-                _buildLoginForm(context, authBloc),
-                _buildTermPart()
-              ],
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildAppname(),
+                    _buildDescrition(),
+                    _buildLoginForm(context, authBloc),
+                    _buildTermPart(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -49,7 +56,7 @@ class SigninScreen extends StatelessWidget {
               onPressed: () {},
               child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
             ),
-          ]
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +66,7 @@ class SigninScreen extends StatelessWidget {
               onPressed: () {},
               child: Text('Privacy Policy', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
             ),
-          ]
+          ],
         ),
       ],
     );
@@ -70,7 +77,7 @@ class SigninScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         BookTudIcon(),
-        Text('BookTud', style: AppTextStyles.heading2Semibold,)
+        Text('BookTud', style: AppTextStyles.heading2Semibold),
       ],
     );
   }
@@ -81,14 +88,14 @@ class SigninScreen extends StatelessWidget {
       children: [
         const Text('Welcome back!', style: AppTextStyles.heading2Semibold),
         const SizedBox(height: 10),
-        Text('You can log into your account first to read many interesting books!', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary,))
+        Text('You can log into your account first to read many interesting books!', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary)),
       ],
     );
   }
 
   Widget _buildLoginForm(BuildContext context, AuthenBloc authBloc) {
     return Form(
-      key: _formKey,  // Attach the GlobalKey to the Form
+      key: _formKey, // Attach the GlobalKey to the Form
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +114,7 @@ class SigninScreen extends StatelessWidget {
           const SizedBox(height: 10),
           _buildLoginWithGoogleButton(),
           const SizedBox(height: 10),
-          _buildBlocConsumer()
+          _buildBlocConsumer(),
         ],
       ),
     );
@@ -141,12 +148,10 @@ class SigninScreen extends StatelessWidget {
       children: [
         Expanded(
           child: OutlinedButton(
-            onPressed: () => {}, 
-            child: const Text('Login with Google', 
-              style: AppTextStyles.body2Semibold
-            )
-          ) ,
-        )
+            onPressed: () => {},
+            child: const Text('Login with Google', style: AppTextStyles.body2Semibold),
+          ),
+        ),
       ],
     );
   }
@@ -162,16 +167,14 @@ class SigninScreen extends StatelessWidget {
                 if (_formKey.currentState!.validate()) {
                   SignInRequest signInRequest = SignInRequest(
                     username: _emailController.text,
-                    password: _passwordController.text
+                    password: _passwordController.text,
                   );
                   authBloc.add(SignInEvent(signInRequest));
                 }
               }
             },
-            child: const Text('Login', 
-              style: AppTextStyles.body2Semibold
-            )
-          )
+            child: const Text('Login', style: AppTextStyles.body2Semibold),
+          ),
         ),
       ],
     );
@@ -181,10 +184,10 @@ class SigninScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Forgot your password?', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary),),
+        Text('Forgot your password?', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary)),
         TextButton(
           onPressed: () {},
-          child: Text('Reset here', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary),),
+          child: Text('Reset here', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
         ),
       ],
     );
@@ -193,7 +196,7 @@ class SigninScreen extends StatelessWidget {
   TextFormField passwordTextFormField(BuildContext context) {
     return TextFormField(
       controller: _passwordController,
-      validator: _validatePassword,  
+      validator: _validatePassword,
       obscureText: true,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.lock_outline, size: 20),
@@ -203,7 +206,7 @@ class SigninScreen extends StatelessWidget {
       keyboardType: TextInputType.visiblePassword,
       style: AppTextStyles.body2Regular,
       onEditingComplete: () {
-        validate(context); 
+        validate(context);
       },
     );
   }
@@ -211,7 +214,7 @@ class SigninScreen extends StatelessWidget {
   TextFormField emailTextFormField(BuildContext context) {
     return TextFormField(
       controller: _emailController,
-      validator: _validateEmail,  
+      validator: _validateEmail,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.mail_outlined, size: 20),
         hintText: 'youremail@mail.com',
@@ -221,20 +224,19 @@ class SigninScreen extends StatelessWidget {
       style: AppTextStyles.body2Regular,
       onEditingComplete: () {
         if (_formKey.currentState != null) {
-          _formKey.currentState!.validate(); 
+          _formKey.currentState!.validate();
         }
-        FocusScope.of(context).nextFocus(); 
+        FocusScope.of(context).nextFocus();
       },
     );
   }
 
   void validate(BuildContext context) {
     if (_formKey.currentState != null) {
-      _formKey.currentState!.validate(); 
+      _formKey.currentState!.validate();
     }
-    FocusScope.of(context).nextFocus(); 
+    FocusScope.of(context).nextFocus();
   }
-
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {

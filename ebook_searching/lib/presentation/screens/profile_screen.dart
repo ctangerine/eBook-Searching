@@ -1,5 +1,6 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/functional_tag.dart';
+import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +80,17 @@ class ProfileScreen extends StatelessWidget {
                   leadingIcon: funtionalIcon[index],
                   label: functionalList[index],
                   onTap: index != 0 ? null : () {
-                  
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PersonalDetailScreen(
+                          fullname: 'Macus Geidt',
+                          avatarUrl: avatar,
+                          gender: true,
+                          dob: DateTime(2003, 04, 25),
+                        ),
+                      ),
+                    );
                   }               
                 ),
               ),
@@ -113,7 +124,17 @@ class ProfileScreen extends StatelessWidget {
                   leadingIcon: funtionalIcon[index],
                   label: functionalList[index],
                   onTap: index != 0 ? null : () {
-                        
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PersonalDetailScreen(
+                          fullname: 'Macus Geidt',
+                          avatarUrl: avatar,
+                          gender: true,
+                          dob: DateTime(2003, 04, 25),
+                        ),
+                      )
+                    );
                   }               
                 ),
               ),

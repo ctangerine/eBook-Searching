@@ -1,3 +1,4 @@
+import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,21 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isHorizontal ? _buildHorizontalCard(context) : _buildVerticalCard(context);
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BookDetailScreen(
+              // bookTitle: bookTitle,
+              // author: author,
+              // bookCover: bookCover,
+            ),
+          ),
+        );
+      },
+      child: isHorizontal ? _buildHorizontalCard(context) : _buildVerticalCard(context),
+    );
   }
 
   Widget _buildHorizontalCard(BuildContext context) {

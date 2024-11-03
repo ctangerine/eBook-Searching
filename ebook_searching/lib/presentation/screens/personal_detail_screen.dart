@@ -26,7 +26,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal Details', style: AppTextStyles.heading3Semibold),
+        title: const Text('Personal Details', style: AppTextStyles.title1Semibold),
         centerTitle: true,
         actions: [
           _buildEditButton(),
@@ -66,7 +66,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
       children: [
         CircleAvatar(
           radius: 50,
-          backgroundImage: NetworkImage(widget.avatarUrl),
+          backgroundImage: AssetImage(widget.avatarUrl),
         ),
       ],
     );

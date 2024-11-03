@@ -26,24 +26,30 @@ class SetupAccountScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: const Icon(Icons.arrow_back_rounded),
           title: _buildAppname(),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildDescrition(),
-                _buildAvatarProfile(),
-                _buildInformationForm(context),
-                _buildSubmitButton(authBloc),
-                // BlocConsumer to test 
-                _buildBlocConsumer()
-              ],
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildDescrition(),
+                    _buildAvatarProfile(),
+                    _buildInformationForm(context),
+                    _buildSubmitButton(authBloc),
+                    const SizedBox(height: 20),
+                    _buildBlocConsumer(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -54,8 +60,16 @@ class SetupAccountScreen extends StatelessWidget {
   BlocConsumer<AuthenBloc, AuthenState> _buildBlocConsumer() {
     return BlocConsumer<AuthenBloc, AuthenState>(
       listener: (context, state) {
-        if (state is AuthenSuccess || state is AuthenFailure) {
+        if (state is AuthenSuccess) {
           _showModalBottomSheet(context, state);
+        }
+        else if (state is AuthenFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: AppColors.error,
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -98,7 +112,7 @@ class SetupAccountScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         BookTudIcon(),
-        Text('BookTud', style: AppTextStyles.heading2Semibold,)
+        Text('BookTud', style: AppTextStyles.heading2Semibold),
       ],
     );
   }
@@ -112,10 +126,10 @@ class SetupAccountScreen extends StatelessWidget {
         const Text('Setup your account', style: AppTextStyles.heading2Semibold),
         const SizedBox(height: 10),
         Text(
-          'Setup your account first before you can borrow lots of interesting books!', 
+          'Setup your account first before you can borrow lots of interesting books!',
           style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),
           textAlign: TextAlign.center,
-        )
+        ),
       ],
     );
   }
@@ -131,10 +145,13 @@ class SetupAccountScreen extends StatelessWidget {
           const CircleAvatar(
             radius: 50,
             backgroundColor: AppColors.themeSecondary,
-            child:Icon(Icons.person_outline, size: 50, color: AppColors.textSecondary),
+            child: Icon(Icons.person_outline, size: 50, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 10),
-          Text('Change photo profile', style: AppTextStyles.title2Semibold.copyWith(color: AppColors.primary),)
+          Text(
+            'Change photo profile',
+            style: AppTextStyles.title2Semibold.copyWith(color: AppColors.primary),
+          ),
         ],
       ),
     );
@@ -142,7 +159,7 @@ class SetupAccountScreen extends StatelessWidget {
 
   Widget _buildInformationForm(BuildContext context) {
     return Form(
-      key: _formKey,  // Attach the GlobalKey to the Form
+      key: _formKey, // Attach the GlobalKey to the Form
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +175,7 @@ class SetupAccountScreen extends StatelessWidget {
           const Text('Date of birth', style: AppTextStyles.body2Semibold),
           const SizedBox(height: 10),
           birthDateTextFormField(context),
-          //_buildSubmitButton()
+          const SizedBox(height: 30),
         ],
       ),
     );
@@ -169,19 +186,22 @@ class SetupAccountScreen extends StatelessWidget {
       children: [
         Expanded(
           child: FilledButton(
-            statesController: WidgetStatesController(_formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled}),
+            statesController: WidgetStatesController(
+              _formKey.currentState != null ? {WidgetState.selected} : {WidgetState.disabled},
+            ),
             onPressed: () {
               SignUpRequest signUpRequest = SignUpRequest(
                 email: email,
                 password: password,
-                username: _fullnameController.text
+                username: _fullnameController.text,
               );
               authBloc.add(SignUpEvent(signUpRequest));
             },
-            child: const Text('Submit', 
-              style: AppTextStyles.body2Semibold
-            )
-          )
+            child: const Text(
+              'Submit',
+              style: AppTextStyles.body2Semibold,
+            ),
+          ),
         ),
       ],
     );
@@ -219,7 +239,6 @@ class SetupAccountScreen extends StatelessWidget {
     );
   }
 
-  //
   Widget birthDateTextFormField(BuildContext context) {
     return TextFormField(
       controller: _birthDateController,
@@ -243,6 +262,4 @@ class SetupAccountScreen extends StatelessWidget {
       style: AppTextStyles.body2Regular,
     );
   }
-
-  
 }

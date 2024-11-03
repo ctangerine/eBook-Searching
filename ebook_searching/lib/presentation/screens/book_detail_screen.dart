@@ -16,7 +16,6 @@ class BookDetailScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.maintheme,
-          leading: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           actions: [
             IconButton(
               icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),

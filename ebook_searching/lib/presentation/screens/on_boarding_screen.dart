@@ -1,4 +1,6 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/screens/signin_screen.dart';
+import 'package:ebook_searching/presentation/screens/signup_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -104,6 +106,11 @@ class OnBoardingScreen extends StatelessWidget {
       child: FilledButton(
         onPressed: () {
           // navigate to signin screen
+          Future.delayed(const Duration(seconds: 2));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SigninScreen())
+          );
         },
         child: const Text('Get started'),
       ),
@@ -116,7 +123,11 @@ class OnBoardingScreen extends StatelessWidget {
       height: 40,
       child: OutlinedButton(
         onPressed: () {
-          // navigate to register screen
+          Future.delayed(const Duration(seconds: 2));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SignupScreen())
+          );
         },
         child: const Text('I\'m new, sign me up'),
       ),

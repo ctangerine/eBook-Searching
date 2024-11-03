@@ -1,25 +1,34 @@
 import 'package:ebook_searching/presentation/assets_link.dart';
+import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 class SignupSuccessfulScreen extends StatelessWidget {
-  const SignupSuccessfulScreen ({super.key});
-
+  const SignupSuccessfulScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: AppColors.maintheme,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildHeroImage(),
-            _buildDescription(),
-            _buildContinueButton(context),
-          ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height * 0.4, // Ensure minimum height
+          ),
+          child: IntrinsicHeight(
+            child: Container(
+              color: AppColors.maintheme,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildHeroImage(),
+                  _buildDescription(),
+                  _buildContinueButton(context),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -38,13 +47,13 @@ class SignupSuccessfulScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Your account successfully created', style: AppTextStyles.title1Semibold,),
+        const Text('Your account successfully created', style: AppTextStyles.title1Semibold),
         const SizedBox(height: 10),
         Text(
-          'Your account has successfully created. You can go to login page first to login into your account!', 
-          style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary,),
+          'Your account has successfully created. You can go to login page first to login into your account!',
+          style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary),
           textAlign: TextAlign.center,
-        )
+        ),
       ],
     );
   }
@@ -52,9 +61,12 @@ class SignupSuccessfulScreen extends StatelessWidget {
   Widget _buildContinueButton(BuildContext context) {
     return FilledButton(
       onPressed: () {
-
-      }, 
-      child: const Text('Yay! Continue')
+        Navigator.pushReplacement(
+          context, 
+          MaterialPageRoute(builder: (context) => const HomeScreen())
+        );
+      },
+      child: const Text('Yay! Continue'),
     );
   }
 }

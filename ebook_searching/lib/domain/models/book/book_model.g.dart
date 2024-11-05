@@ -8,11 +8,11 @@ part of 'book_model.dart';
 
 BookModel _$BookModelFromJson(Map<String, dynamic> json) => BookModel(
       id: (json['id'] as num).toInt(),
-      uri: json['uri'] as String,
-      avgRating: (json['avgRating'] as num).toDouble(),
-      image: json['image'] as String,
-      authors: (json['authors'] as List<dynamic>)
-          .map((e) => AuthorModel.fromJson(e as Map<String, dynamic>))
+      uri: json['uri'] as String?,
+      avgRating: (json['avgRating'] as num?)?.toDouble(),
+      image: json['image'] as String?,
+      authors: (json['authors'] as List<dynamic>?)
+          ?.map((e) => AuthorModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       title: json['title'] as String?,
     );

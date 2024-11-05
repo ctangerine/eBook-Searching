@@ -51,38 +51,38 @@ class BookDetailModel {
   "uri": "<string>"
   """;
 
-  List<AuthorModel> authors;
-  double avgRating;
-  List<String> categories;
-  String description;
-  List<String> genres;
+  List<AuthorModel>? authors;
+  double? avgRating;
+  List<String>? categories;
+  String? description;
+  List<String>? genres;
   int id;
-  String image;
-  String language;
-  int publicationTime;
-  String publisher;
-  int ratingCount;
-  List<ReviewModel> reviews;
-  String title;
-  int totalPages;
-  String uri;
+  String? image;
+  String? language;
+  int? publicationTime;
+  String? publisher;
+  int? ratingCount;
+  List<ReviewModel>? reviews;
+  String? title;
+  int? totalPages;
+  String? uri;
 
   BookDetailModel(
-      {required this.authors,
-      required this.avgRating,
-      required this.categories,
-      required this.description,
-      required this.genres,
+      {this.authors,
+      this.avgRating,
+      this.categories,
+      this.description,
+      this.genres,
       required this.id,
-      required this.image,
-      required this.language,
-      required this.publicationTime,
-      required this.publisher,
-      required this.ratingCount,
-      required this.reviews,
-      required this.title,
-      required this.totalPages,
-      required this.uri});
+      this.image,
+      this.language,
+      this.publicationTime,
+      this.publisher,
+      this.ratingCount,
+      this.reviews,
+      this.title,
+      this.totalPages,
+      this.uri});
 
   // copyWith method
   BookDetailModel copyWith({

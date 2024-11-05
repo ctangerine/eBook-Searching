@@ -38,7 +38,7 @@ class AuthenImplApi extends AuthenApi {
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(e.toString(), null);
+      throw ServerException('${e}I just know that', null);
     }
   }
 

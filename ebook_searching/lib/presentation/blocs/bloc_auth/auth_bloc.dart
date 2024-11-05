@@ -34,13 +34,20 @@ class AuthenBloc extends Bloc<AuthenEvent, AuthenState> {
   }
 
   Future<void> _onSignUp(SignUpEvent event, Emitter<AuthenState> emit) async {
-    emit(AuthenLoading());
-     final result = await signUpUseCase(event.request);
+    if (AppConfig().isPassAPI) {
+      emit(AuthenLoading());
+      final result = await _getMockResponseData();
+      emit(AuthenSuccess(result));
+    }
+    else {
+      emit(AuthenLoading());
+      final result = await signUpUseCase(event.request);
 
-    result.fold(
-          (failure) => emit(AuthenFailure(_mapFailureToMessage(failure))),
-          (response) => emit(AuthenSuccess(response)),
-    );
+      result.fold(
+        (failure) => emit(AuthenFailure(_mapFailureToMessage(failure))),
+        (response) => emit(AuthenSuccess(response)),
+      );
+    }
   }
 
   String _mapFailureToMessage(Failure failure) {

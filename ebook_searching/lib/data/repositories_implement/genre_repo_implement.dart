@@ -23,6 +23,8 @@ class GenreRepositoryImpl extends GenreRepository {
       return Left(ServerFailure(e.message, e.statusCode));
     } on CancelTokenException catch (e) {
       return Left(CancelTokenFailure(e.message, e.statusCode));
+    } catch(e) {
+      return Left(ServerFailure('Error with many message: $e', 0));  
     }
   }
 }

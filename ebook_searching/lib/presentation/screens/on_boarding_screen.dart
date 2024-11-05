@@ -13,13 +13,13 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenBloc, AuthenState>(
-      listener: (context, state) {
-        if (state is AuthenSuccess) {
-          Navigator.pushNamed(context, AppRoutes.homePage);
-        }
-      },
-      child: SafeArea(
+    return SafeArea(
+      child: BlocListener<AuthenBloc, AuthenState>(
+        listener: (context, state) => {
+          if (state is AuthenSuccess) {
+            Navigator.pushNamed(context, AppRoutes.homePage)
+          }
+        },
         child: Scaffold(
           body: Padding(
             padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
@@ -118,7 +118,7 @@ class OnBoardingScreen extends StatelessWidget {
         onPressed: () {
           // navigate to signin screen
           Future.delayed(const Duration(seconds: 2));
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SigninScreen())
           );
@@ -135,7 +135,7 @@ class OnBoardingScreen extends StatelessWidget {
       child: OutlinedButton(
         onPressed: () {
           Future.delayed(const Duration(seconds: 2));
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SignupScreen())
           );

@@ -131,11 +131,16 @@ class SigninScreen extends StatelessWidget {
             const SnackBar(content: Text('Login Successful')),
           );
           final userBloc = BlocProvider.of<UserBloc>(context);
-          userBloc.add(GetProfileEvent(102210131));
+          userBloc.add(GetProfileEvent(state.response.profile.userId));
           Navigator.of(context).pushNamed(AppRoutes.homePage);
         } else if (state is AuthenFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login Failed with error: ${state.error}')),
+          );
+        }
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login Failed with unknown error')),
           );
         }
       },

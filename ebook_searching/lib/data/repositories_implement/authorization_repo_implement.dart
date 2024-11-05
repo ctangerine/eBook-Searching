@@ -24,6 +24,8 @@ class AuthenRepositoryImpl extends AuthenRepository {
       return Left(ServerFailure(e.message, e.statusCode));
     } on CancelTokenException catch (e) {
       return Left(CancelTokenFailure(e.message, e.statusCode));
+    } catch(e) {
+      return const Left(ServerFailure('502 code withou fix', 502));
     }
   }
 

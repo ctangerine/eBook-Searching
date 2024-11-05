@@ -9,22 +9,22 @@ class SearchBookParam {
     "orderDirection": "<string>"
   """;
 
-  late final String keyword;
-  late final int genreId;
-  late final String genreSlug;
-  late final int limit;
-  late final int offset;
-  late final String orderBy;
-  late final String orderDirection;
+  late final String? keyword;
+  late final int? genreId;
+  late final String? genreSlug;
+  late final int? limit;
+  late final int? offset;
+  late final String? orderBy;
+  late final String? orderDirection;
 
   SearchBookParam({
-    required this.keyword,
-    required this.genreId,
-    required this.genreSlug,
-    required this.limit,
-    required this.offset,
-    required this.orderBy,
-    required this.orderDirection,
+    this.keyword,
+    this.genreId,
+    this.genreSlug,
+    this.limit,
+    this.offset,
+    this.orderBy,
+    this.orderDirection,
   });
 
   SearchBookParam.fromJson(Map<String, dynamic> json) {
@@ -47,5 +47,32 @@ class SearchBookParam {
     data['orderBy'] = orderBy;
     data['orderDirection'] = orderDirection;
     return data;
+  }
+
+  static SearchBookParam noParams() {
+    return SearchBookParam(
+      keyword: ""
+    );
+  }
+
+  // copyWith method
+  SearchBookParam copyWith({
+    String? keyword,
+    int? genreId,
+    String? genreSlug,
+    int? limit,
+    int? offset,
+    String? orderBy,
+    String? orderDirection,
+  }) {
+    return SearchBookParam(
+      keyword: keyword ?? this.keyword,
+      genreId: genreId ?? this.genreId,
+      genreSlug: genreSlug ?? this.genreSlug,
+      limit: limit ?? this.limit,
+      offset: offset ?? this.offset,
+      orderBy: orderBy ?? this.orderBy,
+      orderDirection: orderDirection ?? this.orderDirection,
+    );
   }
 }

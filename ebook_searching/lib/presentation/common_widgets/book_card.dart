@@ -1,18 +1,21 @@
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 class BookCard extends StatelessWidget {
-  final String bookTitle;
-  final String author;
-  final String bookCover;
+  final String? bookTitle;
+  final String? author;
+  final String? bookCover;
   final bool isHorizontal;
   final VoidCallback? onTap;
 
   const BookCard({
     super.key,
-    required this.bookTitle,
-    required this.author,
-    required this.bookCover,
+    this.bookTitle,
+    this.author,
+    this.bookCover,
     this.isHorizontal = false,
     this.onTap,
   });
@@ -58,14 +61,66 @@ class BookCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Image.asset(
-            bookCover,
-            fit: BoxFit.fill,
+          padding: const EdgeInsets.all(8.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: _buildImage()
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (bookCover != null && bookCover!.startsWith('http')) {
+      return Image.network(
+        bookCover!,
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            defaultBookCover,
+            fit: BoxFit.fill,
+          );
+        },
+      );
+    } else if (bookCover != null && bookCover!.startsWith('assets/')) {
+      return Image.asset(
+        bookCover!,
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            defaultBookCover,
+            fit: BoxFit.fill,
+          );
+        },
+      );
+    } else if (bookCover != null && _isBase64(bookCover!)) {
+      Uint8List bytes = base64Decode(bookCover!);
+      return Image.memory(
+        bytes,
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            defaultBookCover,
+            fit: BoxFit.fill,
+          );
+        },
+      );
+    } else {
+      return Image.asset(
+        defaultBookCover,
+        fit: BoxFit.fill,
+      );
+    }
+  }
+
+  bool _isBase64(String str) {
+    try {
+      base64Decode(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Widget _buildBookInfo(BuildContext context) {
@@ -75,10 +130,15 @@ class BookCard extends StatelessWidget {
       children: [
         SizedBox(
           width: isHorizontal ? MediaQuery.of(context).size.width - 200 : 160,
-          child: Text(bookTitle, style: AppTextStyles.title2Semibold, maxLines: 1, overflow: TextOverflow.ellipsis)
+          child: Text(
+            bookTitle ?? '',
+            style: AppTextStyles.title2Semibold,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         Text(
-          author,
+          author ?? '',
           style: AppTextStyles.description2Medium.copyWith(color: AppColors.textSecondary),
         ),
       ],

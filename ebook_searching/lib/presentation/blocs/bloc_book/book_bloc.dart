@@ -39,14 +39,14 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   Future<void> _getBookDetail(GetBookDetailEvent event, Emitter<BookState> emit) async {
     if (AppConfig().isPassAPI) {
       final result = await _getMockBookData();
-      final mockDetail = result.data[event.bookId % 3];
-      result.bookDetail = result.bookDetail.copyWith(
-        id: mockDetail.id,
-        authors: mockDetail.authors,
-        avgRating: mockDetail.avgRating,
+      final mockDetail = result.data?[event.bookId % 3];
+      result.bookDetail = result.bookDetail?.copyWith(
+        id: mockDetail?.id,
+        authors: mockDetail?.authors,
+        avgRating: mockDetail?.avgRating,
         categories: ['Literature', 'Sci-Life'],
-        title: mockDetail.title,
-        image: mockDetail.image,
+        title: mockDetail?.title,
+        image: mockDetail?.image,
       );
       emit(SearchBookSuccess(result));
     }
@@ -62,13 +62,20 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   }
 
   Future<void> _searchBook(SearchBookEvent event, Emitter<BookState> emit) async {
-    emit(BookLoading());
-    final result = await searchBookUseCase(event.param);
+    if (AppConfig().isPassAPI) {
+      emit(BookLoading());
+      final result = await _getMockBookData();
+      emit(SearchBookSuccess(result));
+    }
+    else {
+      emit(BookLoading());
+      final result = await searchBookUseCase(event.param);
 
-    result.fold(
-          (failure) => emit(SearchBookFailure(_mapFailureToMessage(failure))),
-          (response) => emit(SearchBookSuccess(response)),
-    );
+      result.fold(
+            (failure) => emit(SearchBookFailure(_mapFailureToMessage(failure))),
+            (response) => emit(SearchBookSuccess(response)),
+      );
+    }
   }
 
   Future<void> _getRecommendBook(LoadingSuggestionsEvent event, Emitter<BookState> emit) async {

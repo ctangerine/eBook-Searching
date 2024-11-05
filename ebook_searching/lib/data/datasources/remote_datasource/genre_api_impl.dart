@@ -28,7 +28,9 @@ class GenreImplApi extends GenreApi {
 
       return GenreResponseModel.fromJson(result.data);
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.cancel) {
+      if (e.response?.statusCode == 404) {
+        throw ServerException("Currently not found any genres!", 404);
+      } else if (e.type == DioExceptionType.cancel) {
         throw CancelTokenException(handleDioError(e), e.response?.statusCode);
       } else {
         throw ServerException(handleDioError(e), e.response?.statusCode);

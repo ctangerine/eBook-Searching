@@ -121,7 +121,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LibraryScreen(),
+                    builder: (context) => const LibraryScreen(),
                   ),
                 );
               },
@@ -145,7 +145,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  ProfileScreen(),
+                    builder: (context) =>  const ProfileScreen(),
                   ),
                 );
               },

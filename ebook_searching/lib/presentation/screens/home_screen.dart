@@ -1,5 +1,6 @@
 import 'package:ebook_searching/core/injections.dart';
 import 'package:ebook_searching/domain/models/book/book_model.dart';
+import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:ebook_searching/domain/models/genre/genre_model.dart';
 import 'package:ebook_searching/domain/models/genre/genre_param.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_state.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
+import 'package:ebook_searching/presentation/screens/search_result.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           homePageScreen(),
           const LibraryScreen(),
           const ProfileScreen(),
+          const SearchResultScreen(),
         ][_selectedIndex],
         bottomNavigationBar: _buildBottomNavigationbar(),
       ),
@@ -49,15 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar homepageAppBar() {
     return AppBar(
-        leading: const BookTudIcon(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none_outlined),
-            onPressed: () {
-            },
-          ),
-        ],
-      );
+      leading: const BookTudIcon(),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.notifications_none_outlined),
+          onPressed: () {
+          },
+        ),
+      ],
+    );
   }
 
   MultiBlocProvider homePageScreen() {
@@ -67,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider<GenreBloc>(
           create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
         ),
-        BlocProvider(create: (context) => sl<BookBloc>()..add(LoadingSuggestionsEvent())),
+        BlocProvider(create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams()))),
       ],
       child: SingleChildScrollView(
           child: Padding(
@@ -108,17 +111,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchBar() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search any books',
-          prefixIcon: const Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(100),
-            borderSide: const BorderSide(color: AppColors.textSecondary, width: 2.0),
-          ),
+    return GestureDetector(
+      onTap: () {
+        _showSearchResultScreen();
+      },
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search any books',
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(100), 
+              borderSide: const BorderSide(color: AppColors.textSecondary, width: 2.0),
+            ),
+            enabled: false,
+          ), // Disable the TextField to make it non-editable
         ),
+      ),
+    );
+  }
+
+  void _showSearchResultScreen() {
+    Navigator.push(
+      context,
+        MaterialPageRoute(
+          builder: (context) => const SearchResultScreen(),
       ),
     );
   }
@@ -149,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (state is GenreSuccess) {
                 return _buildGenreList(state.response.data);
               } else if (state is GenreFailure) {
-                return Center(child: Text(state.error));
+                return Center(child: Text(state.error, style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary,)));
               } else {
                 return const Center(child: Text('No genres available'));
               }
@@ -161,6 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGenreList(List<GenreModel> genres) {
+    if (genres.isEmpty) {
+      return const Center(child: Text('No genres available'));
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -199,15 +220,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          BlocBuilder<BookBloc, BookState>(
+          BlocConsumer<BookBloc, BookState>(
+            listener: (context, state) {
+              if (state is BookDetailFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+              }
+              else if (state is BookDetailSuccess) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (builder) => BlocProvider.value(
+                      value: context.read<BookBloc>(),
+                      child: const BookDetailScreen(),
+                    ),
+                  ),
+                );
+              }
+            },
             builder: (context, state) {
               if (state is BookLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SearchBookSuccess) {
                 return _buildBookList(state.response.data);
               } else if (state is SearchBookFailure) {
-                return Center(child: Text(state.error));
-              } else {
+                return Center(child: Text('Error: ${state.error}'));
+              } else if (state is BookDetailFailure) {
+                return const Center(child: Text('Error: Failed to get book detail'));
+              }
+              else if (state is BookDetailSuccess) {
+                return const Center(child: Text('Error: Failed to get book detail'));
+              }
+              else {
                 return const Center(child: Text('No books available'));
               }
             },
@@ -217,10 +260,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BlocListener _buildBookList(List<BookModel> books) {
+  BlocListener _buildBookList(List<BookModel>? books) {
     return BlocListener<BookBloc, BookState>(
       listener: (context, state) {
-        if (state is SearchBookSuccess) {
+        if (state is BookDetailSuccess) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -236,12 +279,12 @@ class _HomeScreenState extends State<HomeScreen> {
         constraints: const BoxConstraints(maxHeight: 250),
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          itemCount: books.length,
+          itemCount: books!.length,
           itemBuilder: (context, index) {
             final book = books[index];
             return BookCard(
               bookTitle: book.title!,
-              author: book.authors[0].name,
+              author: book.authors?[0].name,
               bookCover: book.image,
               onTap: () {
                 final bookBloc = context.read<BookBloc>();

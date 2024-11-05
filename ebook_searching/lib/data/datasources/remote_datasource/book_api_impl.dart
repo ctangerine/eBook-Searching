@@ -19,7 +19,7 @@ class BookApiImpl extends BookApi {
   Future<BookDetailResponseModel> getBookDetail(int bookId) async {
     try {
       final result = await dio.get(
-        "${NetworkConstant.bookSearchPath}/$bookId",
+        "${NetworkConstant.bookPath}/$bookId",
         cancelToken: cancelToken,
       );
 

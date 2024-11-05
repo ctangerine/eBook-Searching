@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
-  AppConfig().isPassAPI = true;
+  AppConfig().isPassAPI = false;
   runApp(const MainApp());
 }
 
@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => sl<AuthenBloc>()),
         BlocProvider(create: (context) => sl<UserBloc>()),
-      ],
+      ],         
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
@@ -39,3 +39,4 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+

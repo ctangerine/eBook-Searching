@@ -15,18 +15,18 @@ class BookModel {
   """;
 
   int id;
-  String uri;
-  double avgRating;
-  String image;
-  List<AuthorModel> authors;
+  String? uri;
+  double? avgRating;
+  String? image;
+  List<AuthorModel>? authors;
   String? title;
 
   BookModel({
     required this.id,
-    required this.uri,
-    required this.avgRating,
-    required this.image,
-    required this.authors,
+    this.uri,
+    this.avgRating,
+    this.image,
+    this.authors,
     this.title,
   });
 

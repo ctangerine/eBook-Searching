@@ -22,6 +22,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 
 
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: _selectedIndex == 0 ? homepageAppBar() : null,
         body: <Widget>[
           homePageScreen(),
-          const LibraryScreen(),
+          //const LibraryScreen(),
           const ProfileScreen(),
           const SearchResultScreen(),
         ][_selectedIndex],
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       leading: const BookTudIcon(),
       actions: [
         IconButton(
-          icon: const Icon(Icons.notifications_none_outlined),
+          icon: const Icon(Iconsax.notification_bing),
           onPressed: () {
           },
         ),
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCarousel(),
                   const SizedBox(height: 20),
                   _buildSearchBar(),
-                  _buildBookByGenreTab(),
+                  //_buildBookByGenreTab(),
                   _buildBookSlider(),
                 ],
               ),
@@ -146,17 +147,17 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const Text('Explore by genre', style: AppTextStyles.title1Semibold),
-              const Spacer(),
-              TextButton(
-                onPressed: () {},
-                style: lightTheme.textButtonTheme.style?.copyWith(
-                  foregroundColor: WidgetStateProperty.all(AppColors.textSecondary),
-                ),
-                child: const Text('View all', style: AppTextStyles.body3Semibold),
-              ),
+              Text('Explore by genre', style: AppTextStyles.title1Semibold),
+              Spacer(),
+              // TextButton(
+              //   onPressed: () {},
+              //   style: lightTheme.textButtonTheme.style?.copyWith(
+              //     foregroundColor: WidgetStateProperty.all(AppColors.textSecondary),
+              //   ),
+              //   child: const Text('View all', style: AppTextStyles.body3Semibold),
+              // ),
             ],
           ),
           const SizedBox(height: 10),
@@ -206,17 +207,17 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const Text('Class XI books just for you!', style: AppTextStyles.title1Semibold),
-              const Spacer(),
-              TextButton(
-                onPressed: () {},
-                style: lightTheme.textButtonTheme.style?.copyWith(
-                  foregroundColor: WidgetStateProperty.all(AppColors.textSecondary),
-                ),
-                child: const Text('View all', style: AppTextStyles.body3Semibold),
-              ),
+              Text('Class XI books just for you!', style: AppTextStyles.title1Semibold),
+              Spacer(),
+              // TextButton(
+              //   onPressed: () {},
+              //   style: lightTheme.textButtonTheme.style?.copyWith(
+              //     foregroundColor: WidgetStateProperty.all(AppColors.textSecondary),
+              //   ),
+              //   child: const Text('View all', style: AppTextStyles.body3Semibold),
+              // ),
             ],
           ),
           const SizedBox(height: 10),
@@ -243,7 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (state is SearchBookSuccess) {
                 return _buildBookList(state.response.data);
               } else if (state is SearchBookFailure) {
-                return Center(child: Text('Error: ${state.error}'));
+                //return Center(child: Text('Error: ${state.error}'));
+                return _buildErrorState();
               } else if (state is BookDetailFailure) {
                 return const Center(child: Text('Error: Failed to get book detail'));
               }
@@ -256,6 +258,21 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 30),
+            Image.asset(findingImage),
+            const Text('Oops! Something went wrong!', style: AppTextStyles.body2Medium),
+          ],
+        ),
       ),
     );
   }
@@ -308,9 +325,9 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       items: [
-        FlashyTabBarItem(icon: const Icon(Icons.home, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Home', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-        FlashyTabBarItem(icon: const Icon(Icons.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Library', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-        FlashyTabBarItem(icon: const Icon(Icons.person, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Profile', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
+        FlashyTabBarItem(icon: const Icon(Iconsax.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Home', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
+        //FlashyTabBarItem(icon: const Icon(Icons.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Library', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
+        FlashyTabBarItem(icon: const Icon(Iconsax.profile_circle, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Profile', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
       ],
     );
   }

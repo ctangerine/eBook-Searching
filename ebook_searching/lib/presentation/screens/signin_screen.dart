@@ -138,11 +138,6 @@ class SigninScreen extends StatelessWidget {
             SnackBar(content: Text('Login Failed with error: ${state.error}')),
           );
         }
-        else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login Failed with unknown error')),
-          );
-        }
       },
       builder: (context, state) {
         if (state is AuthenLoading) {

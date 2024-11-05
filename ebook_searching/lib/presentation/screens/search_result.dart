@@ -6,6 +6,7 @@ import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,9 +77,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         ),
         Expanded(
           child: Container(
+            height: 45,
             child: TextField(
               controller: _searchController,
               decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                 hintText: 'Search any books',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -97,7 +100,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
         ),
         if (_isButtonVisible) _buildSearchButton(),
-        if (!_isButtonVisible) const SizedBox(width: 71, height: 20),
       ],
     );
   }
@@ -142,27 +144,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ),
           );
         }
-        else if (state is SearchBookFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Search failed with error: ${state.error}'),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
         else if (state is BookDetailFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Get book detail failed with error: ${state.error}'),
               duration: const Duration(seconds: 20),
-            ),
-          );
-        }
-        else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Search failed with unknown error'),
-              duration: Duration(seconds: 2),
             ),
           );
         }
@@ -173,7 +159,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         }
         if (state is SearchBookSuccess) {
           if (state.response.totalItems == 0) {
-            return _showNoResult();
+            return _buildErrorState('We don\'t find any book with that keyword');
           }
           
           if (_apiResponseListAuthor(state.response)) {
@@ -185,11 +171,22 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               itemCount: state.response.totalItems!,
               itemBuilder: (context, index) {
                 final book = state.response.data![index];
-                return BookCard(
-                  bookTitle: book.title!,
-                  author: book.authors?[0].name,
-                  bookCover: book.image,
-                  isHorizontal: true,
+                return Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.maintheme,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.textSecondary,
+                      width: 1,
+                    ),
+                  ),
+                  child: BookCard(
+                    bookTitle: book.title!,
+                    author: book.authors?[0].name,
+                    bookCover: book.image,
+                    isHorizontal: true,
+                  ),
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -198,9 +195,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           
         }
         if (state is SearchBookFailure) {
-          return Center(child: Text(state.error));
+          return _buildErrorState('We don\'t find any book with that keyword');
         }
-        return const Text('nothing to show');
+        return _buildErrorState('');
       },
     );
   }
@@ -240,5 +237,18 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
   Widget _buildListAuthor(BookResponseModel response) {
     return const Text('Currently not have UI');
+  }
+
+    Widget _buildErrorState(String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 30),
+          Image.asset(findingImage),
+          Text(message, style: AppTextStyles.body2Medium),
+        ],
+      ),
+    );
   }
 }

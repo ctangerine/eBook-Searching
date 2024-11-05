@@ -89,7 +89,7 @@ class BookDetailScreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.book, color: AppColors.textPrimary),
                     Text(
-                      bookDetail?.categories?.join(', ') ?? 'No information',
+                      bookDetail?.genres?.join(', ') ?? 'No information',
                       style: AppTextStyles.body2Semibold.copyWith(color: AppColors.textPrimary),
                     )
                   ],
@@ -97,7 +97,7 @@ class BookDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                '${bookDetail?.authors?.first.name ?? 'No information'} id: ${bookDetail?.id ?? 'No information'}',
+                bookDetail?.title ?? 'No information',
                 style: AppTextStyles.title1Semibold,
               )
             ],

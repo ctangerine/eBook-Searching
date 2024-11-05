@@ -42,7 +42,7 @@ class BookRepositoryImpl extends BooksRepository {
     } on CancelTokenException catch (e) {
       return Left(CancelTokenFailure(e.message, e.statusCode));
     } catch (e) {
-      return Left(ServerFailure('Currently can\'t load any books: $e', 0));
+      return Left(ServerFailure('Currently can\'t load any books, retry later', 0));
     }
   }
 

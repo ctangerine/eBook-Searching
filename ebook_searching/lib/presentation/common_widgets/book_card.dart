@@ -61,7 +61,7 @@ class BookCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: _buildImage()
@@ -79,7 +79,7 @@ class BookCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           return Image.asset(
             defaultBookCover,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           );
         },
       );
@@ -90,7 +90,7 @@ class BookCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           return Image.asset(
             defaultBookCover,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           );
         },
       );
@@ -98,18 +98,18 @@ class BookCard extends StatelessWidget {
       Uint8List bytes = base64Decode(bookCover!);
       return Image.memory(
         bytes,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Image.asset(
             defaultBookCover,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           );
         },
       );
     } else {
       return Image.asset(
         defaultBookCover,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       );
     }
   }

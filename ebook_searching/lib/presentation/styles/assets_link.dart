@@ -9,3 +9,4 @@ const String signupSuccess = 'assets/images/signup_success.png';
 const String naturalCover = 'assets/images/natural.png';
 const String searchImage = 'assets/images/search_image.png';
 const String defaultBookCover = 'assets/images/default_book_cover.png';
+const String findingImage = 'assets/images/finding.png';

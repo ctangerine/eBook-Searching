@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
-  AppConfig().isPassAPI = false;
+  AppConfig().isPassAPI = true;
   runApp(const MainApp());
 }
 

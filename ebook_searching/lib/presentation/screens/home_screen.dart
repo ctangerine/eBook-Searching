@@ -15,7 +15,6 @@ import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
-import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/profile_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';

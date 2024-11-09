@@ -11,7 +11,7 @@ import 'package:realm/realm.dart';
 
 initBookInjections() {
   sl.registerSingleton<BookApiImpl>(BookApiImpl(DioNetwork.appAPI));
-  sl.registerSingleton<BookStorageImpl>(BookStorageImpl(Realm(Configuration.local([RealmBookDetailModel.schema, RealmAuthorModel.schema, RealmReviewModel.schema]))));
+  sl.registerSingleton<BookStorageImpl>(BookStorageImpl(_realmBookConfig()));
   sl.registerSingleton<BooksRepository>(BookRepositoryImpl(sl(), sl()));
   sl.registerSingleton<GetBookDetailUseCase>(GetBookDetailUseCase(sl()));
   sl.registerSingleton<SearchBookUseCase>(SearchBookUseCase(sl()));
@@ -31,3 +31,15 @@ initBookInjections() {
     getAllBookStorage: sl<GetAllBookStorageUseCase>()
   ));
 }
+
+Realm _realmBookConfig() {
+  // Add all required schemas here; including Library
+  final realmConfig = Configuration.local([
+    RealmBookDetailModel.schema,
+    RealmAuthorModel.schema,
+    RealmReviewModel.schema,
+  ]);
+
+  return Realm(realmConfig);
+}
+

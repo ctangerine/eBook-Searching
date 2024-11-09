@@ -76,7 +76,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
         ),
         Expanded(
-          child: Container(
+          child: SizedBox(
             height: 45,
             child: TextField(
               controller: _searchController,

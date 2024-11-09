@@ -512,3 +512,87 @@ class RealmBookDetailModel extends _RealmBookDetailModel
   @override
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
+
+class Library extends _Library with RealmEntity, RealmObjectBase, RealmObject {
+  Library(
+    int id,
+    String name, {
+    Iterable<RealmBookDetailModel> books = const [],
+  }) {
+    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, 'name', name);
+    RealmObjectBase.set<RealmList<RealmBookDetailModel>>(
+        this, 'books', RealmList<RealmBookDetailModel>(books));
+  }
+
+  Library._();
+
+  @override
+  int get id => RealmObjectBase.get<int>(this, 'id') as int;
+  @override
+  set id(int value) => throw RealmUnsupportedSetError();
+
+  @override
+  String get name => RealmObjectBase.get<String>(this, 'name') as String;
+  @override
+  set name(String value) => RealmObjectBase.set(this, 'name', value);
+
+  @override
+  RealmList<RealmBookDetailModel> get books =>
+      RealmObjectBase.get<RealmBookDetailModel>(this, 'books')
+          as RealmList<RealmBookDetailModel>;
+  @override
+  set books(covariant RealmList<RealmBookDetailModel> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
+  Stream<RealmObjectChanges<Library>> get changes =>
+      RealmObjectBase.getChanges<Library>(this);
+
+  @override
+  Stream<RealmObjectChanges<Library>> changesFor([List<String>? keyPaths]) =>
+      RealmObjectBase.getChangesFor<Library>(this, keyPaths);
+
+  @override
+  Library freeze() => RealmObjectBase.freezeObject<Library>(this);
+
+  EJsonValue toEJson() {
+    return <String, dynamic>{
+      'id': id.toEJson(),
+      'name': name.toEJson(),
+      'books': books.toEJson(),
+    };
+  }
+
+  static EJsonValue _toEJson(Library value) => value.toEJson();
+  static Library _fromEJson(EJsonValue ejson) {
+    if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
+    return switch (ejson) {
+      {
+        'id': EJsonValue id,
+        'name': EJsonValue name,
+      } =>
+        Library(
+          fromEJson(id),
+          fromEJson(name),
+          books: fromEJson(ejson['books']),
+        ),
+      _ => raiseInvalidEJson(ejson),
+    };
+  }
+
+  static final schema = () {
+    RealmObjectBase.registerFactory(Library._);
+    register(_toEJson, _fromEJson);
+    return const SchemaObject(ObjectType.realmObject, Library, 'Library', [
+      SchemaProperty('id', RealmPropertyType.int, primaryKey: true),
+      SchemaProperty('name', RealmPropertyType.string),
+      SchemaProperty('books', RealmPropertyType.object,
+          linkTarget: 'RealmBookDetailModel',
+          collectionType: RealmCollectionType.list),
+    ]);
+  }();
+
+  @override
+  SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
+}

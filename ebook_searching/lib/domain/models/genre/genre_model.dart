@@ -7,14 +7,17 @@ class GenreModel {
   static const String example = """
   "name": "<string>",
   "id": "<int>"
+  "image": "<String>"
   """;
 
   String name;
   int id;
+  String image;
 
   GenreModel({
     required this.name,
-    required this.id
+    required this.id,
+    required this.image
   });
 
   factory GenreModel.fromJson(Map<String, dynamic> json) => _$GenreModelFromJson(json);

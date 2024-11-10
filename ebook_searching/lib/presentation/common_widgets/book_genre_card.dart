@@ -19,22 +19,23 @@ class BookGenreCard extends StatelessWidget {
       width: 100,
       height: 120,
       child: Card(
+        margin: const EdgeInsets.only(left: 0, right: 0),
         color: AppColors.maintheme,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: Color.fromARGB(130, 156, 163, 175), width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(14.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(genre, style: AppTextStyles.title2Semibold,),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[200],
+                  color: Color.fromRGBO(229, 231, 235, 1.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(icon, size: 20,),

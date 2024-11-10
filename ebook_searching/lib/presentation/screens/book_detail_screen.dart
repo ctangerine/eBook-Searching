@@ -15,6 +15,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 
 class BookDetailScreen extends StatelessWidget {
   const BookDetailScreen({super.key});
@@ -81,7 +82,7 @@ class BookDetailScreen extends StatelessWidget {
             children: [
               OutlinedButton(
                 style: lightTheme.textButtonTheme.style?.copyWith(
-                  padding: WidgetStateProperty.all(const EdgeInsets.all(14)),
+                  padding: WidgetStateProperty.all(const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8)),
                   side: WidgetStateProperty.all(const BorderSide(color: AppColors.textSecondary, width: 0.5)),
                 ),
                 onPressed: () => {},
@@ -89,7 +90,7 @@ class BookDetailScreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.book, color: AppColors.textPrimary),
                     Text(
-                      bookDetail?.genres?.join(', ') ?? 'No information',
+                      "  ${bookDetail?.genres?.join(', ')}" ?? 'No information',
                       style: AppTextStyles.body2Semibold.copyWith(color: AppColors.textPrimary),
                     )
                   ],
@@ -106,12 +107,13 @@ class BookDetailScreen extends StatelessWidget {
             onPressed: () {
               saveToLibrarySheet(context);
             },
-            icon: const Icon(Icons.new_label_outlined, size: 30),
+            icon: const Icon(Iconsax.archive_minus, size: 30),
             style: lightTheme.textButtonTheme.style?.copyWith(
               shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
               padding: const WidgetStatePropertyAll(EdgeInsets.fromLTRB(30, 10, 30, 10)),
               side: WidgetStateProperty.all(const BorderSide(color: AppColors.textSecondary, width: 0.5)),
             ),
+
           )
         ],
       ),

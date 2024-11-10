@@ -55,6 +55,7 @@ class BookCard extends StatelessWidget {
       width: isHorizontal ? 120 : 160,
       height: isHorizontal ? 150 : 210,
       child: Card(
+        margin: const EdgeInsets.only(right: 0, left: 0),
         color: AppColors.maintheme,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: Color.fromARGB(130, 156, 163, 175)),

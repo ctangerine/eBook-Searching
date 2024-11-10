@@ -164,11 +164,71 @@ class BookBloc extends Bloc<BookEvent, BookState> {
           ],
           title: 'Me and my husband',
         ),
+        BookModel(
+          id: 4,
+          uri: 'abc',
+          avgRating: 1.0,
+          image: bookCover1,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Washing Machine Heart',
+        ),
+        BookModel(
+          id: 5,
+          uri: 'abc',
+          avgRating: 2.0,
+          image: bookCover2,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Mine all mine',
+        ),
+        BookModel(
+          id: 6,
+          uri: 'abc',
+          avgRating: 3.0,
+          image: bookCover3,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Me and my husband',
+        ),
+        BookModel(
+          id: 7,
+          uri: 'abc',
+          avgRating: 1.0,
+          image: bookCover1,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Washing Machine Heart',
+        ),
+        BookModel(
+          id: 8,
+          uri: 'abc',
+          avgRating: 2.0,
+          image: bookCover2,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Mine all mine',
+        ),
+        BookModel(
+          id: 9,
+          uri: 'abc',
+          avgRating: 3.0,
+          image: bookCover3,
+          authors: [
+            AuthorModel(name: 'Mitski Miyawaki')
+          ],
+          title: 'Me and my husband',
+        ),
       ],
       limit: 10,
       numPages: 1,
       offset: 0,
-      totalItems: 3,
+      totalItems: 10,
       bookDetail: BookDetailModel(
         authors: [AuthorModel(name: 'Mistki Miyawaki')],
         avgRating: 4.0,

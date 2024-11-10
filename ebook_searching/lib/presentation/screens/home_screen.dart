@@ -10,12 +10,12 @@ import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_state.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
+import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/search_result.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
-import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/profile_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: _selectedIndex == 0 ? homepageAppBar() : null,
         body: <Widget>[
           homePageScreen(),
-          //const LibraryScreen(),
+          const LibraryScreen(),
           const ProfileScreen(),
           const SearchResultScreen(),
         ][_selectedIndex],
@@ -82,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCarousel(),
                   const SizedBox(height: 20),
                   _buildSearchBar(),
-                  //_buildBookByGenreTab(),
+                  const SizedBox(height: 16),
+                  _buildBookByGenreTab(),
                   _buildBookSlider(),
                 ],
               ),
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCarousel() {
     return ImageSlideshow(
       width: double.infinity,
-      height: 200,
+      height: 160,
       initialPage: 0,
       indicatorColor: AppColors.primary,
       indicatorBackgroundColor: AppColors.textSecondary,
@@ -117,7 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _showSearchResultScreen();
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        height: 42,
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: TextField(
           decoration: InputDecoration(
             hintText: 'Search any books',
@@ -188,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: genres.map((genre) {
           return Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(left: 0, right: 10),
             child: BookGenreCard(
               genre: genre.name,
               icon: Icons.book,
@@ -204,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBookSlider() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Column(
         children: [
           const Row(
@@ -309,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(width: 16), // Add horizontal space between items
+          separatorBuilder: (context, index) => const SizedBox(width: 12), // Add horizontal space between items
         ),
       ),
     );
@@ -326,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       items: [
         FlashyTabBarItem(icon: const Icon(Iconsax.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Home', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-        //FlashyTabBarItem(icon: const Icon(Icons.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Library', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
+        FlashyTabBarItem(icon: const Icon(Icons.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Library', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
         FlashyTabBarItem(icon: const Icon(Iconsax.profile_circle, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Profile', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
       ],
     );

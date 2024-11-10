@@ -12,7 +12,7 @@ GenreResponseModel _$GenreResponseModelFromJson(Map<String, dynamic> json) =>
           .map((e) => GenreModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       limit: (json['limit'] as num).toInt(),
-      numpages: (json['numpages'] as num).toInt(),
+      numPages: (json['numPages'] as num).toInt(),
       offset: (json['offset'] as num).toInt(),
       totalItems: (json['totalItems'] as num).toInt(),
     );
@@ -21,7 +21,7 @@ Map<String, dynamic> _$GenreResponseModelToJson(GenreResponseModel instance) =>
     <String, dynamic>{
       'data': instance.data,
       'limit': instance.limit,
-      'numpages': instance.numpages,
+      'numPages': instance.numPages,
       'offset': instance.offset,
       'totalItems': instance.totalItems,
     };

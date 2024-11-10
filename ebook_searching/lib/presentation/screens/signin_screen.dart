@@ -202,6 +202,7 @@ class SigninScreen extends StatelessWidget {
 
   TextFormField passwordTextFormField(BuildContext context) {
     return TextFormField(
+      // initialValue: "12121212",
       controller: _passwordController,
       validator: _validatePassword,
       obscureText: true,
@@ -220,6 +221,7 @@ class SigninScreen extends StatelessWidget {
 
   TextFormField emailTextFormField(BuildContext context) {
     return TextFormField(
+      // initialValue: "quando@gmail.com",
       controller: _emailController,
       validator: _validateEmail,
       decoration: const InputDecoration(

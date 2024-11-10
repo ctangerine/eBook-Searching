@@ -38,16 +38,16 @@ class GenreBloc extends Bloc<GenreEvent, GenreState> {
     await Future.delayed(const Duration(milliseconds: 500));
     final mockResponse = GenreResponseModel(
       data: [
-        GenreModel(name: 'Fiction', id: 1),
-        GenreModel(name: 'Drama', id: 2),
-        GenreModel(name: 'Mystery', id: 3),
-        GenreModel(name: 'Non-Fiction', id: 4),
-        GenreModel(name: 'Fantasy', id: 5),
+        GenreModel(name: 'Natural Science', id: 1, image: ''),
+        GenreModel(name: 'Social Science', id: 2, image: ''),
+        GenreModel(name: 'Math', id: 3, image: ''),
+        GenreModel(name: 'English Language', id: 4, image: ''),
+        GenreModel(name: 'Fantasy', id: 5, image: ''),
       ],
       limit: 3,
-      numpages: 3,
+      numPages: 3,
       offset: 3,
-      totalItems: 5
+      totalItems: 5,
     );
 
     return mockResponse;

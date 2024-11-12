@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class UpdateProfileRequest {
   static const String example = """
     "fullName": "<string>",
@@ -8,11 +10,13 @@ class UpdateProfileRequest {
   late final String fullName;
   late final String gender;
   late final String dateOfBirth;
+  late final int userId;
 
   UpdateProfileRequest({
     required this.fullName,
     required this.gender,
-    required this.dateOfBirth
+    required this.dateOfBirth,
+    required this.userId,
   });
 
   UpdateProfileRequest.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,7 @@ class UpdateProfileRequest {
     data['fullName'] = fullName;
     data['gender'] = gender;
     data['dateOfBirth'] = dateOfBirth;
+    debugPrint('data: $data');
     return data;
   }
 }

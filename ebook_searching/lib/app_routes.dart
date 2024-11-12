@@ -33,10 +33,6 @@ class AppRoutes {
       case personalScreen:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(builder: (_) => PersonalDetailScreen(
-          fullname: args['fullname']!,
-          avatarUrl: args['avatarUrl']!,
-          gender: args['gender']!,
-          dob: args['dob']!,
         )
       );
       case setupAccountScreen:
@@ -46,7 +42,7 @@ class AppRoutes {
         )
       );
       case libraryScreen:
-        return MaterialPageRoute(builder: (_) => const LibraryScreen());
+        return MaterialPageRoute(builder: (_) => LibraryScreen());
       default:
         return MaterialPageRoute(builder: (_) => const HomeScreen()); // Route mặc định
     }

@@ -5,6 +5,7 @@ import 'package:ebook_searching/core/network/error/exceptions.dart';
 import 'package:ebook_searching/data/datasources/remote_datasource/user_api.dart';
 import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:ebook_searching/domain/models/profile/update_profile_request.dart';
+import 'package:flutter/material.dart';
 
 class UserImplApi extends UserApi {
   final Dio dio;
@@ -43,11 +44,13 @@ class UserImplApi extends UserApi {
   @override
   Future<ProfileResponseModel> updateProfile(UpdateProfileRequest request) async {
     try {
-      final result = await dio.put(
-        NetworkConstant.profilePath,
+      final result = await dio.post(
+        "${NetworkConstant.profilePath}/${request.userId}",
         data: request.toJson(),
         cancelToken: cancelToken,
       );
+
+      debugPrint('result: ${result.data}');
 
       if (result.data == null) {
         throw ServerException("Unknown Error", result.statusCode);
@@ -63,7 +66,8 @@ class UserImplApi extends UserApi {
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(e.toString(), null);
+      debugPrint('error here: ${e}');
+      throw ServerException('${e}error here', null);
     }
   }
 }

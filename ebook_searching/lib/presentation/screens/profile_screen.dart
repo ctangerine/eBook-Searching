@@ -39,7 +39,8 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildAvatarProfile(BuildContext context) {
-    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
+    final state = context.read<UserBloc>().state;
+    final user = state is GetProfileSuccess ? state.response : state is UpdateProfileSuccess ? state.response : null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(user.fullName?? '', style: AppTextStyles.body2Semibold,),
+            Text(user?.fullName?? '', style: AppTextStyles.body2Semibold,),
             const SizedBox(height: 10),
             Text('Senior High School, Grade XII', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),),
           ],
@@ -63,7 +64,6 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildAccountTab(BuildContext context) {
-    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,12 +81,7 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                     MaterialPageRoute(
-                    builder: (context) => PersonalDetailScreen(
-                      fullname: user.fullName ?? user.username ?? user.email,
-                      avatarUrl: avatar,
-                      gender: user.gender == 'Nam'? true : false,
-                      dob: user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : DateTime.now(),
-                      
+                    builder: (context) => const PersonalDetailScreen(
                     ),
                   ),
                 );
@@ -108,7 +103,6 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildGeneralTab(BuildContext context) {
-    final user = (context.read<UserBloc>().state as GetProfileSuccess).response;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,11 +127,7 @@ class ProfileScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PersonalDetailScreen(
-                          fullname: user.fullName ?? user.username ?? user.email,
-                          avatarUrl: avatar,
-                          gender: user.gender == 'Nam'? true : false,
-                          dob: user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : DateTime.now(),
+                        builder: (context) => const PersonalDetailScreen(
                         ),
                       )
                     );

@@ -38,7 +38,16 @@ Realm _realmBookConfig() {
     RealmBookDetailModel.schema,
     RealmAuthorModel.schema,
     RealmReviewModel.schema,
-  ]);
+    Library.schema
+    ],
+    schemaVersion: 2, // Incremented from the previous version
+    migrationCallback: (migration, oldSchemaVersion) {
+      if (oldSchemaVersion < 2) {
+        // Handle migration logic here if needed
+        // For example, if the id was previously an ObjectId and is now an int
+      }
+    },
+  );
 
   return Realm(realmConfig);
 }

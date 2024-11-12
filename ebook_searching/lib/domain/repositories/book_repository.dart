@@ -10,8 +10,8 @@ abstract class BooksRepository {
   Future<Either<Failure, BookDetailResponseModel>> getBookDetail(int bookId);
   Future<Either<Failure, BookResponseModel>> searchBooksByCriteria(SearchBookParam param);
 
-  Future<Either<Failure, void>> addBook(RealmBookDetailModel book);
-  Future<Either<Failure, void>> deleteBook(int id);
-  Future<Either<Failure, RealmBookDetailModel?>> getBookById(int id);
-  Future<Either<Failure, List<RealmBookDetailModel>>> getAllBooks();
+  Future<Either<Failure, void>> addBook(RealmBookDetailModel book, {int? libraryId});
+  Future<Either<Failure, void>> deleteBook(int id, int libraryId);
+  Future<Either<Failure, RealmBookDetailModel?>> getBookById(int id, int libraryId);
+  Future<Either<Failure, List<RealmBookDetailModel>>> getAllBooks(int libraryId);
 }

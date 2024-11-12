@@ -1,6 +1,7 @@
 import 'package:ebook_searching/domain/models/book/realm_book_detail_model.dart';
 import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 // Remote api
 abstract class BookEvent extends Equatable {
@@ -29,8 +30,10 @@ class SearchBookEvent extends BookEvent {
 // Local storate
 class AddBookStorageEvent extends BookEvent {
   final RealmBookDetailModel book;
+  final int? libraryId;
+  final BuildContext context;
 
-  AddBookStorageEvent(this.book);
+  AddBookStorageEvent(this.book, this.libraryId, this.context);
 
   @override
   List<Object?> get props => [book];
@@ -38,19 +41,28 @@ class AddBookStorageEvent extends BookEvent {
 
 class DeleteBookStorageEvent extends BookEvent {
   final int bookId;
+  final int libraryId;
 
-  DeleteBookStorageEvent(this.bookId);
+  DeleteBookStorageEvent(this.bookId, this.libraryId);
 
   @override
   List<Object?> get props => [bookId];
 }
 
-class GetAllBooksStorageEvent extends BookEvent {}
+class GetAllBooksStorageEvent extends BookEvent {
+  final int libraryId;
+
+  GetAllBooksStorageEvent(this.libraryId);
+
+  @override
+  List<Object?> get props => [libraryId];
+}
 
 class GetBookByIdStorageEvent extends BookEvent {
   final int bookId;
+  final int libraryId;
 
-  GetBookByIdStorageEvent(this.bookId);
+  GetBookByIdStorageEvent(this.bookId, this.libraryId);
 
   @override
   List<Object?> get props => [bookId];

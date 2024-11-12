@@ -29,7 +29,7 @@ class GenreResponseModel {
     required this.limit,
     required this.numPages,
     required this.offset,
-    required this.totalItems
+    required this.totalItems,
 });
 
   factory GenreResponseModel.fromJson(Map<String, dynamic> json) => _$GenreResponseModelFromJson(json);

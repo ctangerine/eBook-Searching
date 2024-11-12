@@ -58,7 +58,7 @@ class BookCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 0, left: 0),
         color: AppColors.maintheme,
         shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Color.fromARGB(130, 156, 163, 175)),
+          side: const BorderSide(color: Color.fromARGB(255, 233, 233, 233)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -130,7 +130,7 @@ class BookCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: isHorizontal ? MediaQuery.of(context).size.width - 200 : 160,
+          width: isHorizontal ? MediaQuery.of(context).size.width - 200 : 140,
           child: Text(
             bookTitle ?? '',
             style: AppTextStyles.title2Semibold,

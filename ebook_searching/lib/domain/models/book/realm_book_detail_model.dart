@@ -5,23 +5,22 @@ part 'realm_book_detail_model.realm.dart';
 @RealmModel()
 class _RealmReviewModel {
   @PrimaryKey()
-  late ObjectId id;
+  late int id;
 
   late String image;
   late String reviewer;
   late String content;
   late int time;
 
-  // copyWith method
+  //copyWith method
   RealmReviewModel copyWith({
-    ObjectId? id,
     String? image,
     String? reviewer,
     String? content,
     int? time,
   }) {
     return RealmReviewModel(
-      id ?? this.id,
+      id,
       image ?? this.image,
       reviewer ?? this.reviewer,
       content ?? this.content,
@@ -33,7 +32,7 @@ class _RealmReviewModel {
 @RealmModel()
 class _RealmAuthorModel {
   @PrimaryKey()
-  late ObjectId id;
+  late int id;
 
   late String name;
   late String? stageName;
@@ -47,7 +46,6 @@ class _RealmAuthorModel {
 
   // copyWith method
   RealmAuthorModel copyWith({
-    ObjectId? id,
     String? name,
     String? stageName,
     String? nationality,
@@ -59,7 +57,7 @@ class _RealmAuthorModel {
     String? image,
   }) {
     return RealmAuthorModel(
-      id ?? this.id,
+      id,
       name ?? this.name,
       stageName: stageName ?? this.stageName,
       nationality: nationality ?? this.nationality,
@@ -93,7 +91,7 @@ class _RealmBookDetailModel {
   late int totalPages;
   late String uri;
 
-  // copyWith method
+  //copyWith method
   RealmBookDetailModel copyWith({
     List<_RealmAuthorModel>? authors,
     double? avgRating,

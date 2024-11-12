@@ -3,18 +3,16 @@ import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
+import 'package:ebook_searching/presentation/common_widgets/book_cover_showcase.dart';
 import 'package:ebook_searching/presentation/common_widgets/review_card.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
-import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 
 class BookDetailScreen extends StatelessWidget {
   const BookDetailScreen({super.key});
@@ -102,15 +100,19 @@ class BookDetailScreen extends StatelessWidget {
               )
             ],
           ),
-          IconButton(
-            onPressed: () {
-              saveToLibrarySheet(context);
-            },
-            icon: const Icon(Icons.new_label_outlined, size: 30),
-            style: lightTheme.textButtonTheme.style?.copyWith(
-              shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
-              padding: const WidgetStatePropertyAll(EdgeInsets.fromLTRB(30, 10, 30, 10)),
-              side: WidgetStateProperty.all(const BorderSide(color: AppColors.textSecondary, width: 0.5)),
+          SizedBox(
+            width: 80,
+            height: 48,
+            child: IconButton(
+              onPressed: () {
+                saveToLibrarySheet(context);
+              },
+              icon: const Icon(Iconsax.archive_minus, size: 30),
+              style: lightTheme.textButtonTheme.style?.copyWith(
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
+                padding: const WidgetStatePropertyAll(EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                side: WidgetStateProperty.all(const BorderSide(color: AppColors.textSecondary, width: 0.5)),
+              ),
             ),
           )
         ],
@@ -119,6 +121,9 @@ class BookDetailScreen extends StatelessWidget {
   }
 
   Future<dynamic> saveToLibrarySheet(BuildContext context) {
+    final bookBloc = context.read<BookBloc>();
+    final state = bookBloc.state;
+    final bookDetail = state is SearchBookSuccess ? state.response.bookDetail : state is BookDetailSuccess ? state.response : null;
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -137,7 +142,10 @@ class BookDetailScreen extends StatelessWidget {
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
-          child: SaveToLibraryScreen(), // Your ReviewPage widget here
+          child: BlocProvider.value(
+            value: bookBloc,
+            child: SaveToLibraryScreen(bookId: bookDetail!.id),
+          ),
         );
       },
     );
@@ -154,7 +162,7 @@ class BookDetailScreen extends StatelessWidget {
           buildDetailRow("Borrowed by", "240 students"),
           buildDetailRow("Book position", "A12 - Second column on\nNatural Science bookshelf"),
           buildDetailRow("Publisher", bookDetail?.publisher ?? 'No information'),
-          buildDetailRow("Writer", bookDetail?.authors?.first.name ?? 'No information'),
+          buildDetailRow("Writer", (bookDetail?.authors?.isNotEmpty ?? false) ? (bookDetail!.authors?.first.name ?? 'No information') : 'No information'),
           buildDetailRow("Language", bookDetail?.language ?? 'No information'),
         ],
       ),
@@ -167,20 +175,8 @@ class BookDetailScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 3,
-            child: Text(
-              label,
-              style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Text(
-              value,
-              style: AppTextStyles.body2Semibold,
-            ),
-          ),
+          Expanded(flex: 3, child: Text(label,style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary))),
+          Expanded(flex: 5, child: Text(value, style: AppTextStyles.body2Semibold)),
         ],
       ),
     );
@@ -256,7 +252,7 @@ class BookDetailScreen extends StatelessWidget {
                 children: [
                   ReviewCard(
                     maxLines: 2,
-                    name: review.reviewer ?? 'Anonymous',
+                    name: review.reviewer,
                     review: review.content ?? 'No review content',
                     rating: 4,
                     date: review.time != null ? DateTime.fromMillisecondsSinceEpoch(review.time) : DateTime.now(),
@@ -319,7 +315,7 @@ class BookDetailScreen extends StatelessWidget {
   }
 
   BookDetailModel? _getBookDetail(BuildContext context) {
-    final state = context.watch<BookBloc>().state;
+    final state = context.read<BookBloc>().state;
     if (state is SearchBookSuccess) {
       return state.response.bookDetail;
     } else if (state is BookDetailSuccess) {
@@ -329,137 +325,3 @@ class BookDetailScreen extends StatelessWidget {
   }
 }
 
-class BookCoverShowcase extends StatefulWidget {
-  const BookCoverShowcase({super.key});
-
-  @override
-  State<BookCoverShowcase> createState() => _BookCoverShowcaseState();
-}
-
-class _BookCoverShowcaseState extends State<BookCoverShowcase> {
-  final CarouselSliderController _controller = CarouselSliderController();
-  int _currentIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final bookDetail = _getBookDetail(context);
-    final imgList = [bookDetail?.image ?? 'assets/default_book_cover.png'];
-    return Column(
-      children: [
-        Container(
-          color: AppColors.themeSecondary,
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-                child: CarouselSlider(
-                  carouselController: _controller,
-                  options: CarouselOptions(
-                    height: 280,
-                    aspectRatio: 14 / 9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                  ),
-                  items: imgList.map((item) => _buildImage(item)).toList(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: imgList.asMap().entries.map((entry) {
-                  return GestureDetector(
-                    onTap: () => _controller.animateToPage(entry.key),
-                    child: Container(
-                      width: 6.0,
-                      height: 6.0,
-                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primary.withOpacity(_currentIndex == entry.key ? 0.9 : 0.4),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildImage(String imageUrl) {
-    if (imageUrl.startsWith('http')) {
-      return Image.network(
-        imageUrl,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            defaultBookCover,
-            fit: BoxFit.cover,
-          );
-        },
-      );
-    } else if (_isBase64(imageUrl)) {
-      Uint8List bytes = base64Decode(imageUrl);
-      return Image.memory(
-        bytes,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            defaultBookCover,
-            fit: BoxFit.cover,
-          );
-        },
-      );
-    } else if (imageUrl.startsWith('assets/')) {
-      return Image.asset(
-        imageUrl,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            defaultBookCover,
-            fit: BoxFit.cover,
-          );
-        },
-      );
-    } else {
-      return Image.asset(
-        defaultBookCover,
-        fit: BoxFit.cover,
-      );
-    }
-  }
-
-  bool _isBase64(String str) {
-    try {
-      base64Decode(str);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  BookDetailModel? _getBookDetail(BuildContext context) {
-    final state = context.watch<BookBloc>().state;
-    if (state is SearchBookSuccess) {
-      return state.response.bookDetail;
-    } else if (state is BookDetailSuccess) {
-      return state.response;
-    }
-    return null;
-  }
-}

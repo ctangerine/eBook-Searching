@@ -10,7 +10,7 @@ part of 'realm_book_detail_model.dart';
 class RealmReviewModel extends _RealmReviewModel
     with RealmEntity, RealmObjectBase, RealmObject {
   RealmReviewModel(
-    ObjectId id,
+    int id,
     String image,
     String reviewer,
     String content,
@@ -26,9 +26,9 @@ class RealmReviewModel extends _RealmReviewModel
   RealmReviewModel._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  int get id => RealmObjectBase.get<int>(this, 'id') as int;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+  set id(int value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get image => RealmObjectBase.get<String>(this, 'image') as String;
@@ -101,7 +101,7 @@ class RealmReviewModel extends _RealmReviewModel
     register(_toEJson, _fromEJson);
     return const SchemaObject(
         ObjectType.realmObject, RealmReviewModel, 'RealmReviewModel', [
-      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+      SchemaProperty('id', RealmPropertyType.int, primaryKey: true),
       SchemaProperty('image', RealmPropertyType.string),
       SchemaProperty('reviewer', RealmPropertyType.string),
       SchemaProperty('content', RealmPropertyType.string),
@@ -116,7 +116,7 @@ class RealmReviewModel extends _RealmReviewModel
 class RealmAuthorModel extends _RealmAuthorModel
     with RealmEntity, RealmObjectBase, RealmObject {
   RealmAuthorModel(
-    ObjectId id,
+    int id,
     String name, {
     String? stageName,
     String? nationality,
@@ -142,9 +142,9 @@ class RealmAuthorModel extends _RealmAuthorModel
   RealmAuthorModel._();
 
   @override
-  ObjectId get id => RealmObjectBase.get<ObjectId>(this, 'id') as ObjectId;
+  int get id => RealmObjectBase.get<int>(this, 'id') as int;
   @override
-  set id(ObjectId value) => RealmObjectBase.set(this, 'id', value);
+  set id(int value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
@@ -258,7 +258,7 @@ class RealmAuthorModel extends _RealmAuthorModel
     register(_toEJson, _fromEJson);
     return const SchemaObject(
         ObjectType.realmObject, RealmAuthorModel, 'RealmAuthorModel', [
-      SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
+      SchemaProperty('id', RealmPropertyType.int, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('stageName', RealmPropertyType.string, optional: true),
       SchemaProperty('nationality', RealmPropertyType.string, optional: true),

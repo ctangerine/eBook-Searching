@@ -38,40 +38,60 @@ class AddBookToStorageUseCase extends UseCase<void, RealmBookDetailModel> {
   AddBookToStorageUseCase(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(RealmBookDetailModel book) {
-    return repository.addBook(book);
+  Future<Either<Failure, void>> call(RealmBookDetailModel book, {int? libraryId}) {
+    return repository.addBook(book, libraryId: libraryId);
   }
 }
 
-class DeleteBookStorageUseCase extends UseCase<void, int> {
+class DeleteBookStorageUseCase extends UseCase<void, DeleteBookParams> {
   final BooksRepository repository;
 
   DeleteBookStorageUseCase(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(int bookId) {
-    return repository.deleteBook(bookId);
+  Future<Either<Failure, void>> call(DeleteBookParams params) {
+    return repository.deleteBook(params.bookId, params.libraryId);
   }
 }
 
-class GetAllBookStorageUseCase extends UseCase<List<RealmBookDetailModel>, NoParams> {
+class DeleteBookParams {
+  final int bookId;
+  final int libraryId;
+
+  DeleteBookParams(this.bookId, this.libraryId);
+}
+
+class GetAllBookStorageUseCase extends UseCase<List<RealmBookDetailModel>, GetAllBookParams> {
   final BooksRepository repository;
 
   GetAllBookStorageUseCase(this.repository);
 
   @override
-  Future<Either<Failure, List<RealmBookDetailModel>>> call(NoParams params) {
-    return repository.getAllBooks();
+  Future<Either<Failure, List<RealmBookDetailModel>>> call(GetAllBookParams params) {
+    return repository.getAllBooks(params.libraryId);
   }
 }
 
-class GetBookByIdStorageUseCase extends UseCase<RealmBookDetailModel?, int> {
+class GetAllBookParams {
+  final int libraryId;
+
+  GetAllBookParams(this.libraryId);
+}
+
+class GetBookByIdStorageUseCase extends UseCase<RealmBookDetailModel?, GetBookByIdParams> {
   final BooksRepository repository;
 
   GetBookByIdStorageUseCase(this.repository);
 
   @override
-  Future<Either<Failure, RealmBookDetailModel?>> call(int bookId) {
-    return repository.getBookById(bookId);
+  Future<Either<Failure, RealmBookDetailModel?>> call(GetBookByIdParams params) {
+    return repository.getBookById(params.bookId, params.libraryId);
   }
+}
+
+class GetBookByIdParams {
+  final int bookId;
+  final int libraryId;
+
+  GetBookByIdParams(this.bookId, this.libraryId);
 }

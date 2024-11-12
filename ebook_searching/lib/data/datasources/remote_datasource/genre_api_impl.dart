@@ -38,7 +38,7 @@ class GenreImplApi extends GenreApi {
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(e.toString(), null);
+      throw ServerException('Server error: $e', null);
     }
   }
 }

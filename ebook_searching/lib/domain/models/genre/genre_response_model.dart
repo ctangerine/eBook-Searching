@@ -20,16 +20,16 @@ class GenreResponseModel {
 
   List<GenreModel> data;
   int limit;
-  int numpages;
+  int numPages;
   int offset;
   int totalItems;
 
   GenreResponseModel({
     required this.data,
     required this.limit,
-    required this.numpages,
+    required this.numPages,
     required this.offset,
-    required this.totalItems
+    required this.totalItems,
 });
 
   factory GenreResponseModel.fromJson(Map<String, dynamic> json) => _$GenreResponseModelFromJson(json);

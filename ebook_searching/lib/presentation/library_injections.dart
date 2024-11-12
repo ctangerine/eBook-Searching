@@ -7,7 +7,7 @@ import 'package:ebook_searching/domain/usecases/library_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_library/library_bloc.dart';
 import 'package:realm/realm.dart';
 
-initBookInjections() {
+initLibraryInjections() {
   sl.registerSingleton<LibraryStorageImpl>(LibraryStorageImpl(_realmLibraryConfig()));
   sl.registerSingleton<LibraryRepository>(LibraryRepoImplement(sl()));
   sl.registerSingleton(LibraryUsecase(sl()));
@@ -20,8 +20,19 @@ initBookInjections() {
 Realm _realmLibraryConfig() {
   // Add all required schemas here; including Library
   final realmConfig = Configuration.local([
+    RealmBookDetailModel.schema,
+    RealmAuthorModel.schema,
+    RealmReviewModel.schema,
     Library.schema,  // Include the Library schema
-  ]);
+    ],
+    schemaVersion: 2, // Incremented from the previous version
+    migrationCallback: (migration, oldSchemaVersion) {
+      if (oldSchemaVersion < 2) {
+        // Handle migration logic here if needed
+        // For example, if the id was previously an ObjectId and is now an int
+      }
+    },
+  );
 
   return Realm(realmConfig);
 }

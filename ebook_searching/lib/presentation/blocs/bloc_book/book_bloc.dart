@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:ebook_searching/app_config.dart';
 import 'package:ebook_searching/domain/models/author/author_model.dart';
 import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
@@ -7,7 +8,10 @@ import 'package:ebook_searching/domain/models/review/review_model.dart';
 import 'package:ebook_searching/domain/usecases/book_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
+import 'package:ebook_searching/presentation/common_widgets/custom_popup.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ebook_searching/core/network/error/Failure.dart';
 
@@ -87,17 +91,78 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
   Future<void> _addBookStorage(AddBookStorageEvent event, Emitter<BookState> emit) async {
     emit(BookLoading());
-    final result = await addBookToStorage(event.book);
+    final result = await addBookToStorage(event.book, libraryId: event.libraryId);
+    final book = BookDetailModel(
+      id: event.book.id,
+      avgRating: event.book.avgRating,
+      categories: event.book.categories.isNotEmpty ? event.book.categories : [],
+      title: event.book.title,
+      image: event.book.image,
+      authors: event.book.authors.isNotEmpty ? event.book.authors.map((author) => AuthorModel(name: author.name)).toList() : [],
+      description: event.book.description,
+      genres: event.book.genres.isNotEmpty ? event.book.genres : [],
+      language: event.book.language,
+      publicationTime: event.book.publicationTime,
+      publisher: event.book.publisher,
+      ratingCount: event.book.ratingCount,
+      totalPages: event.book.totalPages,
+      uri: event.book.uri,
+      reviews: event.book.reviews.isNotEmpty ? event.book.reviews.map((review) => ReviewModel(
+        image: review.image,
+        reviewer: review.reviewer,
+        content: review.content,
+        time: review.time,
+      )).toList() : [],
+    );
+
+    final completer = Completer<void>();
 
     result.fold(
-          (failure) => emit(AddBookStorageFailure(_mapFailureToMessage(failure))),
-          (_) => emit(AddBookStorageSuccess()),
+      (failure) {
+        emit(AddBookStorageFailure(_mapFailureToMessage(failure)));
+        completer.future.then((_) {
+          if (!emit.isDone) {
+            emit(BookDetailSuccess(book));
+          }
+        });
+      },
+      (_) {
+        emit(AddBookStorageSuccess());
+        completer.future.then((_) {
+          if (!emit.isDone) {
+            emit(BookDetailSuccess(book));
+          }
+        });
+      }
     );
+
+    // Wait for user confirmation before completing the completer
+    await showDialog(
+      context: event.context,
+      builder: (BuildContext context) {
+        return CustomPopup(
+          title: 'Save Book',
+          content: result.isRight() ? 'Book has been saved to your library' : 'Book has been saved into another library',
+          confirmText: 'OK',
+          onConfirm: () {
+            Navigator.of(context).pop();
+            completer.complete();
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+            completer.complete();
+          },
+        );
+      },
+    );
+
+    // Ensure the completer is completed
+    await completer.future;
   }
 
   Future<void> _deleteBookStorage(DeleteBookStorageEvent event, Emitter<BookState> emit) async {
     emit(BookLoading());
-    final result = await deleteBookStorage(event.bookId);
+    final result = await deleteBookStorage(DeleteBookParams(event.bookId, event.libraryId));
 
     result.fold(
           (failure) => emit(DeleteBookStorageFailure(_mapFailureToMessage(failure))),
@@ -107,7 +172,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
   Future<void> _getAllBooksStorage(GetAllBooksStorageEvent event, Emitter<BookState> emit) async {
     emit(BookLoading());
-    final result = await getAllBookStorage(NoParams());
+    final result = await getAllBookStorage(GetAllBookParams(event.libraryId));
 
     result.fold(
           (failure) => emit(GetAllBooksStorageFailure(_mapFailureToMessage(failure))),
@@ -117,7 +182,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
   Future<void> _getBookByIdStorage(GetBookByIdStorageEvent event, Emitter<BookState> emit) async {
     emit(BookLoading());
-    final result = await getBookByIdStorage(event.bookId);
+    final result = await getBookByIdStorage(GetBookByIdParams(event.bookId, event.libraryId));
 
     result.fold(
           (failure) => emit(GetBookByIdStorageFailure(_mapFailureToMessage(failure))),
@@ -125,8 +190,8 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     );
   }
 
-
   String _mapFailureToMessage(Failure failure) {
+    debugPrint('libraryId : $failure.errorMessage');
     return failure.errorMessage ?? "An unexpected error occurred.";
   }
 

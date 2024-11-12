@@ -1,39 +1,67 @@
+import 'package:ebook_searching/core/injections.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_library/library_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_library/library_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_library/library_state.dart';
+import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/screens/create_new_library_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LibraryScreen extends StatelessWidget {
-  const LibraryScreen({super.key});
-
+  final ValueNotifier<int?> _selectedCardIndex = ValueNotifier<int?>(null);
+  
+  LibraryScreen({super.key});
 
   @override
   Widget build (BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Library', style: AppTextStyles.heading2Semibold),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search, size: 25,),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height/2,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTabBar(),
-              _buildEmptyList(context),
-            ],
-          ),
+    final crossAxisCount = MediaQuery.of(context).size.width ~/ 200;
+    return BlocProvider<LibraryBloc>(
+      create : (context) => sl<LibraryBloc>()..add(LoadLocalLibraryEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('Library', style: AppTextStyles.heading2Semibold),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search, size: 25,),
+            )
+          ],
         ),
-      )
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height/2,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTabBar(),
+                const SizedBox(height: 20,),
+                BlocBuilder<LibraryBloc, LibraryState>(
+                  builder: (context, state) {
+                    if (state is LoadLocalLibrarySuccess) {
+                      if (state.libraries.isEmpty) {
+                        return _buildEmptyList(context);
+                      } else {
+                        return SavedLibraryList(
+                          selectedCardIndex: _selectedCardIndex, 
+                          crossAxisCount: crossAxisCount,
+                          toListBook: true,
+                        );
+                      }
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        )
+      ),
     );
   }
 
@@ -73,7 +101,7 @@ class LibraryScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => const CreateNewLibraryScreen())
+              MaterialPageRoute(builder: (context) => CreateNewLibraryScreen())
             );
           }, 
           icon: const Icon(Icons.add), 

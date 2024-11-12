@@ -1,46 +1,69 @@
-import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_card.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
+import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
+import 'package:ebook_searching/core/injections.dart';
 
 class LibraryBooksScreen extends StatelessWidget {
-  const LibraryBooksScreen({super.key});
+  final int libraryID;
+
+  const LibraryBooksScreen({super.key, required this.libraryID});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Name list', style: AppTextStyles.body2Semibold,),
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20), 
-        child: ListView.separated(
-          scrollDirection: Axis.vertical,
-          itemCount: 3,
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
-            itemBuilder: (context, index) {
-            final books = [
-              const BookCard(bookTitle: 'Lorem Ispum Lorem Ispum Lorem Ispum Lorem Ispum Lorem Ispum ', author: 'author1', bookCover: bookCover1, isHorizontal: true),
-              const BookCard(bookTitle: 'bookTitle2', author: 'author2', bookCover: bookCover2, isHorizontal: true),
-              const BookCard(bookTitle: 'bookTitle3', author: 'author3', bookCover: bookCover3, isHorizontal: true),
-            ];
-            return Card(
-              color: AppColors.maintheme,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(
-                  color: AppColors.textSecondary,
-                  width: 1,
-                )
-              ),
-              // margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: books[index],
-              ),
-            );
-          },
+    return BlocProvider(
+      create: (context) => sl<BookBloc>()..add(GetAllBooksStorageEvent(libraryID)),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Name list', style: AppTextStyles.title1Semibold),
+          centerTitle: true,
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: BlocBuilder<BookBloc, BookState>(
+            builder: (context, state) {
+              if (state is BookLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is GetAllBooksStorageSuccess) {
+                return ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  itemCount: state.books.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final book = state.books[index];
+                    return Card(
+                      shadowColor: const Color.fromARGB(255, 202, 208, 217),
+                      elevation: 3,
+                      color: AppColors.maintheme,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(
+                          color: AppColors.themeSecondary,
+                          width: 1,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: BookCard(
+                          bookTitle: book.title,
+                          author: book.authors.isNotEmpty ? book.authors[0].name : 'Unknown',
+                          bookCover: book.image,
+                          isHorizontal: true,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              } else if (state is GetAllBooksStorageFailure) {
+                return Center(child: Text('Error: ${state.error}'));
+              } else {
+                return const Center(child: Text('No books available'));
+              }
+            },
+          ),
         ),
       ),
     );

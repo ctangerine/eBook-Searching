@@ -47,9 +47,22 @@ class BookRepositoryImpl extends BooksRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addBook(RealmBookDetailModel book) async {
+  Future<Either<Failure, void>> addBook(RealmBookDetailModel book, {int? libraryId}) async {
     try {
-      await bookStorage.addBook(book);
+      await bookStorage.addBook(book, libraryId: libraryId);
+      return const Right(null); // Return void result on success
+    } on RealmException catch (e) {
+      return Left(QueryStorageFailure(e.message));
+    }
+    catch (e) {
+      return Left(QueryStorageFailure('$e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteBook(int id, int libraryId) async {
+    try {
+      await bookStorage.deleteBook(id, libraryId);
       return const Right(null); // Return void result on success
     } on RealmException catch (e) {
       return Left(QueryStorageFailure(e.message));
@@ -57,19 +70,9 @@ class BookRepositoryImpl extends BooksRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteBook(int id) async {
+  Future<Either<Failure, List<RealmBookDetailModel>>> getAllBooks(int libraryId) async {
     try {
-      await bookStorage.deleteBook(id);
-      return const Right(null); // Return void result on success
-    } on RealmException catch (e) {
-      return Left(QueryStorageFailure(e.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<RealmBookDetailModel>>> getAllBooks() async {
-    try {
-      final result = await bookStorage.getAllBooks();
+      final result = await bookStorage.getAllBooks(libraryId);
       return Right(result);
     } on RealmException catch (e) {
       return Left(QueryStorageFailure(e.message));
@@ -77,9 +80,9 @@ class BookRepositoryImpl extends BooksRepository {
   }
 
   @override
-  Future<Either<Failure, RealmBookDetailModel?>> getBookById(int id) async {
+  Future<Either<Failure, RealmBookDetailModel?>> getBookById(int id, int libraryId) async {
     try {
-      final result = await bookStorage.getBookById(id);
+      final result = await bookStorage.getBookById(id, libraryId);
       return Right(result);
     } on RealmException catch (e) {
       return Left(QueryStorageFailure(e.message));

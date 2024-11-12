@@ -24,8 +24,6 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -34,6 +32,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  bool _isListenerActive = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: _selectedIndex == 0 ? homepageAppBar() : null,
         body: <Widget>[
           homePageScreen(),
-          const LibraryScreen(),
+          LibraryScreen(),
           const ProfileScreen(),
           const SearchResultScreen(),
         ][_selectedIndex],
@@ -57,8 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         IconButton(
           icon: const Icon(Iconsax.notification_bing),
-          onPressed: () {
-          },
+          onPressed: () {},
         ),
       ],
     );
@@ -71,9 +69,27 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider<GenreBloc>(
           create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
         ),
-        BlocProvider(create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams()))),
+        BlocProvider<BookBloc>(
+          create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams()))),
       ],
-      child: SingleChildScrollView(
+      child: BlocListener<BookBloc, BookState>(
+        listener: (context, state) {
+          if (_isListenerActive && state is BookDetailSuccess) {
+            _isListenerActive = false;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (builder) => BlocProvider.value(
+                  value: context.read<BookBloc>(),
+                  child: const BookDetailScreen(),
+                ),
+              ),
+            ).then((_) {
+              _isListenerActive = true;
+            });
+          }
+        },
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: Center(
@@ -82,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCarousel(),
                   const SizedBox(height: 20),
                   _buildSearchBar(),
-                  const SizedBox(height: 16),
                   _buildBookByGenreTab(),
                   _buildBookSlider(),
                 ],
@@ -90,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -108,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Image.asset(homepageImage, fit: BoxFit.fitWidth),
         Image.asset(homepageImage, fit: BoxFit.fitWidth),
         Image.asset(homepageImage, fit: BoxFit.fitWidth),
-      ]
+      ],
     );
   }
 
@@ -118,14 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
         _showSearchResultScreen();
       },
       child: Container(
-        height: 42,
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        height: 60,
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         child: TextField(
           decoration: InputDecoration(
             hintText: 'Search any books',
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(100), 
+              borderRadius: BorderRadius.circular(100),
               borderSide: const BorderSide(color: AppColors.textSecondary, width: 2.0),
             ),
             enabled: false,
@@ -138,8 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showSearchResultScreen() {
     Navigator.push(
       context,
-        MaterialPageRoute(
-          builder: (context) => const SearchResultScreen(),
+      MaterialPageRoute(
+        builder: (context) => const SearchResultScreen(),
       ),
     );
   }
@@ -170,7 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (state is GenreSuccess) {
                 return _buildGenreList(state.response.data);
               } else if (state is GenreFailure) {
-                return Center(child: Text(state.error, style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary,)));
+                return Center(
+                  child: Text(
+                    state.error,
+                    style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),
+                  ),
+                );
               } else {
                 return const Center(child: Text('No genres available'));
               }
@@ -223,23 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          BlocConsumer<BookBloc, BookState>(
-            listener: (context, state) {
-              if (state is BookDetailFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-              }
-              else if (state is BookDetailSuccess) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (builder) => BlocProvider.value(
-                      value: context.read<BookBloc>(),
-                      child: const BookDetailScreen(),
-                    ),
-                  ),
-                );
-              }
-            },
+          BlocBuilder<BookBloc, BookState>(
             builder: (context, state) {
               if (state is BookLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -250,11 +255,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 return _buildErrorState();
               } else if (state is BookDetailFailure) {
                 return const Center(child: Text('Error: Failed to get book detail'));
-              }
-              else if (state is BookDetailSuccess) {
+              } else if (state is BookDetailSuccess) {
                 return const Center(child: Text('Error: Failed to get book detail'));
-              }
-              else {
+              } else {
                 return const Center(child: Text('No books available'));
               }
             },
@@ -333,6 +336,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
-  
 }

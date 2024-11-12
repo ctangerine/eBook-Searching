@@ -2,23 +2,14 @@ import 'package:ebook_searching/domain/models/profile/update_profile_request.dar
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_state.dart';
+import 'package:ebook_searching/presentation/common_widgets/custom_popup.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PersonalDetailScreen extends StatefulWidget {
-  final String fullname;
-  final String avatarUrl;
-  final bool gender;
-  final DateTime dob;
-
-  const PersonalDetailScreen({
-    super.key,
-    required this.fullname,
-    required this.avatarUrl,
-    required this.gender,
-    required this.dob,
-  });
+  const PersonalDetailScreen({super.key});
 
   @override
   _PersonalDetailScreenState createState() => _PersonalDetailScreenState();
@@ -34,10 +25,19 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _fullnameController = TextEditingController(text: widget.fullname);
-    _dobController = TextEditingController(text: widget.dob.toString());
-    _genderController = TextEditingController(text: widget.gender ? 'Male' : 'Female');
     _userBloc = context.read<UserBloc>();
+    _initializeControllers();
+  }
+
+  void _initializeControllers() {
+    final user = (_userBloc.state is GetProfileSuccess) 
+      ? (_userBloc.state as GetProfileSuccess).response 
+      : null;
+
+    _fullnameController = TextEditingController(text: user?.fullName ?? '');
+    _dobController = TextEditingController(text: user?.dateOfBirth ?? '');
+    _genderController = TextEditingController();
+    _genderController.text = _userBloc.state is GetProfileSuccess ? (_userBloc.state as GetProfileSuccess).response.gender ?? '' : '';
   }
 
   @override
@@ -54,34 +54,17 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
       appBar: AppBar(
         title: const Text('Personal Details', style: AppTextStyles.title1Semibold),
         centerTitle: true,
-        actions: [
-          _buildEditButton(),
-        ],
+        actions: [_buildEditButton()],
       ),
-      body: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state is UpdateProfileSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Update profile success'),
-                backgroundColor: AppColors.primary,
-              ),
-            );
-          } else if (state is UpdateProfileFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Update profile failure'),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-        },
-        child: Container(
+      body: BlocConsumer<UserBloc, UserState>(
+        listener: _handleProfileUpdate,
+        builder: (context, state) => Container(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildAvatarProfile(),
-              _personalDetail(),
+              _buildPersonalDetail(state),
             ],
           ),
         ),
@@ -89,91 +72,130 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
     );
   }
 
-  Widget _buildEditButton() {
-    return Row(
-      children: [
-        FilledButton(
-          onPressed: () {
-            setState(() {
-              isEdit = !isEdit;
-            });
-            if (!isEdit) {
-              final request = UpdateProfileRequest(
-                fullName: _fullnameController.text,
-                gender: _genderController.text,
-                dateOfBirth: _dobController.text,
-              );
-              _userBloc.add(UpdateProfileEvent(request));
-            }
-          },
-          child: Text(isEdit ? 'Save' : 'Edit'),
+  void _handleProfileUpdate(BuildContext context, UserState state) {
+    if (state is GetProfileSuccess && state.message != null) {
+      _fullnameController.text = state.response.fullName ?? '';
+      _dobController.text = state.response.dateOfBirth ?? '';
+      _genderController.text = state.response.gender ?? '';
+
+      showDialog(
+        context: context,
+        builder: (context) => CustomPopup(
+          title: 'Update profile',
+          confirmText: 'OK',
+          content: 'Update failed with error message: ${state.message}',
+          onConfirm: () => Navigator.of(context).pop(),
+          onCancel: () => Navigator.of(context).pop(),
         ),
-        const SizedBox(width: 20),
-      ],
+      );
+    }
+  }
+
+  Widget _buildEditButton() {
+    return FilledButton(
+      onPressed: () {
+        setState(() => isEdit = !isEdit);
+        if (!isEdit) {
+          final request = UpdateProfileRequest(
+            fullName: _fullnameController.text,
+            gender: _genderController.text,
+            dateOfBirth: _dobController.text,
+            userId: _userBloc.state is GetProfileSuccess ? (_userBloc.state as GetProfileSuccess).response.userId : _userBloc.state is UpdateProfileSuccess ? (_userBloc.state as UpdateProfileSuccess).response.userId : 0,
+          );
+          _userBloc.add(UpdateProfileEvent(request));
+        }
+      },
+      child: Text(isEdit ? 'Save' : 'Edit'),
     );
   }
 
   Widget _buildAvatarProfile() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return const Center(
+      child: CircleAvatar(
+        radius: 50,
+        backgroundImage: AssetImage(avatar),
+      ),
+    );
+  }
+
+  Widget _buildPersonalDetail(UserState state) {
+    if (state is UpdateProfileFailure && state.orgUser == null) {
+      return const Center(
+        child: Text(
+          'No user data available',
+          style: AppTextStyles.body2Medium,
+        ),
+      );
+    }
+    return _buildUserFields();
+  }
+
+  Widget _buildUserFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundImage: AssetImage(widget.avatarUrl),
+        _buildField('Full name', _fullnameController, isReadOnly: !isEdit),
+        const SizedBox(height: 20),
+        _buildGenderField(),
+        const SizedBox(height: 20),
+        _buildField('Date of birth', _dobController, isDate: true),
+      ],
+    );
+  }
+
+  Widget _buildField(String label, TextEditingController controller, {bool isReadOnly = false, bool isDate = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: AppTextStyles.body2Semibold),
+        const SizedBox(height: 10),
+        TextFormField(
+          controller: controller,
+          readOnly: isReadOnly,
+          decoration: const InputDecoration(border: OutlineInputBorder()),
+          onTap: isDate && isEdit ? _pickDate : null,
         ),
       ],
     );
   }
 
-  Widget _personalDetail() {
+  Future<void> _pickDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _dobController.text = pickedDate.toString().split(' ')[0];
+      });
+    }
+  }
+
+  Widget _buildGenderField() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Full name', style: AppTextStyles.body2Semibold),
-        const SizedBox(height: 10),
-        TextFormField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          readOnly: !isEdit,
-          controller: _fullnameController,
-        ),
-        const SizedBox(height: 20),
         const Text('Gender', style: AppTextStyles.body2Semibold),
         const SizedBox(height: 10),
-        DropdownButtonFormField<String>(
-          items: ['Male', 'Female', 'Other'].map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value, style: AppTextStyles.body2Regular),
-            );
-          }).toList(),
-          onChanged: isEdit ? (String? newValue) {
-            setState(() {
-              _genderController.text = newValue!;
-            });
-          } : null,
-          value: _genderController.text,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            enabled: isEdit,
-            disabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.textSecondary),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+        isEdit
+          ? DropdownButtonFormField<String>(
+              items: ['male', 'female', 'other'].map((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value, style: AppTextStyles.body2Regular),
+                );
+              }).toList(),
+              onChanged: (value) => setState(() => _genderController.text = value ?? ''),
+              value: _genderController.text.isNotEmpty ? _genderController.text : null,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+            )
+          : TextFormField(
+              controller: _genderController,
+              readOnly: true,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        const Text('Date of birth', style: AppTextStyles.body2Semibold),
-        const SizedBox(height: 10),
-        TextFormField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          readOnly: !isEdit,
-          controller: _dobController,
-        ),
       ],
     );
   }

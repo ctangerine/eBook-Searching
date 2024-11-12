@@ -13,8 +13,9 @@ class UserLoading extends UserState {}
 // Get Profile
 class GetProfileSuccess extends UserState {
   final ProfileResponseModel response;
+  final String? message;
 
-  GetProfileSuccess(this.response);
+  GetProfileSuccess(this.response, {this.message});
 
   GetProfileSuccess copyWith({
     ProfileResponseModel? response,
@@ -49,8 +50,9 @@ class UpdateProfileSuccess extends UserState {
 
 class UpdateProfileFailure extends UserState {
   final String error;
+  final ProfileResponseModel? orgUser;
 
-  UpdateProfileFailure(this.error);
+  UpdateProfileFailure(this.error, this.orgUser);
 
   @override
   List<Object?> get props => [error];

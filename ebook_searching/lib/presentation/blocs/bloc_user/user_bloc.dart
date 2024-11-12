@@ -3,6 +3,7 @@ import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:ebook_searching/domain/usecases/user_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ebook_searching/core/network/error/Failure.dart';
 
@@ -40,15 +41,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         gender: event.request.gender,
         dateOfBirth: event.request.dateOfBirth,
       );
-      emit(UpdateProfileSuccess(result));
-    }
-    else {
+      if (!emit.isDone) emit(UpdateProfileSuccess(result));
+    } else {
       emit(UserLoading());
       final result = await updateProfileUseCase(event.request);
 
-      result.fold(
-        (failure) => emit(UpdateProfileFailure(_mapFailureToMessage(failure))),
-        (response) => emit(UpdateProfileSuccess(response)),
+      await result.fold(
+        (failure) async {
+          debugPrint("id: ${event.request.userId}");
+          final user = await getProfileUseCase(event.request.userId);
+          await user.fold(
+            (failure) async {
+              if (!emit.isDone) emit(GetProfileFailure(_mapFailureToMessage(failure)));
+            },
+            (response) async {
+              if (!emit.isDone) emit(GetProfileSuccess(response, message: _mapFailureToMessage(failure)));
+            },
+          );
+        },
+        (response) async {
+          if (!emit.isDone) emit(UpdateProfileSuccess(response));
+        },
       );
     }
   }

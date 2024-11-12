@@ -36,5 +36,8 @@ class UserRepositoryImpl extends UserRepository {
     } on CancelTokenException catch (e) {
       return Left(CancelTokenFailure(e.message, e.statusCode));
     }
+    catch (e) {
+      return Left(ServerFailure(e.toString(), null));
+    }
   }
 }

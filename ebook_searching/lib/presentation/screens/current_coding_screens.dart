@@ -1,6 +1,5 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
-import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/screens/library_books_screen.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
@@ -110,7 +109,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SaveToLibraryScreen(),
+                    builder: (context) => SaveToLibraryScreen(bookId: 0,),
                   ),
                 );
               }, child: const Text('SaveToLibraryScreen',)
@@ -121,7 +120,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LibraryScreen(),
+                    builder: (context) => LibraryScreen(),
                   ),
                 );
               },
@@ -133,7 +132,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LibraryBooksScreen(),
+                    builder: (context) => const LibraryBooksScreen(libraryID: 0,),
                   ),
                 );
               },
@@ -157,11 +156,7 @@ class CurrentCodingScreens extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  PersonalDetailScreen(
-                      fullname: 'John Doe',
-                      gender: true,
-                      dob: DateTime.now(),
-                      avatarUrl: avatar,
+                    builder: (context) =>  const PersonalDetailScreen(
                     ),
                   ),
                 );

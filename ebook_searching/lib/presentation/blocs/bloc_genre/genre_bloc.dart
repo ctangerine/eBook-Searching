@@ -45,7 +45,7 @@ class GenreBloc extends Bloc<GenreEvent, GenreState> {
         GenreModel(name: 'Fantasy', id: 5),
       ],
       limit: 3,
-      numpages: 3,
+      numPages: 3,
       offset: 3,
       totalItems: 5
     );

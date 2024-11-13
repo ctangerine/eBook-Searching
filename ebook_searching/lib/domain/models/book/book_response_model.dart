@@ -43,7 +43,18 @@ class BookResponseModel {
           : null,
     );
   }
-  Map<String, dynamic> toJson() => _$BookResponseModelToJson(this);
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data?.map((e) => e.toJson()).toList(),
+      'limit': limit,
+      'numPages': numPages,
+      'offset': offset,
+      'totalItems': totalItems,
+      'bookDetail': bookDetail?.toJson(),
+      'author': author?.toJson(),
+    };
+  }
 
   // copyWith method
   BookResponseModel copyWith({

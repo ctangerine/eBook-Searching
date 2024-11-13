@@ -122,5 +122,23 @@ class BookDetailModel {
   }
 
   factory BookDetailModel.fromJson(Map<String, dynamic> json) => _$BookDetailModelFromJson(json);
-  Map<String, dynamic> toJson() => _$BookDetailModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'authors': authors?.map((e) => e.toJson()).toList(),
+      'avgRating': avgRating,
+      'categories': categories,
+      'description': description,
+      'genres': genres,
+      'id': id,
+      'image': image,
+      'language': language,
+      'publicationTime': publicationTime,
+      'publisher': publisher,
+      'ratingCount': ratingCount,
+      'reviews': reviews?.map((e) => e.toJson()).toList(),
+      'title': title,
+      'totalPages': totalPages,
+      'uri': uri,
+    };
+  }
 }

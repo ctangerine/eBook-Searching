@@ -74,20 +74,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: BlocListener<BookBloc, BookState>(
         listener: (context, state) {
-          if (_isListenerActive && state is BookDetailSuccess) {
-            _isListenerActive = false;
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (builder) => BlocProvider.value(
-                  value: context.read<BookBloc>(),
-                  child: const BookDetailScreen(),
-                ),
-              ),
-            ).then((_) {
-              _isListenerActive = true;
-            });
-          }
+          // if (_isListenerActive && state is BookDetailSuccess) {
+          //   _isListenerActive = false;
+          //   debugPrint('Call at homePageScreen');
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (builder) => BlocProvider.value(
+          //         value: context.read<BookBloc>(),
+          //         child: const BookDetailScreen(),
+          //       ),
+          //     ),
+          //   ).then((_) {
+          //     _isListenerActive = true;
+          //   });
+          // }
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -286,6 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocListener<BookBloc, BookState>(
       listener: (context, state) {
         if (state is BookDetailSuccess) {
+          debugPrint('Call at buildBookList');
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -311,6 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 final bookBloc = context.read<BookBloc>();
                 bookBloc.add(GetBookDetailEvent(book.id));
+                debugPrint('add once');
               },
             );
           },

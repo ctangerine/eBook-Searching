@@ -32,7 +32,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case personalScreen:
         final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (_) => PersonalDetailScreen(
+        return MaterialPageRoute(builder: (_) => const PersonalDetailScreen(
         )
       );
       case setupAccountScreen:

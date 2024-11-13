@@ -39,5 +39,17 @@ class AuthorModel {
   });
 
   factory AuthorModel.fromJson(Map<String, dynamic> json) => _$AuthorModelFromJson(json);
-  Map<String, dynamic> toJson() => _$AuthorModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'stageName': stageName,
+      'nationality': nationality,
+      'birthDate': birthDate,
+      'birthPlace': birthPlace,
+      'deathDate': deathDate,
+      'website': website,
+      'description': description,
+      'image': image,
+    };
+  }
 }

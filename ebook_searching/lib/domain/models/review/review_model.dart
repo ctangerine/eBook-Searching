@@ -24,5 +24,12 @@ class ReviewModel {
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) => _$ReviewModelFromJson(json);
-  Map<String, dynamic> toJson() => _$ReviewModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'image': image,
+      'reviewer': reviewer,
+      'content': content,
+      'time': time,
+    };
+  }
 }

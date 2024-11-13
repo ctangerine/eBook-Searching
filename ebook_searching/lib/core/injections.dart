@@ -1,6 +1,8 @@
+import 'package:ebook_searching/app_config.dart';
 import 'package:ebook_searching/app_injections.dart';
 import 'package:ebook_searching/core/log/app_logger.dart';
 import 'package:ebook_searching/core/network/dio_network.dart';
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/presentation/auth_injections.dart';
 import 'package:ebook_searching/presentation/book_injections.dart';
 import 'package:ebook_searching/presentation/genre_injections.dart';
@@ -27,6 +29,10 @@ initSharedPrefsInjections() async {
     return await SharedPreferences.getInstance();
   });
   await sl.isReady<SharedPreferences>();
+
+  if (AppConfig().isPassAPI) {
+    sl.registerSingleton<AppSharedPrefs>(AppSharedPrefs(sl()));
+  }
 }
 
 Future<void> initDioInjections() async {

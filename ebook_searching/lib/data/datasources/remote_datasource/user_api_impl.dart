@@ -66,7 +66,7 @@ class UserImplApi extends UserApi {
     } on ServerException {
       rethrow;
     } catch (e) {
-      debugPrint('error here: ${e}');
+      debugPrint('error here: $e');
       throw ServerException('${e}error here', null);
     }
   }

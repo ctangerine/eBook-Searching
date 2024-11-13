@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ebook_searching/app_config.dart';
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/domain/models/author/author_model.dart';
 import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
 import 'package:ebook_searching/domain/models/book/book_model.dart';
@@ -10,10 +11,10 @@ import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
 import 'package:ebook_searching/presentation/common_widgets/custom_popup.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ebook_searching/core/network/error/Failure.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookBloc extends Bloc<BookEvent, BookState> {
   final GetBookDetailUseCase getBookDetailUseCase;
@@ -23,13 +24,16 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   final GetAllBookStorageUseCase getAllBookStorage;
   final GetBookByIdStorageUseCase getBookByIdStorage;
 
+  final AppSharedPrefs? appSharedPrefs;
+
   BookBloc({
     required this.getBookDetailUseCase,
     required this.searchBookUseCase,
     required this.addBookToStorage,
     required this.deleteBookStorage,
     required this.getAllBookStorage,
-    required this.getBookByIdStorage
+    required this.getBookByIdStorage,
+    this.appSharedPrefs
   }) : super(BookInitial()) {
     on<GetBookDetailEvent>(_getBookDetail);
     on<SearchBookEvent>(_searchBook);
@@ -52,7 +56,15 @@ class BookBloc extends Bloc<BookEvent, BookState> {
         title: mockDetail?.title,
         image: mockDetail?.image,
       );
-      emit(SearchBookSuccess(result));
+      debugPrint('state: $state.toString()');
+      emit(BookDetailSuccess(BookDetailModel(
+        id: mockDetail!.id,
+        authors: mockDetail.authors,
+        avgRating: mockDetail.avgRating,
+        categories: ['Literature', 'Sci-Life'],
+        title: mockDetail.title,
+        image: mockDetail.image,
+      )));
     }
     else {
       emit(BookLoading());
@@ -67,8 +79,18 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
   Future<void> _searchBook(SearchBookEvent event, Emitter<BookState> emit) async {
     if (AppConfig().isPassAPI) {
+      //await appSharedPrefs!.deleteAllData();
+      final books = await appSharedPrefs!.getBookList();
+      debugPrint(books.toString());
+      if (books.data!.isNotEmpty) {
+        emit(SearchBookSuccess(books));
+        return;
+      } 
+
       emit(BookLoading());
       final result = await _getMockBookData();
+      debugPrint('Cache book list: ${result.toJson()}');
+      appSharedPrefs!.cacheBookList(result);
       emit(SearchBookSuccess(result));
     }
     else {
@@ -196,7 +218,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   }
 
   Future<BookResponseModel> _getMockBookData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 50));
     final mockReponse = BookResponseModel(
       data: [
         BookModel(
@@ -314,6 +336,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       author: AuthorModel(name: 'Mitski Miyawaki'),
     );
 
+    debugPrint('Mock response: ${mockReponse.toJson()}');
     return mockReponse;
   }
 }

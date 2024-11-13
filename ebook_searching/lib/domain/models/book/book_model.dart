@@ -31,7 +31,16 @@ class BookModel {
   });
 
   factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);
-  Map<String, dynamic> toJson() => _$BookModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'uri': uri,
+      'avgRating': avgRating,
+      'image': image,
+      'authors': authors?.map((e) => e.toJson()).toList(),
+      'title': title,
+    };
+  }
 
 
 }

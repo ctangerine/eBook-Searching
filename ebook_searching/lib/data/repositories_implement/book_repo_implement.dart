@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:ebook_searching/core/network/error/Failure.dart';
 import 'package:ebook_searching/core/network/error/exceptions.dart';
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/data/datasources/local_datasource/book_storage_impl.dart';
 import 'package:ebook_searching/data/datasources/remote_datasource/book_api_impl.dart';
 import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
@@ -14,11 +15,13 @@ import 'package:realm/realm.dart';
 class BookRepositoryImpl extends BooksRepository {
   final BookApiImpl bookApi;
   final BookStorageImpl bookStorage;
+  final AppSharedPrefs appSharedPrefs;
 
   BookRepositoryImpl(
-      this.bookApi,
-      this.bookStorage
-      );
+    this.bookApi,
+    this.bookStorage,
+    this.appSharedPrefs,
+  );
 
   @override
   Future<Either<Failure, BookDetailResponseModel>> getBookDetail(int bookId) async {
@@ -34,8 +37,14 @@ class BookRepositoryImpl extends BooksRepository {
 
   @override
   Future<Either<Failure, BookResponseModel>> searchBooksByCriteria(SearchBookParam param) async {
+    final cachedBookList = await appSharedPrefs.getBookList();
+    if (cachedBookList.data!.isNotEmpty) {
+      return Right(cachedBookList);
+    }
+
     try {
       final result = await bookApi.searchBooksByCriteria(param);
+      await appSharedPrefs.cacheBookList(result);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message, e.statusCode));

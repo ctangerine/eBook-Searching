@@ -19,42 +19,52 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.maintheme,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-            onPressed: () {
-              final bloc = context.read<BookBloc>();
-              bloc.add(SearchBookEvent(SearchBookParam.noParams()));
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),
-              onPressed: () {},
+    return PopScope(
+      onPopInvokedWithResult: (bool didPop, Object? object) async {
+        if (didPop) {
+          final bloc = context.read<BookBloc>();
+          bloc.add(SearchBookEvent(SearchBookParam.noParams()));
+          debugPrint('Back to search result');
+        } // Allows pop to proceed
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.maintheme,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+              onPressed: () {
+                final bloc = context.read<BookBloc>();
+                bloc.add(SearchBookEvent(SearchBookParam.noParams()));
+                debugPrint('Back to search result');
+                Navigator.pop(context);
+              },
             ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const BookCoverShowcase(),
-                  _buildNameTag(context),
-                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                  _buildBookInfo(context),
-                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                  _buildBookDescription(context),
-                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                  _buildComments(context),
-                  _buildViewCommentsButton(context),
-                ],
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const BookCoverShowcase(),
+                    _buildNameTag(context),
+                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                    _buildBookInfo(context),
+                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                    _buildBookDescription(context),
+                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                    _buildComments(context),
+                    _buildViewCommentsButton(context),
+                  ],
+                ),
               ),
             ),
           ),

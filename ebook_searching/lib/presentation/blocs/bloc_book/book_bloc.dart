@@ -14,7 +14,6 @@ import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ebook_searching/core/network/error/Failure.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BookBloc extends Bloc<BookEvent, BookState> {
   final GetBookDetailUseCase getBookDetailUseCase;

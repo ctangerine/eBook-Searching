@@ -32,7 +32,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  bool _isListenerActive = true;
+  final bool _isListenerActive = true;
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (state is BookDetailSuccess) {
           debugPrint('Call at buildBookList');
           Navigator.push(
-            context,
+            context,  
             MaterialPageRoute(
               builder: (builder) => BlocProvider.value(
                 value: context.read<BookBloc>(),

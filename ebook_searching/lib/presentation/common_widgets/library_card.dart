@@ -58,7 +58,7 @@ class LibraryCard extends StatelessWidget {
     if (imageUrl.startsWith('http')) {
       return Image.network(
         imageUrl,
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
           return _buildDefaultImage();
         },
@@ -72,7 +72,7 @@ class LibraryCard extends StatelessWidget {
     if (imageUrl.startsWith('assets/')) {
       return Image.asset(
         imageUrl,
-        fit: BoxFit.cover,
+        fit: BoxFit.fitWidth,
         errorBuilder: (context, error, stackTrace) {
           return _buildDefaultImage();
         },
@@ -85,7 +85,7 @@ class LibraryCard extends StatelessWidget {
   Widget _buildDefaultImage() {
     return Image.asset(
       defaultBookCover,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
     );
   }
 }

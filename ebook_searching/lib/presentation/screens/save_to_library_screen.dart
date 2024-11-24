@@ -24,7 +24,7 @@ class SaveToLibraryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    int crossAxisCount = width ~/ 200;
+    int crossAxisCount = (width ~/ 200).clamp(2, double.infinity).toInt();
 
     return MultiBlocProvider(
       providers: [
@@ -117,7 +117,8 @@ class SavedLibraryList extends StatelessWidget {
   const SavedLibraryList({
     super.key,
     required ValueNotifier<int?> selectedCardIndex,
-    required this.crossAxisCount, this.toListBook = false,
+    required this.crossAxisCount,
+    this.toListBook = false,
   }) : _selectedCardIndex = selectedCardIndex;
 
   final ValueNotifier<int?> _selectedCardIndex;
@@ -147,7 +148,7 @@ class SavedLibraryList extends StatelessWidget {
                   ),
                   itemCount: state.libraries.length,
                   itemBuilder: (context, index) {
-                    final library = state.libraries[index];
+                    final library = state.libraries[0];
                     final libraryCover = library.books.isNotEmpty
                         ? library.books[library.books.length - 1].image
                         : defaultBookCover;

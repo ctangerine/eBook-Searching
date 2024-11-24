@@ -1,4 +1,5 @@
 import 'package:ebook_searching/app_config.dart';
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/domain/models/authen/authen_model.dart';
 import 'package:ebook_searching/domain/models/profile/profile_model.dart';
 import 'package:ebook_searching/domain/usecases/authorization_usecase.dart';
@@ -20,9 +21,9 @@ class AuthenBloc extends Bloc<AuthenEvent, AuthenState> {
     if (AppConfig().isPassAPI) {
       emit(AuthenLoading());
       final result = await _getMockResponseData();
+      AppSharedPrefs.saveLoginInfo(result);
       emit(AuthenSuccess(result));
-    }
-    else {
+    } else {
       emit(AuthenLoading());
       final result = await signInUseCase(event.request);
 

@@ -31,25 +31,26 @@ class LibraryScreen extends StatelessWidget {
           ],
         ),
         body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height/2,
+          child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildTabBar(),
-                const SizedBox(height: 20,),
+                const SizedBox(height: 20),
                 BlocBuilder<LibraryBloc, LibraryState>(
                   builder: (context, state) {
                     if (state is LoadLocalLibrarySuccess) {
                       if (state.libraries.isEmpty) {
                         return _buildEmptyList(context);
                       } else {
-                        return SavedLibraryList(
-                          selectedCardIndex: _selectedCardIndex, 
-                          crossAxisCount: crossAxisCount,
-                          toListBook: true,
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: SavedLibraryList(
+                            selectedCardIndex: _selectedCardIndex,
+                            crossAxisCount: crossAxisCount,
+                            toListBook: true,
+                          ),
                         );
                       }
                     } else {
@@ -60,7 +61,7 @@ class LibraryScreen extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ),
     );
   }
@@ -92,7 +93,8 @@ class LibraryScreen extends StatelessWidget {
         const SizedBox(height: 20),
         const Text('No saved list', style: AppTextStyles.heading3Semibold),
         const SizedBox(height: 5,),
-        Text('There is no saved list that you have. You can create a new saved list first.', 
+        Text(
+          'There is no saved list that you have. You can create a new saved list first.',
           style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary),
           textAlign: TextAlign.center,
         ),

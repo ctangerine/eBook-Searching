@@ -39,18 +39,16 @@ initBookInjections() {
 }
 
 Realm _realmBookConfig() {
-  // Add all required schemas here; including Library
   final realmConfig = Configuration.local([
     RealmBookDetailModel.schema,
     RealmAuthorModel.schema,
     RealmReviewModel.schema,
     Library.schema
     ],
-    schemaVersion: 2, // Incremented from the previous version
+    schemaVersion: 2,
     migrationCallback: (migration, oldSchemaVersion) {
       if (oldSchemaVersion < 2) {
-        // Handle migration logic here if needed
-        // For example, if the id was previously an ObjectId and is now an int
+
       }
     },
   );

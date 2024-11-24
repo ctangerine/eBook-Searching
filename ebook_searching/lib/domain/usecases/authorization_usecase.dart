@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dartz/dartz.dart';
 import 'package:ebook_searching/core/usecase/usecase.dart';
 import 'package:ebook_searching/domain/models/authen/authen_model.dart';
@@ -26,5 +28,16 @@ class SignUpUseCase extends UseCase<AuthenResponseModel, SignUpRequest> {
   @override
   Future<Either<Failure, AuthenResponseModel>> call(SignUpRequest params) {
     return repository.signUp(params);
+  }
+}
+
+class GetLocalInfoAuthenUseCase extends UseCase<AuthenModel, Void> {
+  final AuthenRepository repository;
+
+  GetLocalInfoAuthenUseCase(this.repository);
+
+  @override
+  Future<Either<Failure, AuthenModel>> call(Void params) {
+    return repository.getLocalAuthenInfo();
   }
 }

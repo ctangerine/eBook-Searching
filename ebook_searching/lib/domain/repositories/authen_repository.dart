@@ -8,4 +8,5 @@ import 'package:ebook_searching/domain/models/authen/sign_up_request.dart';
 abstract class AuthenRepository {
   Future<Either<Failure, AuthenResponseModel>> signIn(SignInRequest request);
   Future<Either<Failure, AuthenResponseModel>> signUp(SignUpRequest request);
+  Future<Either<Failure, AuthenResponseModel>> getLocalAuthenInfo();
 }

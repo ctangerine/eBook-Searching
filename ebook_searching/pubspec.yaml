@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flashy_tab_bar2: ^0.0.10
   sqflite: ^2.0.0+3
   path: ^1.8.0
   flutter_image_slideshow: any

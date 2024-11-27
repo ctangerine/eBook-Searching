@@ -18,7 +18,6 @@ import 'package:ebook_searching/presentation/common_widgets/book_genre_card.dart
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
 import 'package:ebook_searching/presentation/screens/profile_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
-import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   MultiBlocProvider homePageScreen() {
-    final genreParam = GenreParam(limit: 3, offset: 3, orderBy: 'name', orderDirection: 'direction');
+    final genreParam = GenreParam(limit: null, offset: null, orderBy: null, orderDirection: null);
     return MultiBlocProvider(
       providers: [
         BlocProvider<GenreBloc>(
@@ -324,19 +323,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBottomNavigationbar() {
-    return FlashyTabBar(
-      selectedIndex: _selectedIndex,
-      showElevation: true,
-      onItemSelected: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
-      items: [
-        FlashyTabBarItem(icon: const Icon(Iconsax.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Home', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-        FlashyTabBarItem(icon: const Icon(Icons.book, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Library', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-        FlashyTabBarItem(icon: const Icon(Iconsax.profile_circle, size: 20, color: Color.fromARGB(255, 48, 60, 80)), title: Text('Profile', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary))),
-      ],
+    return Container(
+      height: 61, // Chiều cao của TabBar
+      child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.book, size: 20),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book, size: 20),
+            label: 'Library',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.profile_circle, size: 20),
+            label: 'Profile',
+          ),
+        ],
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: Color.fromARGB(255, 48, 60, 80),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+      ),
     );
   }
+
 }

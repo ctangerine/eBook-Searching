@@ -6,16 +6,16 @@ class GenreParam {
     "orderDirection": "<string>"
   """;
 
-  late final int limit;
-  late final int offset;
-  late final String orderBy;
-  late final String orderDirection;
+  late final int? limit;
+  late final int? offset;
+  late final String? orderBy;
+  late final String? orderDirection;
 
   GenreParam({
-    required this.limit,
-    required this.offset,
-    required this.orderBy,
-    required this.orderDirection,
+    this.limit,
+    this.offset,
+    this.orderBy,
+    this.orderDirection,
   });
 
   GenreParam.fromJson(Map<String, dynamic> json) {

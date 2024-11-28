@@ -323,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBottomNavigationbar() {
-    return Container(
+    return SizedBox(
       height: 61, // Chiều cao của TabBar
       child: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -347,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         selectedItemColor: AppColors.primary,
-        unselectedItemColor: Color.fromARGB(255, 48, 60, 80),
+        unselectedItemColor: const Color.fromARGB(255, 48, 60, 80),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,

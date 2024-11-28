@@ -54,7 +54,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
       appBar: AppBar(
         title: const Text('Personal Details', style: AppTextStyles.title1Semibold),
         centerTitle: true,
-        actions: [_buildEditButton()],
+        actions: [_buildEditButton(), const SizedBox(width: 10)],
       ),
       body: BlocConsumer<UserBloc, UserState>(
         listener: _handleProfileUpdate,

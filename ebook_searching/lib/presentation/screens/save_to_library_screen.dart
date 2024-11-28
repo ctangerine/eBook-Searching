@@ -47,9 +47,11 @@ class SaveToLibraryScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SavedLibraryList(
-                selectedCardIndex: _selectedCardIndex,
-                crossAxisCount: crossAxisCount,
+              Expanded(
+                child: SavedLibraryList(
+                  selectedCardIndex: _selectedCardIndex,
+                  crossAxisCount: crossAxisCount,
+                ),
               ),
               const SizedBox(height: 20),
               _buildActionButton(context),
@@ -127,68 +129,67 @@ class SavedLibraryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocBuilder<LibraryBloc, LibraryState>(
-        builder: (context, state) {
-          if (state is LocalLibraryLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is LoadLocalLibrarySuccess) {
-            if (state.libraries.isEmpty) {
-              return _buildNoLibrariesAvailable(context);
-            }
-            return ValueListenableBuilder<int?>(
-              valueListenable: _selectedCardIndex,
-              builder: (context, selectedIndex, child) {
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.95,
-                  ),
-                  itemCount: state.libraries.length,
-                  itemBuilder: (context, index) {
-                    final library = state.libraries[0];
-                    final libraryCover = library.books.isNotEmpty
-                        ? library.books[library.books.length - 1].image
-                        : defaultBookCover;
-                    return Container(
-                      padding: const EdgeInsets.all(0),
-                      alignment: Alignment.center,
-                      child: LibraryCard(
-                        libraryName: library.name,
-                        libraryCover: libraryCover,
-                        isSelected: selectedIndex == index,
-                        onTap: toListBook ?? true ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LibraryBooksScreen(libraryID: library.id),
-                            ),
-                          );
-                        }
-                        : () {
-                            _selectedCardIndex.value = index;
-                        },
-                        onLongPress: () {
-                          debugPrint(BlocProvider.of<LibraryBloc>(context).state.toString());
-                          _showDeleteConfirmation(context, library.id);
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          } else if (state is LoadLocalLibraryFailure) {
+    return BlocBuilder<LibraryBloc, LibraryState>(
+      builder: (context, state) {
+        if (state is LocalLibraryLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is LoadLocalLibrarySuccess) {
+          if (state.libraries.isEmpty) {
             return _buildNoLibrariesAvailable(context);
-          } else {
-            return const Center(child: Text('No libraries available'));
           }
-        },
-      ),
+          return ValueListenableBuilder<int?>(
+            valueListenable: _selectedCardIndex,
+            builder: (context, selectedIndex, child) {
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.95,
+                ),
+                itemCount: state.libraries.length,
+                itemBuilder: (context, index) {
+                  final library = state.libraries[index]; // Changed from [0] to [index]
+                  final libraryCover = library.books.isNotEmpty
+                      ? library.books[library.books.length - 1].image
+                      : defaultBookCover;
+                  return Container(
+                    padding: const EdgeInsets.all(0),
+                    alignment: Alignment.center,
+                    child: LibraryCard(
+                      libraryName: library.name,
+                      libraryCover: libraryCover,
+                      isSelected: selectedIndex == index,
+                      onTap: toListBook ?? true ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LibraryBooksScreen(libraryID: library.id),
+                          ),
+                        );
+                      }
+                      : () {
+                          _selectedCardIndex.value = index;
+                      },
+                      onLongPress: () {
+                        debugPrint(BlocProvider.of<LibraryBloc>(context).state.toString());
+                        _showDeleteConfirmation(context, library.id);
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        } else if (state is LoadLocalLibraryFailure) {
+          return _buildNoLibrariesAvailable(context);
+        } else {
+          return const Center(child: Text('No libraries available'));
+        }
+      },
     );
   }
+
 
   Widget _buildNoLibrariesAvailable(BuildContext context) {
     return Center(

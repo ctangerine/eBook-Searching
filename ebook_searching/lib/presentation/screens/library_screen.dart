@@ -62,6 +62,16 @@ class LibraryScreen extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.maintheme,
+          onPressed: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => CreateNewLibraryScreen())
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

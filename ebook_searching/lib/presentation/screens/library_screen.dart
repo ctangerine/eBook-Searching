@@ -67,7 +67,7 @@ class LibraryScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => CreateNewLibraryScreen())
+              MaterialPageRoute(builder: (context) => const CreateNewLibraryScreen())
             );
           },
           child: const Icon(Icons.add),
@@ -113,7 +113,7 @@ class LibraryScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => CreateNewLibraryScreen())
+              MaterialPageRoute(builder: (context) => const CreateNewLibraryScreen())
             );
           }, 
           icon: const Icon(Icons.add), 

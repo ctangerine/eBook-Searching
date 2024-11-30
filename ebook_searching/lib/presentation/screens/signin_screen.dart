@@ -127,9 +127,6 @@ class SigninScreen extends StatelessWidget {
     return BlocConsumer<AuthenBloc, AuthenState>(
       listener: (context, state) {
         if (state is AuthenSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Login Successful')),
-          );
           final userBloc = BlocProvider.of<UserBloc>(context);
           userBloc.add(GetProfileEvent(state.response.profile.userId));
           Navigator.of(context).pushNamed(AppRoutes.homePage);

@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:ebook_searching/core/injections.dart';
 import 'package:ebook_searching/domain/models/book/realm_book_detail_model.dart';
@@ -88,15 +87,13 @@ class _CreateNewLibraryScreenState extends State<CreateNewLibraryScreen> {
                 child: FilledButton(
                   onPressed: () {
                     final libraryName = _libraryNameController.text;
-                    if (state is LoadLocalLibrarySuccess) {
-                      final currentId = state.libraries.length;
-                      Library library = Library(currentId == 0 ? 0 : currentId + 1, libraryName);
-                      context.read<LibraryBloc>().add(AddLibraryEvent(library));
-                      setState(() {
-                        _isLibraryCreated = true;
-                      });
-                    }
-                  },
+                    final currentId = state.libraries.length;
+                    Library library = Library(currentId == 0 ? 0 : currentId + 1, libraryName);
+                    context.read<LibraryBloc>().add(AddLibraryEvent(library));
+                    setState(() {
+                      _isLibraryCreated = true;
+                    });
+                                    },
                   child: const Text('Create'),
                 ),
               ),

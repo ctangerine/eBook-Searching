@@ -205,7 +205,7 @@ class SavedLibraryList extends StatelessWidget {
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => (CreateNewLibraryScreen())));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => (const CreateNewLibraryScreen())));
             },
             child: const Text('Create Library'),
           ),

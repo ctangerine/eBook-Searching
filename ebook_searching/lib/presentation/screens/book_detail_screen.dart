@@ -1,10 +1,14 @@
+import 'package:ebook_searching/core/injections.dart';
 import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
+import 'package:ebook_searching/domain/models/book/book_response_model.dart';
 import 'package:ebook_searching/domain/models/book/search_book_param.dart';
+import 'package:ebook_searching/domain/usecases/book_usecase.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
 import 'package:ebook_searching/presentation/common_widgets/book_cover_showcase.dart';
 import 'package:ebook_searching/presentation/common_widgets/review_card.dart';
+import 'package:ebook_searching/presentation/screens/author_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/reviews_screen.dart';
 import 'package:ebook_searching/presentation/screens/save_to_library_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
@@ -175,7 +179,46 @@ class BookDetailScreen extends StatelessWidget {
           buildDetailRow("Publisher", bookDetail?.publisher ?? 'No information'),
           buildDetailRow("Writer", (bookDetail?.authors?.isNotEmpty ?? false) ? (bookDetail!.authors?.first.name ?? 'No information') : 'No information'),
           buildDetailRow("Language", bookDetail?.language ?? 'No information'),
+          buildAuthorPageLink(context),
         ],
+      ),
+    );
+  }
+
+  Widget buildAuthorPageLink(BuildContext context) {
+    final bookDetail = _getBookDetail(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0.0),
+      child: TextButton(
+        onPressed: () async {
+          final author = bookDetail?.authors?.first;
+          if (author != null) {
+            final searchUsecase = sl.get<SearchBookUseCase>();
+            final response = await searchUsecase(SearchBookParam.noParams());
+            response.fold(
+              (l) => debugPrint('Error when searching author page'),
+              (r) {
+                // find all books belong to author
+                final books = r.data?.where((book) => book.authors?.first.name == author.name).toList();
+                final BookResponseModel authorBookResposne = BookResponseModel(
+                  data: books,
+                );
+                if (books != null && books.isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AuthorDetailScreen(author: author, authorBooks: authorBookResposne),
+                    )
+                  );
+                }
+              },
+            );
+          }
+        },
+        style: lightTheme.textButtonTheme.style?.copyWith(
+          padding: WidgetStateProperty.all(const EdgeInsets.only(left: 0, top: 8, right: 12, bottom: 8)),
+        ),
+        child: Text('View author page', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
       ),
     );
   }

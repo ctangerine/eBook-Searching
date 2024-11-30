@@ -1,5 +1,7 @@
 // show a button link to each current coding page, includes: HomeScreen, BookDetailScreen, SplashScreen, SigninScreen
 
+import 'package:ebook_searching/domain/models/author/author_model.dart';
+import 'package:ebook_searching/presentation/screens/author_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_books_screen.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
@@ -163,6 +165,18 @@ class CurrentCodingScreens extends StatelessWidget {
               },
               child: const Text('PersonalDetailsScreen'),
             ),
+            // AuthorDetailScreen
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AuthorDetailScreen(author: AuthorModel.defaultInstance,),
+                  )
+                );
+              },
+              child: const Text('Author detail screen'),
+            )
           ],
         ),
       ),

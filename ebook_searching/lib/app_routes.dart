@@ -1,3 +1,4 @@
+import 'package:ebook_searching/presentation/screens/author_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/home_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
 import 'package:ebook_searching/presentation/screens/on_boarding_screen.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
   static const String signupScreen = '/signup';
   static const String setupAccountScreen = '/signup/setup';
   static const String libraryScreen = '/library';
+  static const String authorDetail = '/authorDetail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -43,6 +45,8 @@ class AppRoutes {
       );
       case libraryScreen:
         return MaterialPageRoute(builder: (_) => LibraryScreen());
+      case authorDetail:
+        return MaterialPageRoute(builder: (_) => AuthorDetailScreen());
       default:
         return MaterialPageRoute(builder: (_) => const HomeScreen()); // Route mặc định
     }

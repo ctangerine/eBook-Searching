@@ -136,21 +136,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               ),
             ),
           );
-          // build a snake bar inform that the book is found
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Book found: ${state.response.bookDetail!.title}'),
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-        else if (state is BookDetailFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Get book detail failed with error: ${state.error}'),
-              duration: const Duration(seconds: 20),
-            ),
-          );
         }
       },
       builder: (context, state) {

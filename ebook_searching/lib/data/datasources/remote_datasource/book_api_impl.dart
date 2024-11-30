@@ -18,6 +18,9 @@ class BookApiImpl extends BookApi {
   @override
   Future<BookDetailResponseModel> getBookDetail(int bookId) async {
     try {
+      
+      
+      
       final result = await dio.get(
         "${NetworkConstant.bookPath}/$bookId",
         cancelToken: cancelToken,

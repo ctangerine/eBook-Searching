@@ -9,6 +9,8 @@ import 'package:ebook_searching/domain/models/book/book_response_model.dart';
 import 'package:ebook_searching/domain/models/book/realm_book_detail_model.dart';
 import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:ebook_searching/domain/repositories/book_repository.dart';
+import 'package:ebook_searching/presentation/styles/assets_link.dart';
+import 'package:flutter/material.dart';
 import 'package:realm/realm.dart';
 
 
@@ -26,6 +28,25 @@ class BookRepositoryImpl extends BooksRepository {
   @override
   Future<Either<Failure, BookDetailResponseModel>> getBookDetail(int bookId) async {
     try {
+      debugPrint('encouter here');
+      final localData = await appSharedPrefs.getBookList();
+      if (localData.data!.isNotEmpty) {
+        try {
+          final book = localData.data!.firstWhere((element) => element.id == bookId);
+          final BookDetailResponseModel result = BookDetailResponseModel(
+            id: book.id,
+            title: book.title,
+            authors: book.authors,
+            image: book.image ?? defaultBookCover,
+            avgRating: book.avgRating,
+            uri: book.uri,
+          );
+          return Right(result);
+        } catch (e) {
+          // Do nothing
+        }
+      }
+
       final result = await bookApi.getBookDetail(bookId);
       return Right(result);
     } on ServerException catch (e) {
@@ -37,11 +58,6 @@ class BookRepositoryImpl extends BooksRepository {
 
   @override
   Future<Either<Failure, BookResponseModel>> searchBooksByCriteria(SearchBookParam param) async {
-    final cachedBookList = await appSharedPrefs.getBookList();
-    if (cachedBookList.data!.isNotEmpty) {
-      return Right(cachedBookList);
-    }
-
     try {
       final result = await bookApi.searchBooksByCriteria(param);
       await appSharedPrefs.cacheBookList(result);

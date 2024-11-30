@@ -39,10 +39,6 @@ class AppSharedPrefs {
   }
 
   Future<void> cacheToListRecentBook(BookModel book) async {
-    // try:
-    // if the book is already in the list, ignore
-    // if there are no book cached, create a new list 
-    // else, add the book to the list
     try {
       final recentBooks = await getRecentBooks();
       if (recentBooks.contains(book)) {
@@ -93,5 +89,15 @@ class AppSharedPrefs {
   static Future<void> clearLoginInfo() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(AppConstant.loginKey);
+  }
+
+  static Future<void> deleteLoginDataIfFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+
+    if (isFirstTime) {
+      await clearLoginInfo();
+      await prefs.setBool('isFirstTime', false);
+    }
   }
 }

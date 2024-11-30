@@ -46,7 +46,6 @@ class SearchBookParam {
 
   static SearchBookParam noParams() {
     return SearchBookParam(
-      keyword: ""
     );
   }
 

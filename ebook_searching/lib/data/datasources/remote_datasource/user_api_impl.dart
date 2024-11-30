@@ -44,7 +44,7 @@ class UserImplApi extends UserApi {
   @override
   Future<ProfileResponseModel> updateProfile(UpdateProfileRequest request) async {
     try {
-      final result = await dio.post(
+      final result = await dio.put(
         "${NetworkConstant.profilePath}/${request.userId}",
         data: request.toJson(),
         cancelToken: cancelToken,

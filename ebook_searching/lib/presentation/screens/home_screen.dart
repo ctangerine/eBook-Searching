@@ -62,12 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   MultiBlocProvider homePageScreen() {
-    final genreParam = GenreParam(limit: null, offset: null, orderBy: null, orderDirection: null);
+    //final genreParam = GenreParam(limit: null, offset: null, orderBy: null, orderDirection: null);
     return MultiBlocProvider(
       providers: [
-        BlocProvider<GenreBloc>(
-          create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
-        ),
+        // BlocProvider<GenreBloc>(
+        //   create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
+        // ),
         BlocProvider<BookBloc>(
           create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams()))),
       ],
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCarousel(),
                   const SizedBox(height: 20),
                   _buildSearchBar(),
-                  _buildBookByGenreTab(),
+                  //_buildBookByGenreTab(),
                   _buildBookSlider(),
                 ],
               ),
@@ -249,8 +249,10 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state is BookLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SearchBookSuccess) {
+                debugPrint('get ok');
                 return _buildBookList(state.response.data);
               } else if (state is SearchBookFailure) {
+                debugPrint(state.error);
                 //return Center(child: Text('Error: ${state.error}'));
                 return _buildErrorState();
               } else if (state is BookDetailFailure) {
@@ -323,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBottomNavigationbar() {
-    return Container(
+    return SizedBox(
       height: 61, // Chiều cao của TabBar
       child: BottomNavigationBar(
         currentIndex: _selectedIndex,

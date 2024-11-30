@@ -1,6 +1,5 @@
 import 'package:ebook_searching/domain/models/authen/upload_file_model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ebook_searching/domain/models/authen/authen_model.dart';
 
 abstract class FileState extends Equatable {
   @override

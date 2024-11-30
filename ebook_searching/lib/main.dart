@@ -1,6 +1,7 @@
 import 'package:ebook_searching/app_config.dart';
 import 'package:ebook_searching/app_routes.dart';
 import 'package:ebook_searching/core/injections.dart';
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/screens/splash_screen.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
+  await AppSharedPrefs.deleteLoginDataIfFirstTime();
   AppConfig().isPassAPI = false;
   runApp(const MainApp());
 }

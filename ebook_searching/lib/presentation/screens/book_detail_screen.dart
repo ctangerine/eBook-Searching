@@ -17,6 +17,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:readmore/readmore.dart';
 
 class BookDetailScreen extends StatelessWidget {
   const BookDetailScreen({super.key});
@@ -111,7 +112,9 @@ class BookDetailScreen extends StatelessWidget {
               Text(
                 bookDetail?.title ?? 'No information',
                 style: AppTextStyles.title1Semibold,
-              )
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
           SizedBox(

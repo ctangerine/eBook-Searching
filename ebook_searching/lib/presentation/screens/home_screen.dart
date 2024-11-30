@@ -35,17 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: _selectedIndex == 0 ? homepageAppBar() : null,
-        body: <Widget>[
-          homePageScreen(),
-          LibraryScreen(),
-          const ProfileScreen(),
-          const SearchResultScreen(),
-        ][_selectedIndex],
-        bottomNavigationBar: _buildBottomNavigationbar(),
-      ),
+    return Scaffold(
+      appBar: _selectedIndex == 0 ? homepageAppBar() : null,
+      body: <Widget>[
+        homePageScreen(),
+        LibraryScreen(),
+        const ProfileScreen(),
+        const SearchResultScreen(),
+      ][_selectedIndex],
+      bottomNavigationBar: _buildBottomNavigationbar(),
     );
   }
 
@@ -69,42 +67,51 @@ class _HomeScreenState extends State<HomeScreen> {
         //   create: (context) => sl<GenreBloc>()..add(GetAllGenreDetailEvent(genreParam)),
         // ),
         BlocProvider<BookBloc>(
-          create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams()))),
+          create: (context) => sl<BookBloc>()..add(SearchBookEvent(SearchBookParam.noParams(), false))),
       ],
-      child: BlocListener<BookBloc, BookState>(
-        listener: (context, state) {
-          // if (_isListenerActive && state is BookDetailSuccess) {
-          //   _isListenerActive = false;
-          //   debugPrint('Call at homePageScreen');
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (builder) => BlocProvider.value(
-          //         value: context.read<BookBloc>(),
-          //         child: const BookDetailScreen(),
-          //       ),
-          //     ),
-          //   ).then((_) {
-          //     _isListenerActive = true;
-          //   });
-          // }
-        },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Center(
-              child: Column(
-                children: [
-                  _buildCarousel(),
-                  const SizedBox(height: 20),
-                  _buildSearchBar(),
-                  //_buildBookByGenreTab(),
-                  _buildBookSlider(),
-                ],
+      child: Builder(
+        builder: (context) {
+          return BlocListener<BookBloc, BookState>(
+            listener: (context, state) {
+              // if (_isListenerActive && state is BookDetailSuccess) {
+              //   _isListenerActive = false;
+              //   debugPrint('Call at homePageScreen');
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (builder) => BlocProvider.value(
+              //         value: context.read<BookBloc>(),
+              //         child: const BookDetailScreen(),
+              //       ),
+              //     ),
+              //   ).then((_) {
+              //     _isListenerActive = true;
+              //   });
+              // }
+            },
+            child: GestureDetector(
+              onVerticalDragUpdate: (details) {
+                context.read<BookBloc>().add(SearchBookEvent(SearchBookParam.noParams(), true));
+              },
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        _buildCarousel(),
+                        const SizedBox(height: 20),
+                        _buildSearchBar(),
+                        //_buildBookByGenreTab(),
+                        _buildBookSlider(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }

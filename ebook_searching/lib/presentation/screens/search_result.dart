@@ -42,17 +42,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<BookBloc>(
       create: (context) => sl<BookBloc>(),
-      child: SafeArea(
-        child: Scaffold(
-          body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            child: Column(
-              children: [
-                _buildAppBar(),
-                const SizedBox(height: 20),
-                Expanded(child: _buildSearchResult()),
-              ],
-            ),
+      child: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Column(
+            children: [
+              _buildAppBar(),
+              const SizedBox(height: 20),
+              Expanded(child: _buildSearchResult()),
+            ],
           ),
         ),
       ),
@@ -112,7 +110,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             final searchKey = _searchController.text;
             final bookBloc = context.read<BookBloc>();
             final searchParam = SearchBookParam.noParams().copyWith(keyword: searchKey);
-            bookBloc.add(SearchBookEvent(searchParam));
+            bookBloc.add(SearchBookEvent(searchParam, false));
           },
           child: Text(
             'Search',

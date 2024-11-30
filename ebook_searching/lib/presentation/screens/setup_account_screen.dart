@@ -23,32 +23,30 @@ class SetupAccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthenBloc>();
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: _buildAppname(),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildDescrition(),
-                    _buildAvatarProfile(),
-                    _buildInformationForm(context),
-                    _buildSubmitButton(authBloc),
-                    const SizedBox(height: 20),
-                    _buildBlocConsumer(),
-                  ],
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: _buildAppname(),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildDescrition(),
+                  _buildAvatarProfile(),
+                  _buildInformationForm(context),
+                  _buildSubmitButton(authBloc),
+                  const SizedBox(height: 20),
+                  _buildBlocConsumer(),
+                ],
               ),
             ),
           ),

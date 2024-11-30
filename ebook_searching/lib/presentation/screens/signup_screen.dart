@@ -1,5 +1,6 @@
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
 import 'package:ebook_searching/presentation/screens/setup_account_screen.dart';
+import 'package:ebook_searching/presentation/screens/signin_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -14,29 +15,27 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: _buildAppname(),
-        ),
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildDescrition(),
-                    _buildSignupForm(context),
-                    _buildTermPart()
-                  ],
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: _buildAppname(),
+      ),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height -100,
+          ),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildDescrition(),
+                  _buildSignupForm(context),
+                  _buildTermPart()
+                ],
               ),
             ),
           ),
@@ -90,7 +89,13 @@ class SignupScreen extends StatelessWidget {
         const SizedBox(height: 20),
         const Text('Create your account', style: AppTextStyles.heading2Semibold),
         const SizedBox(height: 10),
-        Text('Create a new account so you can read lots of interesting books!', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary,))
+        SizedBox(
+          width: 340,
+          child: Text('Create a new account so you can read lots of interesting books!', 
+          style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary, height: 1.5), 
+          textAlign: TextAlign.center,),
+          
+        )
       ],
     );
   }
@@ -116,19 +121,24 @@ class SignupScreen extends StatelessWidget {
           const SizedBox(height: 30),
           _buildRegisterButton(context),
           const SizedBox(height: 10),
-          _buildLoginWithGoogleButton()
+          _buildLoginWithGoogleButton(context)
         ],
       ),
     );
   }
 
-  Row _buildLoginWithGoogleButton() {
+  Row _buildLoginWithGoogleButton(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: OutlinedButton(
-            onPressed: () => {}, 
-            child: const Text('Login with Google', 
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SigninScreen(),)
+              )
+            }, 
+            child: const Text('Account already? Sign In', 
               style: AppTextStyles.body2Semibold
             )
           ) ,

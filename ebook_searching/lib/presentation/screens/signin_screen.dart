@@ -20,26 +20,24 @@ class SigninScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthenBloc>();
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildAppname(),
-                    _buildDescrition(),
-                    _buildLoginForm(context, authBloc),
-                    _buildTermPart(),
-                  ],
-                ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildAppname(),
+                  _buildDescrition(),
+                  _buildLoginForm(context, authBloc),
+                  _buildTermPart(),
+                ],
               ),
             ),
           ),
@@ -54,7 +52,7 @@ class SigninScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('By continuing, you agree to our', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary)),
+            Text('By continuing, you agree to our', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary, fontSize: 14)),
             TextButton(
               onPressed: () {},
               child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
@@ -91,7 +89,10 @@ class SigninScreen extends StatelessWidget {
       children: [
         const Text('Welcome back!', style: AppTextStyles.heading2Semibold),
         const SizedBox(height: 10),
-        Text('You can log into your account first to read many interesting books!', style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary)),
+        Text('You can log into your account first to read many interesting books!', 
+          style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary, height: 2.0),
+          textAlign: TextAlign.center
+        ,),
       ],
     );
   }

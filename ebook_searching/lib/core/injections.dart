@@ -29,10 +29,7 @@ initSharedPrefsInjections() async {
     return await SharedPreferences.getInstance();
   });
   await sl.isReady<SharedPreferences>();
-
-  if (AppConfig().isPassAPI) {
-    sl.registerSingleton<AppSharedPrefs>(AppSharedPrefs(sl()));
-  }
+  //sl.registerSingleton<AppSharedPrefs>(AppSharedPrefs(sl()));
 }
 
 Future<void> initDioInjections() async {

@@ -55,6 +55,7 @@ class SaveToLibraryScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               _buildActionButton(context),
+              const SizedBox(height: 24,)
             ],
           ),
         ),

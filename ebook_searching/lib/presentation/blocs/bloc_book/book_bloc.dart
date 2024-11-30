@@ -93,12 +93,27 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       emit(SearchBookSuccess(result));
     }
     else {
+      try {
+        if (event.isReload == true) {
+          await AppSharedPrefs.deleteAllData();
+        }
+        final books = await appSharedPrefs!.getBookList();
+        if (books.data!.isNotEmpty) {
+          emit(SearchBookSuccess(books));
+          return;
+        }
+      } catch (e) {
+        debugPrint('Error: $e');
+      }
+
       emit(BookLoading());
       final result = await searchBookUseCase(event.param);
 
       result.fold(
             (failure) => emit(SearchBookFailure(_mapFailureToMessage(failure))),
-            (response) => emit(SearchBookSuccess(response)),
+            (response) {
+              emit(SearchBookSuccess(response));
+            },
       );
     }
   }
@@ -173,6 +188,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
             Navigator.of(context).pop();
             completer.complete();
           },
+          showCancelButton: false,
         );
       },
     );

@@ -6,6 +6,7 @@ class CustomPopup extends StatelessWidget {
   final String confirmText;
   final void Function() onConfirm;
   final void Function()? onCancel;
+  final bool showCancelButton;
 
   const CustomPopup({
     super.key,
@@ -14,11 +15,13 @@ class CustomPopup extends StatelessWidget {
     required this.confirmText,
     required this.onConfirm,
     this.onCancel,
+    this.showCancelButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      alignment: Alignment.center,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -44,15 +47,17 @@ class CustomPopup extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                if (showCancelButton)
+                  TextButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                      ),
+                      padding: const EdgeInsets.all(16),
                     ),
+                    onPressed: onCancel ?? () => Navigator.of(context).pop(),
+                    child: const Text('Return'),
                   ),
-                  onPressed: onCancel ?? () => Navigator.of(context).pop(),
-                  child: const Text('Return'),
-                ),
                 FilledButton(
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(

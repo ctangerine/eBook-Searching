@@ -12,7 +12,7 @@ import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
 import 'package:realm/realm.dart';
 
 initBookInjections() {
-  sl.registerSingleton<BookApiImpl>(BookApiImpl(DioNetwork.appAPI));
+  sl.registerSingleton<BookApiImpl>(BookApiImpl(DioNetwork.appAPI, sl()));
   sl.registerSingleton<BookStorageImpl>(BookStorageImpl(_realmBookConfig()));
   sl.registerSingleton<BooksRepository>(BookRepositoryImpl(sl(), sl(), sl()));
   sl.registerSingleton<GetBookDetailUseCase>(GetBookDetailUseCase(sl()));
@@ -23,10 +23,6 @@ initBookInjections() {
   sl.registerSingleton<GetBookByIdStorageUseCase>(GetBookByIdStorageUseCase(sl()));
   sl.registerSingleton<GetAllBookStorageUseCase>(GetAllBookStorageUseCase(sl()));
 
-  // if (AppConfig().isPassAPI) {
-  //   sl.registerSingleton<AppSharedPrefs>(AppSharedPrefs());
-  // }
-
   sl.registerFactory<BookBloc>(() => BookBloc(
     getBookDetailUseCase: sl<GetBookDetailUseCase>(),
     searchBookUseCase: sl<SearchBookUseCase>(),
@@ -34,7 +30,7 @@ initBookInjections() {
     deleteBookStorage: sl<DeleteBookStorageUseCase>(),
     getBookByIdStorage: sl<GetBookByIdStorageUseCase>(),
     getAllBookStorage: sl<GetAllBookStorageUseCase>(),
-    appSharedPrefs: AppConfig().isPassAPI ? sl<AppSharedPrefs>() : null,
+    appSharedPrefs: AppConfig().isPassAPI ? sl<AppSharedPrefs>() : sl<AppSharedPrefs>(),
   ));
 }
 

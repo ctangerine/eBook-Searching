@@ -28,48 +28,46 @@ class BookDetailScreen extends StatelessWidget {
       onPopInvokedWithResult: (bool didPop, Object? object) async {
         if (didPop) {
           final bloc = context.read<BookBloc>();
-          bloc.add(SearchBookEvent(SearchBookParam.noParams()));
+          bloc.add(SearchBookEvent(SearchBookParam.noParams(), false));
           debugPrint('Back to search result');
         } // Allows pop to proceed
       },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.maintheme,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () {
-                final bloc = context.read<BookBloc>();
-                bloc.add(SearchBookEvent(SearchBookParam.noParams()));
-                debugPrint('Back to search result');
-                Navigator.pop(context);
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),
-                onPressed: () {},
-              ),
-            ],
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.maintheme,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            onPressed: () {
+              final bloc = context.read<BookBloc>();
+              bloc.add(SearchBookEvent(SearchBookParam.noParams(), false));
+              debugPrint('Back to search result');
+              Navigator.pop(context);
+            },
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const BookCoverShowcase(),
-                    _buildNameTag(context),
-                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                    _buildBookInfo(context),
-                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                    _buildBookDescription(context),
-                    Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
-                    _buildComments(context),
-                    _buildViewCommentsButton(context),
-                  ],
-                ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const BookCoverShowcase(),
+                  _buildNameTag(context),
+                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                  _buildBookInfo(context),
+                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                  _buildBookDescription(context),
+                  Container(height: 10, width: double.infinity, color: AppColors.themeSecondary),
+                  _buildComments(context),
+                  _buildViewCommentsButton(context),
+                ],
               ),
             ),
           ),
@@ -109,11 +107,14 @@ class BookDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                bookDetail?.title ?? 'No information',
-                style: AppTextStyles.title1Semibold,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
+              SizedBox(
+                width: 200,
+                child: Text(
+                  bookDetail?.title ?? 'No information',
+                  style: AppTextStyles.title1Semibold,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -176,12 +177,12 @@ class BookDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildDetailRow("Stock", "8/10 book"),
-          buildDetailRow("Borrowed by", "240 students"),
-          buildDetailRow("Book position", "A12 - Second column on\nNatural Science bookshelf"),
           buildDetailRow("Publisher", bookDetail?.publisher ?? 'No information'),
-          buildDetailRow("Writer", (bookDetail?.authors?.isNotEmpty ?? false) ? (bookDetail!.authors?.first.name ?? 'No information') : 'No information'),
+          buildDetailRow("Writers", (bookDetail?.authors?.isNotEmpty ?? false) ? bookDetail!.authors!.map((author) => author.name).join(', ') : 'No information'),
           buildDetailRow("Language", bookDetail?.language ?? 'No information'),
+          buildDetailRow("Categories", (bookDetail?.genres?.isNotEmpty ?? false) ? bookDetail!.genres!.join(', ') : 'No information'),
+          buildDetailRow("Total pages", bookDetail?.totalPages?.toString() ?? 'No information'),
+          buildDetailRow("Published date", bookDetail?.publicationTime?.toString() ?? 'No information'),
           buildAuthorPageLink(context),
         ],
       ),
@@ -233,7 +234,7 @@ class BookDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(flex: 3, child: Text(label,style: AppTextStyles.body2Medium.copyWith(color: AppColors.textSecondary))),
-          Expanded(flex: 5, child: Text(value, style: AppTextStyles.body2Semibold)),
+          Expanded(flex: 5, child: Text(value, style: AppTextStyles.body2Semibold.copyWith(height: 1.6))),
         ],
       ),
     );
@@ -263,7 +264,7 @@ class BookDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Synopsis', style: AppTextStyles.title1Semibold),
+              const Text('Description', style: AppTextStyles.title1Semibold),
               const SizedBox(height: 10),
               Text(
                 synopsisText,

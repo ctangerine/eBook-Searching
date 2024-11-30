@@ -79,7 +79,9 @@ class AuthorDetailScreen extends StatelessWidget {
                 child: ImageHandler(
                   imageUrl: author.image ?? avatar,
                   defaultImage: avatar,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitWidth,
+                  width: 160,
+                  height: 160,
                 ),
               ),
             ),

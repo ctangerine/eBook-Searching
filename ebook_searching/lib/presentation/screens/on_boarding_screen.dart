@@ -13,28 +13,26 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocListener<AuthenBloc, AuthenState>(
-        listener: (context, state) => {
-          if (state is AuthenSuccess) {
-            Navigator.pushNamed(context, AppRoutes.homePage)
-          }
-        },
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: Center(
-              child: Column(
-                children: [
-                  _buildHeroImage(context),
-                  const SizedBox(height: 30),
-                  _buildGreetings(),
-                  const SizedBox(height: 40),
-                  _buildSigninLinkButton(context),
-                  const SizedBox(height: 10),
-                  _buildRegisterLinkButton(context),
-                ],
-              ),
+    return BlocListener<AuthenBloc, AuthenState>(
+      listener: (context, state) => {
+        if (state is AuthenSuccess) {
+          Navigator.pushNamed(context, AppRoutes.homePage)
+        }
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+          child: Center(
+            child: Column(
+              children: [
+                _buildHeroImage(context),
+                const SizedBox(height: 30),
+                _buildGreetings(),
+                const SizedBox(height: 40),
+                _buildSigninLinkButton(context),
+                const SizedBox(height: 10),
+                _buildRegisterLinkButton(context),
+              ],
             ),
           ),
         ),

@@ -67,8 +67,9 @@ class AppSharedPrefs {
     }
   }
 
-  Future<void> deleteAllData() async {
-    await _preferences.clear();
+  static Future<void> deleteAllData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   static Future<void> saveLoginInfo(AuthenModel loginModel) async {

@@ -20,8 +20,9 @@ class GetBookDetailEvent extends BookEvent {
 
 class SearchBookEvent extends BookEvent {
   final SearchBookParam param;
+  final bool isReload;
 
-  SearchBookEvent(this.param);
+  SearchBookEvent(this.param, this.isReload);
 
   @override
   List<Object?> get props => [param];

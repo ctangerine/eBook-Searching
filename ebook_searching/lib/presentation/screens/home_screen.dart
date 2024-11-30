@@ -316,14 +316,14 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(width: 12), // Add horizontal space between items
+          separatorBuilder: (context, index) => const SizedBox(width: 12),
         ),
       ),
     );
   }
 
   Widget _buildBottomNavigationbar() {
-    return SizedBox(
+    return Container(
       height: 61, // Chiều cao của TabBar
       child: BottomNavigationBar(
         currentIndex: _selectedIndex,

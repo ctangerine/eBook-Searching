@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ebook_searching/domain/models/profile/update_profile_request.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
@@ -7,6 +9,7 @@ import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonalDetailScreen extends StatefulWidget {
   const PersonalDetailScreen({super.key});
@@ -21,6 +24,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
   late TextEditingController _dobController;
   late TextEditingController _genderController;
   late UserBloc _userBloc;
+  String? _selectedImagePath;
 
   @override
   void initState() {
@@ -46,6 +50,17 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
     _dobController.dispose();
     _genderController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImagePath = pickedFile.path;
+      });
+    }
   }
 
   @override
@@ -110,10 +125,35 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
   }
 
   Widget _buildAvatarProfile() {
-    return const Center(
-      child: CircleAvatar(
-        radius: 50,
-        backgroundImage: AssetImage(avatar),
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: _selectedImagePath != null
+                ? FileImage(File(_selectedImagePath!))
+                : const AssetImage(avatar) as ImageProvider,
+          ),
+          if (isEdit)
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue,
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

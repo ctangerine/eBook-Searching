@@ -6,4 +6,5 @@ class NetworkConstant {
   static const String bookPath = "/api/books/details";
   static const String bookSearchPath = "/api/books/search";
   static const String genrePath = "/api/books/genres";
+  static const String filePath = "/api/files";
 }

@@ -316,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(width: 12), // Add horizontal space between items
+          separatorBuilder: (context, index) => const SizedBox(width: 12),
         ),
       ),
     );
@@ -347,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         selectedItemColor: AppColors.primary,
-        unselectedItemColor: Color.fromARGB(255, 48, 60, 80),
+        unselectedItemColor: const Color.fromARGB(255, 48, 60, 80),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,

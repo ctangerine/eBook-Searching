@@ -25,21 +25,13 @@ BookResponseModel _$BookResponseModelFromJson(Map<String, dynamic> json) =>
           : AuthorModel.fromJson(json['author'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$BookResponseModelToJson(BookResponseModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('data', instance.data);
-  writeNotNull('limit', instance.limit);
-  writeNotNull('numPages', instance.numPages);
-  writeNotNull('offset', instance.offset);
-  writeNotNull('totalItems', instance.totalItems);
-  writeNotNull('bookDetail', instance.bookDetail);
-  writeNotNull('author', instance.author);
-  return val;
-}
+Map<String, dynamic> _$BookResponseModelToJson(BookResponseModel instance) =>
+    <String, dynamic>{
+      if (instance.data case final value?) 'data': value,
+      if (instance.limit case final value?) 'limit': value,
+      if (instance.numPages case final value?) 'numPages': value,
+      if (instance.offset case final value?) 'offset': value,
+      if (instance.totalItems case final value?) 'totalItems': value,
+      if (instance.bookDetail case final value?) 'bookDetail': value,
+      if (instance.author case final value?) 'author': value,
+    };

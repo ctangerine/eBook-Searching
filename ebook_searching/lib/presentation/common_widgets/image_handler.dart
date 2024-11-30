@@ -14,7 +14,7 @@ class ImageHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Uri.tryParse(imageUrl)?.hasAbsolutePath ?? false) {
       // Check if it's a network link
-      return Image.network(imageUrl, width: width, errorBuilder: (context, error, stackTrace) {
+      return Image.network(imageUrl, width: width, height:height, fit: fit,errorBuilder: (context, error, stackTrace) {
         return Image.asset(defaultImage, width: width, height: height, fit: fit,);
       });
     } else {

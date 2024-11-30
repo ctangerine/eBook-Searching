@@ -44,7 +44,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       create: (context) => sl<BookBloc>(),
       child: Scaffold(
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
           child: Column(
             children: [
               _buildAppBar(),
@@ -135,6 +135,17 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ),
           );
         }
+        if (state is BookDetailSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (builder) => BlocProvider.value(
+                value: context.read<BookBloc>(),
+                child: const BookDetailScreen(),
+              ),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is BookLoading) {
@@ -151,7 +162,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
           if (state.response.data!.isNotEmpty) {
             return ListView.separated(
-              itemCount: state.response.totalItems!,
+              itemCount: (state.response.totalItems ?? 0) > 9 ? 9 : (state.response.totalItems ?? 0),
               itemBuilder: (context, index) {
                 final book = state.response.data![index];
                 return Container(
@@ -169,6 +180,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     author: book.authors?[0].name,
                     bookCover: book.image,
                     isHorizontal: true,
+                    onTap: () {
+                      final bookBloc = context.read<BookBloc>();
+                      bookBloc.add(GetBookDetailEvent(book.id));
+                    },
                   ),
                 );
               },

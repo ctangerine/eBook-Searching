@@ -52,8 +52,10 @@ class SignupScreen extends StatelessWidget {
           children: [
             Text('By continuing, you agree to our', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary)),
             TextButton(
+              style: TextButton.styleFrom(padding: const EdgeInsets.all(4.0)),
               onPressed: () {},
-              child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
+              child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)
+              ),
             ),
           ]
         ),
@@ -239,7 +241,7 @@ class SignupScreen extends StatelessWidget {
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.mail_outlined, size: 20),
         hintText: 'youremail@mail.com',
-        hintStyle: TextStyle(color: AppColors.textSecondary),
+        hintStyle: TextStyle(color: Color.fromARGB(255, 175, 171, 156)),
       ),
       keyboardType: TextInputType.emailAddress,
       style: AppTextStyles.body2Regular,

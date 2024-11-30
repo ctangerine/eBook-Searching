@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:ebook_searching/core/constant/network_constant.dart';
@@ -9,7 +8,6 @@ import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
 import 'package:ebook_searching/domain/models/book/book_response_model.dart';
 import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'book_api.dart';
 

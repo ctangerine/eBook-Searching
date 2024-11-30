@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
-  await AppSharedPrefs.deleteLoginDataIfFirstTime();
+  //await AppSharedPrefs.deleteLoginDataIfFirstTime();
   await AppSharedPrefs.deleteAllData();
   AppConfig().isPassAPI = false;
   runApp(const MainApp());

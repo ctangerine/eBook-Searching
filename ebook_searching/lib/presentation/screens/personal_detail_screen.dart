@@ -133,6 +133,15 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
             backgroundImage: _selectedImagePath != null
                 ? FileImage(File(_selectedImagePath!))
                 : const AssetImage(avatar) as ImageProvider,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.blue, // border color
+                  width: 2.0, // border width
+                ),
+              ),
+            ),
           ),
           if (isEdit)
             Positioned(
@@ -141,7 +150,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
               child: GestureDetector(
                 onTap: _pickImage,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.blue,
                   ),

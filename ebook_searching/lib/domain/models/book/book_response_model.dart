@@ -1,7 +1,6 @@
 import 'package:ebook_searching/domain/models/author/author_model.dart';
 import 'package:ebook_searching/domain/models/book/book_detail_model.dart';
 import 'package:ebook_searching/domain/models/book/book_model.dart';
-import 'package:ebook_searching/domain/models/book/genre.dart';
 import 'package:ebook_searching/domain/models/review/review_model.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:json_annotation/json_annotation.dart';

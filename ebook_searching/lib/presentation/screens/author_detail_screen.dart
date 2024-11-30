@@ -74,15 +74,12 @@ class AuthorDetailScreen extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: SizedBox.fromSize(
-                size: const Size.fromRadius(80),
-                child: ImageHandler(
-                  imageUrl: author.image ?? avatar,
-                  defaultImage: avatar,
-                  fit: BoxFit.fitWidth,
-                  width: 160,
-                  height: 160,
-                ),
+              child: ImageHandler(
+                imageUrl: author.image ?? avatar,
+                defaultImage: avatar,
+                fit: BoxFit.fitHeight,
+                width: 160,
+                height: 160,
               ),
             ),
           ),

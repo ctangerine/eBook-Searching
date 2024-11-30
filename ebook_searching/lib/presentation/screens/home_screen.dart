@@ -2,12 +2,10 @@ import 'package:ebook_searching/core/injections.dart';
 import 'package:ebook_searching/domain/models/book/book_model.dart';
 import 'package:ebook_searching/domain/models/book/search_book_param.dart';
 import 'package:ebook_searching/domain/models/genre/genre_model.dart';
-import 'package:ebook_searching/domain/models/genre/genre_param.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_book/book_state.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_bloc.dart';
-import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_event.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_genre/genre_state.dart';
 import 'package:ebook_searching/presentation/screens/book_detail_screen.dart';
 import 'package:ebook_searching/presentation/screens/library_screen.dart';
@@ -251,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          BlocBuilder<BookBloc, BookState>(
+          BlocConsumer<BookBloc, BookState>(
             builder: (context, state) {
               if (state is BookLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -263,11 +261,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 //return Center(child: Text('Error: ${state.error}'));
                 return _buildErrorState();
               } else if (state is BookDetailFailure) {
-                return const Center(child: Text('Error: Failed to get book detail'));
+                return Center(child: Text('Error: Failed to get book detail with error $state.error'));
               } else if (state is BookDetailSuccess) {
-                return const Center(child: Text('Error: Failed to get book detail'));
+                //return const Center(child: Text('Error: Failed to get book detail ???'));
+                return const SizedBox();
               } else {
                 return const Center(child: Text('No books available'));
+              }
+            },
+            listener: (context, state) => {
+              if (state is BookDetailSuccess) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (builder) => BlocProvider.value(
+                      value: context.read<BookBloc>(),
+                      child: const BookDetailScreen(),
+                    ),
+                  ),
+                )
               }
             },
           ),
@@ -316,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final book = books[index];
             return BookCard(
               bookTitle: book.title!,
-              author: book.authors?[0].name,
+              author: book.authors != null && book.authors!.isNotEmpty ? book.authors![0].name : 'Unknown',
               bookCover: book.image,
               onTap: () {
                 final bookBloc = context.read<BookBloc>();

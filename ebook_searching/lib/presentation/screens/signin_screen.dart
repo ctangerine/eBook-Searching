@@ -6,6 +6,7 @@ import 'package:ebook_searching/presentation/blocs/bloc_auth/auth_state.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
 import 'package:ebook_searching/presentation/reuse_component/booktud_icon.dart';
+import 'package:ebook_searching/presentation/screens/signup_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,8 +55,10 @@ class SigninScreen extends StatelessWidget {
           children: [
             Text('By continuing, you agree to our', style: AppTextStyles.body2Regular.copyWith(color: AppColors.textSecondary, fontSize: 14)),
             TextButton(
+              style: TextButton.styleFrom(padding: const EdgeInsets.all(4.0)),
               onPressed: () {},
-              child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)),
+              child: Text('Terms of Service', style: AppTextStyles.body2Semibold.copyWith(color: AppColors.primary)
+              ),
             ),
           ],
         ),
@@ -74,12 +77,15 @@ class SigninScreen extends StatelessWidget {
   }
 
   Widget _buildAppname() {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        BookTudIcon(),
-        Text('BookTud', style: AppTextStyles.heading2Semibold),
-      ],
+    return const Padding(
+      padding: EdgeInsets.only(top: 30.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BookTudIcon(),
+          Text('BookTud', style: AppTextStyles.heading2Semibold),
+        ],
+      ),
     );
   }
 
@@ -116,7 +122,7 @@ class SigninScreen extends StatelessWidget {
           const SizedBox(height: 10),
           _buildLoginButton(authBloc),
           const SizedBox(height: 10),
-          _buildLoginWithGoogleButton(),
+          _buildLoginWithGoogleButton(context),
           const SizedBox(height: 10),
           _buildBlocConsumer(),
         ],
@@ -148,13 +154,18 @@ class SigninScreen extends StatelessWidget {
   }
 
 
-  Row _buildLoginWithGoogleButton() {
+  Row _buildLoginWithGoogleButton(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: OutlinedButton(
-            onPressed: () => {},
-            child: const Text('Login with Google', style: AppTextStyles.body2Semibold),
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignupScreen(),)
+              )
+            },
+            child: const Text('I\'m new, sign me up', style: AppTextStyles.body2Semibold),
           ),
         ),
       ],

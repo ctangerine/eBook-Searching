@@ -84,17 +84,20 @@ class _CreateNewLibraryScreenState extends State<CreateNewLibraryScreen> {
           return Row(
             children: [
               Expanded(
-                child: FilledButton(
-                  onPressed: () {
-                    final libraryName = _libraryNameController.text;
-                    final currentId = state.libraries.length;
-                    Library library = Library(currentId == 0 ? 0 : currentId + 1, libraryName);
-                    context.read<LibraryBloc>().add(AddLibraryEvent(library));
-                    setState(() {
-                      _isLibraryCreated = true;
-                    });
-                                    },
-                  child: const Text('Create'),
+                child: SizedBox(
+                  height: 48, // Đặt chiều cao cố định
+                  child: FilledButton(
+                    onPressed: () {
+                      final libraryName = _libraryNameController.text;
+                      final currentId = state.libraries.length;
+                      Library library = Library(currentId == 0 ? 0 : currentId + 1, libraryName);
+                      context.read<LibraryBloc>().add(AddLibraryEvent(library));
+                      setState(() {
+                        _isLibraryCreated = true;
+                      });
+                    },
+                    child: const Text('Create'),
+                  ),
                 ),
               ),
             ],
@@ -103,7 +106,6 @@ class _CreateNewLibraryScreenState extends State<CreateNewLibraryScreen> {
           return const SizedBox();
         }
       },
-        
       listener: (context, state) {
         if (_isLibraryCreated && state is LoadLocalLibrarySuccess) {
           _isLibraryCreated = false;
@@ -130,4 +132,5 @@ class _CreateNewLibraryScreenState extends State<CreateNewLibraryScreen> {
       },
     );
   }
+
 }

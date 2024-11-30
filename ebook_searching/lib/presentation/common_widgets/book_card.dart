@@ -45,6 +45,7 @@ class BookCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildBookCover(),
+        const SizedBox(height: 4),
         _buildBookInfo(context),
       ],
     );
@@ -53,7 +54,7 @@ class BookCard extends StatelessWidget {
   Widget _buildBookCover() {
     return SizedBox(
       width: isHorizontal ? 120 : 160,
-      height: isHorizontal ? 150 : 210,
+      height: isHorizontal ? 150 : 208,
       child: Card(
         margin: const EdgeInsets.only(right: 0, left: 0),
         color: AppColors.maintheme,

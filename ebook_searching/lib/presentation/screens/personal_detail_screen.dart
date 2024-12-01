@@ -116,6 +116,7 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
             gender: _genderController.text,
             dateOfBirth: _dobController.text,
             userId: _userBloc.state is GetProfileSuccess ? (_userBloc.state as GetProfileSuccess).response.userId : _userBloc.state is UpdateProfileSuccess ? (_userBloc.state as UpdateProfileSuccess).response.userId : 0,
+            avatar: ""
           );
           _userBloc.add(UpdateProfileEvent(request));
         }

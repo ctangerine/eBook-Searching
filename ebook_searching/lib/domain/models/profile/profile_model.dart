@@ -10,6 +10,7 @@ class ProfileModel {
     "setup": "<boolean>",
     "userId": "<integer>",
     "email": "<string>",
+    "avatar": "",
     "username": "<string>",
     "fullName": "<string>",
     "gender": "<string>",
@@ -23,6 +24,7 @@ class ProfileModel {
   String? fullName;
   String? gender;
   String? dateOfBirth;
+  String? avatar;
 
   ProfileModel({
     required this.setup,
@@ -31,7 +33,8 @@ class ProfileModel {
     this.username,
     this.fullName,
     this.gender,
-    this.dateOfBirth
+    this.dateOfBirth,
+    this.avatar
   });
 
   // copyWith method
@@ -43,6 +46,7 @@ class ProfileModel {
     String? fullName,
     String? gender,
     String? dateOfBirth,
+    String? avatar
   }) {
     return ProfileModel(
       setup: setup ?? this.setup,
@@ -52,6 +56,7 @@ class ProfileModel {
       fullName: fullName ?? this.fullName,
       gender: gender ?? this.gender,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      avatar: avatar ?? this.avatar
     );
   }
 

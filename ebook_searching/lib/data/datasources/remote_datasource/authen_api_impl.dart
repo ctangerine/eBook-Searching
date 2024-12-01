@@ -5,6 +5,7 @@ import 'package:ebook_searching/core/network/error/exceptions.dart';
 import 'package:ebook_searching/domain/models/authen/authen_model.dart';
 import 'package:ebook_searching/domain/models/authen/sign_in_request.dart';
 import 'package:ebook_searching/domain/models/authen/sign_up_request.dart';
+import 'package:flutter/material.dart';
 
 import 'authen_api.dart';
 
@@ -27,6 +28,8 @@ class AuthenImplApi extends AuthenApi {
       if (result.data == null) {
         throw ServerException("Unknown Error", result.statusCode);
       }
+
+      debugPrint('user data: $result.data');
 
       return AuthenResponseModel.fromJson(result.data);
     } on DioException catch (e) {

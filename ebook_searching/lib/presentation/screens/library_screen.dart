@@ -16,13 +16,13 @@ class LibraryScreen extends StatelessWidget {
 
   @override
   Widget build (BuildContext context) {
-    final crossAxisCount = MediaQuery.of(context).size.width ~/ 200;
+    final crossAxisCount = MediaQuery.of(context).size.width ~/ 180;
     return BlocProvider<LibraryBloc>(
       create : (context) => sl<LibraryBloc>()..add(LoadLocalLibraryEvent()),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Library', style: AppTextStyles.heading2Semibold),
+          title: const Text('Library', style: AppTextStyles.heading3Semibold),
           actions: [
             IconButton(
               onPressed: () {},
@@ -36,7 +36,7 @@ class LibraryScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTabBar(),
+                //_buildTabBar(),
                 const SizedBox(height: 20),
                 BlocBuilder<LibraryBloc, LibraryState>(
                   builder: (context, state) {
@@ -45,7 +45,7 @@ class LibraryScreen extends StatelessWidget {
                         return _buildEmptyList(context);
                       } else {
                         return SizedBox(
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height -100,
                           child: SavedLibraryList(
                             selectedCardIndex: _selectedCardIndex,
                             crossAxisCount: crossAxisCount,
@@ -85,10 +85,10 @@ class LibraryScreen extends StatelessWidget {
           child: const Text('Saved')
         ),
         const SizedBox(width: 10),
-        OutlinedButton(
-          onPressed: ()=>{}, 
-          child: const Text('Recent', style: AppTextStyles.title1Semibold,)
-        )
+        // OutlinedButton(
+        //   onPressed: ()=>{}, 
+        //   child: const Text('Recent', style: AppTextStyles.title1Semibold,)
+        // )
       ],
     );
   }

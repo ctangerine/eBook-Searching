@@ -1,11 +1,14 @@
+import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_state.dart';
+import 'package:ebook_searching/presentation/screens/signin_screen.dart';
 import 'package:ebook_searching/presentation/styles/assets_link.dart';
 import 'package:ebook_searching/presentation/common_widgets/functional_tag.dart';
 import 'package:ebook_searching/presentation/screens/personal_detail_screen.dart';
 import 'package:ebook_searching/presentation/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,6 +34,36 @@ class ProfileScreen extends StatelessWidget {
               _buildAccountTab(context),
               const SizedBox(height: 20),
               _buildGeneralTab(context),
+              const SizedBox(height: 20,),
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 48,
+                      child: FilledButton(onPressed: () async {
+                        AppSharedPrefs.clearLoginInfo();
+                        await Future.delayed(const Duration(milliseconds: 1000));
+                        Navigator.pushReplacement(
+                          context,
+                      
+                          MaterialPageRoute(
+                            builder: (context) => SigninScreen(),
+                          )
+                        );
+                      }, 
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                        //side: const BorderSide(color: AppColors.primary, width: 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(48))
+                        )
+                      ),
+                      child: const Text('Log out', style: AppTextStyles.body2Medium,)
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

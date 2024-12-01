@@ -93,18 +93,18 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       emit(SearchBookSuccess(result));
     }
     else {
-      try {
-        if (event.isReload == true) {
-          await AppSharedPrefs.deleteAllData();
-        }
-        final books = await appSharedPrefs!.getBookList();
-        if (books.data!.isNotEmpty) {
-          emit(SearchBookSuccess(books));
-          return;
-        }
-      } catch (e) {
-        debugPrint('Error: $e');
-      }
+      // try {
+      //   if (event.isReload == true) {
+      //     //await AppSharedPrefs.deleteAllData();
+      //   }
+      //   final books = await appSharedPrefs!.getBookList();
+      //   if (books.data!.isNotEmpty) {
+      //     emit(SearchBookSuccess(books));
+      //     return;
+      //   }
+      // } catch (e) {
+      //   debugPrint('Error: $e');
+      // }
 
       emit(BookLoading());
       final result = await searchBookUseCase(event.param);

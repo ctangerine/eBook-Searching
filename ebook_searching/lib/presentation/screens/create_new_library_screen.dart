@@ -113,6 +113,7 @@ class _CreateNewLibraryScreenState extends State<CreateNewLibraryScreen> {
             context: context,
             builder: (context) {
               return CustomPopup(
+                showCancelButton: false,
                 title: 'Create new library',
                 content: 'Create new library successfully',
                 confirmText: 'OK',

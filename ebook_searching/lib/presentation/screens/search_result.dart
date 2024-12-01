@@ -47,6 +47,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
           child: Column(
             children: [
+              const SizedBox(height: 20,),
               _buildAppBar(),
               const SizedBox(height: 20),
               Expanded(child: _buildSearchResult()),

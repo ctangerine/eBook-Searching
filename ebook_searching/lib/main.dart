@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initInjections();
   //await AppSharedPrefs.deleteLoginDataIfFirstTime();
-  await AppSharedPrefs.deleteAllData();
+  //await AppSharedPrefs.deleteAllData();
   AppConfig().isPassAPI = false;
   runApp(const MainApp());
 }

@@ -15,7 +15,7 @@ class AppSharedPrefs {
   Future<void> cacheBookList(BookResponseModel books) async {
     try {
       final jsonString = jsonEncode(books.toJson());
-      debugPrint('Books JSON: $jsonString');
+      //debugPrint('Books JSON: $jsonString');
       await _preferences.setString(AppConstant.bookKey, jsonString);
     } catch (e) {
       debugPrint('Error caching book list: $e');
@@ -81,6 +81,7 @@ class AppSharedPrefs {
   static Future<AuthenModel?> getLoginInfo() async {
     final prefs = await SharedPreferences.getInstance();
     String? jsonString = prefs.getString(AppConstant.loginKey);
+    debugPrint('Login Info: $jsonString');
     if (jsonString == null) return null;
 
     Map<String, dynamic> json = jsonDecode(jsonString);

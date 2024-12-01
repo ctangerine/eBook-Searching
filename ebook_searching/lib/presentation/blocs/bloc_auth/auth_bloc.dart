@@ -21,15 +21,18 @@ class AuthenBloc extends Bloc<AuthenEvent, AuthenState> {
     if (AppConfig().isPassAPI) {
       emit(AuthenLoading());
       final result = await _getMockResponseData();
-      AppSharedPrefs.saveLoginInfo(result);
+      
       emit(AuthenSuccess(result));
     } else {
       emit(AuthenLoading());
       final result = await signInUseCase(event.request);
-
+      
       result.fold(
         (failure) => emit(AuthenFailure(_mapFailureToMessage(failure))),
-        (response) => emit(AuthenSuccess(response)),
+        (response) {
+          AppSharedPrefs.saveLoginInfo(response);
+          emit(AuthenSuccess(response));
+        },
       );
     }
   }

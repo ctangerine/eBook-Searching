@@ -48,24 +48,31 @@ class CustomPopup extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 if (showCancelButton)
-                  TextButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
+                        
                       ),
-                      padding: const EdgeInsets.all(16),
-                    ),
-                    onPressed: onCancel ?? () => Navigator.of(context).pop(),
-                    child: const Text('Return'),
-                  ),
-                FilledButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      onPressed: onCancel ?? () => Navigator.of(context).pop(),
+                      child: const Text('Cancel'),
                     ),
                   ),
-                  onPressed: onConfirm,
-                  child: Text(confirmText),
+                if (showCancelButton) const SizedBox(width: 24,),
+                Expanded(
+                  child: FilledButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
+                    ),
+                    onPressed: onConfirm,
+                    child: Text(confirmText),
+                  ),
                 ),
               ],
             ),

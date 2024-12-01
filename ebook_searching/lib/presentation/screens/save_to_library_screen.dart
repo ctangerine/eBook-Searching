@@ -144,9 +144,9 @@ class SavedLibraryList extends StatelessWidget {
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.95,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.9,
                 ),
                 itemCount: state.libraries.length,
                 itemBuilder: (context, index) {

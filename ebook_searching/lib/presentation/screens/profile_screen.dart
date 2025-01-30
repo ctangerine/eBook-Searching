@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.error,
                         //side: const BorderSide(color: AppColors.primary, width: 1),
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(48))
                         )
                       ),

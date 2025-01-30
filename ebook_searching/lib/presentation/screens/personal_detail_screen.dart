@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ebook_searching/data/datasources/app_shared_prefs.dart';
 import 'package:ebook_searching/domain/models/profile/update_profile_request.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_bloc.dart';
 import 'package:ebook_searching/presentation/blocs/bloc_user/user_event.dart';
